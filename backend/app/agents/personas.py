@@ -178,11 +178,19 @@ async def run_persona(
     prompt = render_persona_prompt(persona, deck, tool_output)
 
     try:
+        from app.config import settings
+        has_api_key = bool(getattr(settings, "GEMINI_API_KEY", ""))
+    except Exception:
+        has_api_key = False
+
+    try:
         if llm_generate is not None:
             raw_report = await llm_generate(prompt=prompt, schema=PersonaReport, system=None, temperature=0.2)
-        else:
+        elif generate_json is not None and has_api_key:
             raw_report = await generate_json(prompt=prompt, schema=PersonaReport, system=None, temperature=0.2)
-    except NotImplementedError:
+        else:
+            raw_report = _mock_persona_report(persona)
+    except Exception:
         raw_report = _mock_persona_report(persona)
 
     if isinstance(raw_report, dict):

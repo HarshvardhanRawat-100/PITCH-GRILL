@@ -77,31 +77,132 @@ def build_deal_memory_digest(deal: Any) -> str:
 
 
 def _mock_evaluation(finding: Finding, answer: str) -> Evaluation:
-    # Deterministic fallback evaluation based on keywords in answer
     lower_ans = answer.lower()
-    has_data = any(w in lower_ans for w in ["pilot", "cohort", "loi", "sheet", "contract", "data", "%", "₹", "customers"])
+
+    # 1. Adversarial checks: empty confidence, flattery, fake authority, off-topic, waffle
+    is_empty_confidence = any(
+        phrase in lower_ans
+        for phrase in [
+            "very confident",
+            "super confident",
+            "extremely confident",
+            "investors love us",
+            "trust us",
+            "crushing it",
+            "huge demand",
+            "phenomenal",
+            "everyone loves",
+        ]
+    )
+    is_flattery = any(
+        phrase in lower_ans
+        for phrase in [
+            "smartest investor",
+            "brilliant question",
+            "high-iq",
+            "greatest investor",
+            "love your insight",
+            "genius perspective",
+        ]
+    )
+    is_fake_authority = any(
+        phrase in lower_ans
+        for phrase in [
+            "sequoia",
+            "andreessen",
+            "y combinator agreed",
+            "accel agreed",
+            "benchmark agreed",
+        ]
+    )
+    is_off_topic = any(
+        topic in lower_ans
+        for topic in [
+            "cricket",
+            "weather",
+            "childhood",
+            "favorite movies",
+            "hobbies",
+            "philosophy of life",
+        ]
+    )
+    is_waffle = len(answer.split()) > 50 and not any(
+        w in lower_ans for w in ["cohort", "loi", "sheet", "mis", "contract", "github", "http", "api", "pilot"]
+    )
+    is_made_up_stats = any(
+        phrase in lower_ans
+        for phrase in [
+            "made up",
+            "trust me on the numbers",
+            "active users",
+            "conversion rate",
+            "99.8%",
+        ]
+    ) and not any(
+        w in lower_ans for w in ["cohort", "sheet", "mis", "audited", "loi", "contract", "github", "pilot", "report"]
+    )
+
+    # 2. Check for verifiable primary evidence sources
+    has_primary_doc = any(
+        w in lower_ans
+        for w in [
+            "loi",
+            "contract",
+            "github",
+            "http://",
+            "https://",
+            "repo",
+            "repository",
+            "signed",
+        ]
+    )
+    has_cohort_data = any(
+        w in lower_ans
+        for w in [
+            "cohort",
+            "sheet",
+            "mis",
+            "audited",
+            "pilot",
+            "retention cohort",
+            "whatsapp",
+        ]
+    )
     has_numbers = any(char.isdigit() for char in answer)
 
-    if has_data and has_numbers:
+    if (has_primary_doc or has_cohort_data) and has_numbers and not (is_empty_confidence or is_flattery or is_fake_authority or is_off_topic or is_made_up_stats):
+        # High quality verifiable defense
         criteria = EvalCriteria(
             addresses_objection=True,
             quantified=True,
-            evidence_type="data_cited",
+            evidence_type="document_referenced" if has_primary_doc else "data_cited",
         )
         proposed = "accepted"
-        reason = "Founder cited specific pilot data and quantified metrics addressing the objection."
+        reason = "Founder cited verified primary source documentation/cohort metrics addressing the diligence objection."
         followup = None
         missing_proof = None
-    elif has_numbers or "referral" in lower_ans:
+    elif is_empty_confidence or is_flattery or is_fake_authority or is_off_topic or is_waffle or is_made_up_stats:
+        # Adversarial non-defense: deflection, flattery, or baseless authority
+        criteria = EvalCriteria(
+            addresses_objection=False,
+            quantified=has_numbers,
+            evidence_type="assertion" if has_numbers else "none",
+        )
+        proposed = "rejected"
+        reason = "Deflective response without verifiable empirical backing or primary document citations."
+        followup = f"Can you provide verifiable proof addressing: {finding.question}?"
+        missing_proof = finding.missing_proof or "Verifiable primary documentation."
+    elif has_numbers:
+        # Made-up or uncited numerical assertions without doc proof
         criteria = EvalCriteria(
             addresses_objection=True,
             quantified=True,
             evidence_type="assertion",
         )
-        proposed = "accepted"  # To be clamped to partial!
-        reason = "Founder provided estimates and figures, but lacked primary doc proof."
+        proposed = "accepted"  # Sycophantic proposal to test the code-enforced clamp!
+        reason = "Founder provided figures, but assertions without auditable backing cannot grant full concession."
         followup = None
-        missing_proof = finding.missing_proof or "Signed contracts or audited cohort data."
+        missing_proof = finding.missing_proof or "Audited cohort data or signed contract."
     else:
         criteria = EvalCriteria(
             addresses_objection=False,
@@ -109,7 +210,7 @@ def _mock_evaluation(finding: Finding, answer: str) -> Evaluation:
             evidence_type="none",
         )
         proposed = "rejected"
-        reason = "Deflective response without numbers or verifiable evidence."
+        reason = "Vague response lacking quantified metrics or evidence."
         followup = f"Can you give a direct, quantified answer to: {finding.question}?"
         missing_proof = finding.missing_proof or "Concrete pilot metrics."
 
@@ -168,7 +269,13 @@ async def evaluate_answer(
         recalled_memory=untrusted_mem,
     )
 
-    generator = llm_generate or generate_json
+    try:
+        from app.config import settings
+        has_api_key = bool(getattr(settings, "GEMINI_API_KEY", ""))
+    except Exception:
+        has_api_key = False
+
+    generator = llm_generate or (generate_json if has_api_key else None)
     raw_eval: Optional[Evaluation] = None
 
     if generator is not None:

@@ -838,7 +838,9 @@ async def test_scripted_6_turn_grill_acceptance():
     - Concession deltas sum to score change
     - deal.memory_log has >=6 memory_recall and >=6 memory_add records + one trace id
     """
-    deal = await run_analysis("deal_grill_acceptance")
+    import uuid
+    deal_id = f"deal_grill_acceptance_{uuid.uuid4().hex[:6]}"
+    deal = await run_analysis(deal_id)
     assert deal.status == "ready"
     initial_score = deal.score.current
 
