@@ -223,13 +223,18 @@ export const useDealStore = create<DealState>((set, get) => ({
 }));
 
 /* ─── Selector hooks (documented in shell/README.md) ─── */
+const EMPTY_REPORTS: PersonaReport[] = [];
+
 export const useDeal = () => useDealStore((s) => s.deal);
 export const useDealLoading = () => useDealStore((s) => s.loading);
 export const useDealError = () => useDealStore((s) => s.error);
-export const useStageProgress = () =>
-  useDealStore((s) => ({ message: s.stageMessage, progress: s.stageProgress }));
+export const useStageProgress = () => {
+  const message = useDealStore((s) => s.stageMessage);
+  const progress = useDealStore((s) => s.stageProgress);
+  return { message, progress };
+};
 export const useDealConnected = () => useDealStore((s) => s.connected);
-export const useReports = () => useDealStore((s) => s.deal?.reports ?? []);
+export const useReports = () => useDealStore((s) => s.deal?.reports ?? EMPTY_REPORTS);
 export const usePersonaReport = (persona: Persona) =>
   useDealStore((s) => s.deal?.reports.find((r) => r.persona === persona) ?? null);
 export const useDealScore = () => useDealStore((s) => s.deal?.score ?? null);
