@@ -1,0 +1,23 @@
+{
+  "site_url": "https://bolbot.ai",
+  "site_reachable": true,
+  "site_summary": "Landing page demonstrating automated WhatsApp sales workflows, SME catalog integrations, and Hindi/Hinglish audio demo samples.",
+  "claims_supported": [
+    "WhatsApp catalog checkout demo",
+    "Vernacular voice note query handling"
+  ],
+  "claims_unsupported": [
+    "Real-time Tally / Zoho Books automated 2-way sync (no developer documentation or API connector active on site)"
+  ],
+  "github": {
+    "repo": "bolbot-ai/bolbot-core",
+    "stars": 42,
+    "last_commit": "2026-10-28T09:15:00Z",
+    "languages": ["Python", "TypeScript", "FastAPI"]
+  },
+  "notes": [
+    "Public repo shows a functional webhook receiver for Meta WhatsApp Cloud API.",
+    "No proprietary Indic ASR weights stored in public repo; relies on external Whisper/Bhashini endpoints."
+  ],
+  "from_cache": true
+}
