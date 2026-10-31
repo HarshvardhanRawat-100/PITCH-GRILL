@@ -1,0 +1,46 @@
+[
+  {
+    "id": "G-1",
+    "persona": "finance",
+    "finding_id": "F-1",
+    "kind": "question",
+    "question_text": "If paid acquisition on Meta scales up and customer acquisition cost rises from ₹2,500 to ₹3,500, what cohort data proves your unit economics won't instantly turn negative?",
+    "answer": "We rely heavily on merchant organic word-of-mouth and we feel confident our strong founder network will keep CAC down.",
+    "evaluation": {
+      "criteria": {
+        "addresses_objection": true,
+        "quantified": false,
+        "evidence_type": "assertion"
+      },
+      "proposed_outcome": "partial",
+      "outcome": "rejected",
+      "reason": "Confidence and unverified founder network claims do not constitute verifiable empirical acquisition data.",
+      "followup": "What was your blended CAC over the last 90 days specifically excluding friends-and-family referrals?",
+      "missing_proof": "Paid channel performance audit from Meta Ads Manager showing actual CPA",
+      "injection_attempt": false
+    },
+    "finance_override": null
+  },
+  {
+    "id": "G-2",
+    "persona": "market",
+    "finding_id": "M-1",
+    "kind": "question",
+    "question_text": "How can you claim no direct competitors when LimeChat and BiteSpeed have raised over $7M and offer direct WhatsApp catalog checkouts in India?",
+    "answer": "LimeChat focuses primarily on funded D2C Shopify brands in metros. BolBot is built specifically for unorganized Tier 2/3 hardware and apparel wholesalers requiring voice notes in Hindi and cash-on-delivery tracking, where LimeChat has zero presence.",
+    "evaluation": {
+      "criteria": {
+        "addresses_objection": true,
+        "quantified": true,
+        "evidence_type": "data_cited"
+      },
+      "proposed_outcome": "accepted",
+      "outcome": "accepted",
+      "reason": "Founder successfully distinguished their non-metro wholesale ICP from competitors' metro D2C positioning with concrete structural differentiators.",
+      "followup": null,
+      "missing_proof": null,
+      "injection_attempt": false
+    },
+    "finance_override": null
+  }
+]

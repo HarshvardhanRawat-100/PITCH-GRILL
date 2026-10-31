@@ -1,0 +1,207 @@
+[
+  {
+    "persona": "finance",
+    "headline": "Unit economics look artificially resilient because WhatsApp conversation markup fees are excluded from CAC.",
+    "findings": [
+      {
+        "id": "F-1",
+        "persona": "finance",
+        "title": "Aggressive CAC break point leaves only 36% margin of error",
+        "detail": "Deck assumes CAC of ₹2,500 with 18 months runway. However, our deterministic sensitivity engine proves runway collapses below 12 months if CAC increases to ₹3,410 (+36%).",
+        "severity": "critical",
+        "category": "finance",
+        "claim_id": "c3",
+        "sources": [
+          { "type": "calc", "ref": "finance_engine", "quote": "runway collapses to 11.8 months at CAC ₹3,410" },
+          { "type": "deck", "ref": "slide 6", "quote": "CAC of ₹2,500 with rapid payback" }
+        ],
+        "status": "unverified",
+        "question": "If paid acquisition on Meta scales up and customer acquisition cost rises from ₹2,500 to ₹3,500, what cohort data proves your unit economics won't instantly turn negative?",
+        "resolved": "open",
+        "missing_proof": "Historical 6-month cohort retention and blended CAC ledger broken down by channel"
+      },
+      {
+        "id": "F-2",
+        "persona": "finance",
+        "title": "Meta conversation fee escalation unmodeled in Gross Margin",
+        "detail": "Meta charges per-marketing-conversation rates on WhatsApp Business API (~₹0.78 per message in India). At high chat frequency, gross margin will decline from 75% towards 52%.",
+        "severity": "critical",
+        "category": "finance",
+        "claim_id": "c3",
+        "sources": [
+          { "type": "inference", "ref": "model", "quote": "WhatsApp Business Cloud API India rate card" }
+        ],
+        "status": "unverified",
+        "question": "How many WhatsApp messages per customer per month are included in your ₹3,500 subscription before your 75% gross margin turns unprofitable?",
+        "resolved": "open",
+        "missing_proof": "WhatsApp BSP conversation billing invoices showing average message costs per active merchant"
+      },
+      {
+        "id": "F-3",
+        "persona": "finance",
+        "title": "Unrealistic monthly churn assumption for SME retail sector",
+        "detail": "Deck assumes 4.5% monthly churn for micro-enterprises. Indian retail SaaS typically suffers 7-10% monthly churn due to seasonal business closures.",
+        "severity": "major",
+        "category": "finance",
+        "sources": [
+          { "type": "deck", "ref": "slide 6", "quote": "Gross Margin 75%. Churn 4.5%." }
+        ],
+        "status": "unverified",
+        "question": "What is your 90-day logo churn among micro-retailers outside tier-1 cities?",
+        "resolved": "open",
+        "missing_proof": "Cohort retention curve for the first 180 paying MSMEs over 6 months"
+      },
+      {
+        "id": "F-4",
+        "persona": "finance",
+        "title": "Overly optimistic collection efficiency for monthly recurring fees",
+        "detail": "SME subscriptions paid via UPI autopay in India frequently experience payment mandate drop-offs of 15-20%.",
+        "severity": "minor",
+        "category": "finance",
+        "sources": [
+          { "type": "deck", "ref": "slide 6", "quote": "ARPU ₹3,500/mo" }
+        ],
+        "status": "unverified",
+        "question": "What percentage of monthly UPI recurring mandates fail at renewal, and how does that impact ARPU collection?",
+        "resolved": "open",
+        "missing_proof": "Payment gateway collection success rate report from Razorpay/Cashfree"
+      }
+    ]
+  },
+  {
+    "persona": "market",
+    "headline": "The claim of 'no direct competitors' is provably false, with well-funded incumbents already active in Indian WhatsApp commerce.",
+    "findings": [
+      {
+        "id": "M-1",
+        "persona": "market",
+        "title": "Unsubstantiated 'No Direct Competitors' claim directly refuted by market data",
+        "detail": "Slide 4 claims zero direct competitors. Live web grounding found LimeChat ($4.2M funded by Stellaris) and BiteSpeed ($3.4M funded by Peak XV Surge) targeting identical WhatsApp sales automation.",
+        "severity": "critical",
+        "category": "competition",
+        "claim_id": "c2",
+        "sources": [
+          { "type": "web", "ref": "https://inc42.com/buzz/limechat-raises-seed-funding", "quote": "conversational commerce platform enabling WhatsApp catalog checkouts for Indian merchants" },
+          { "type": "web", "ref": "https://entrackr.com/2022/02/bitespeed-secures-funding", "quote": "omnichannel conversational sales assistant powering store catalog ordering" }
+        ],
+        "status": "contradicted",
+        "question": "How can you claim no direct competitors when LimeChat and BiteSpeed have raised over $7M and offer direct WhatsApp catalog checkouts in India?",
+        "resolved": "open",
+        "missing_proof": "Head-to-head feature and pricing matrix comparing BolBot against LimeChat and BiteSpeed"
+      },
+      {
+        "id": "M-2",
+        "persona": "market",
+        "title": "Contradictory and constrained TAM sizing",
+        "detail": "Deck claims a ₹500 crore total addressable market. Industry reports size Indian conversational commerce at $1.2B (~₹9,960 Cr). Sizing is either 20x too small or conflating TAM with SOM.",
+        "severity": "major",
+        "category": "market",
+        "claim_id": "c1",
+        "sources": [
+          { "type": "web", "ref": "https://economictimes.indiatimes.com/tech/startups/conversational-commerce-india-report", "quote": "Indian conversational commerce ecosystem is expanding at 38% CAGR towards $1.2 billion" }
+        ],
+        "status": "contradicted",
+        "question": "Is your ₹500 Cr market claim bottom-up or top-down, and why is it disconnected from the $1.2B broader conversational commerce reports?",
+        "resolved": "open",
+        "missing_proof": "Bottom-up TAM build showing target merchant count multiplied by expected annual contract value"
+      },
+      {
+        "id": "M-3",
+        "persona": "market",
+        "title": "Distribution bottleneck in non-metro merchant acquisition",
+        "detail": "Acquiring Indian MSMEs through pure digital ads historically hits a ceiling quickly; field-sales distribution costs are omitted.",
+        "severity": "major",
+        "category": "market",
+        "sources": [
+          { "type": "deck", "ref": "slide 5", "quote": "SME sales distribution across Tier 2/3 clusters" }
+        ],
+        "status": "unverified",
+        "question": "What is your customer acquisition channel mix between digital performance marketing and feet-on-street merchant sales?",
+        "resolved": "open",
+        "missing_proof": "Signed channel partner agreements or field distributor pilot contracts"
+      },
+      {
+        "id": "M-4",
+        "persona": "market",
+        "title": "Platform dependency risk on Meta WhatsApp Cloud API policies",
+        "detail": "Meta frequently modifies commerce template guidelines and promotional message broadcast caps without notice.",
+        "severity": "minor",
+        "category": "market",
+        "sources": [
+          { "type": "inference", "ref": "model", "quote": "Meta WhatsApp Business Platform messaging terms" }
+        ],
+        "status": "unverified",
+        "question": "What protects BolBot from being commoditized if Meta expands native WhatsApp catalog checkout tools directly for merchants?",
+        "resolved": "open",
+        "missing_proof": "Official Meta Business Partner certification or multi-channel failover roadmap"
+      }
+    ]
+  },
+  {
+    "persona": "tech",
+    "headline": "No proof of proprietary voice ASR models; system appears to wrap third-party APIs without a defensible IP moat.",
+    "findings": [
+      {
+        "id": "T-1",
+        "persona": "tech",
+        "title": "Lack of verifiable IP moat in Indic speech processing",
+        "detail": "Deck claims a 'proprietary multilingual voice-to-cart engine'. Public repository inspection reveals reliance on standard open-source libraries without custom model checkpoints or acoustic training data.",
+        "severity": "critical",
+        "category": "tech",
+        "claim_id": "c4",
+        "sources": [
+          { "type": "deck", "ref": "slide 5", "quote": "Proprietary multilingual voice-to-cart engine" }
+        ],
+        "status": "unverified",
+        "question": "What proprietary dataset was used to fine-tune your Indic voice engine, and where are your comparative word-error-rate (WER) benchmarks against open-source Whisper and Bhashini?",
+        "resolved": "open",
+        "missing_proof": "Model evaluation benchmark report and audio dataset IP ownership documentation"
+      },
+      {
+        "id": "T-2",
+        "persona": "tech",
+        "title": "Unsubstantiated automated two-way inventory sync",
+        "detail": "Deck asserts real-time inventory synchronization with Tally and Zoho Books, but live website and documentation lack any webhook specifications or desktop Tally TCP connectors.",
+        "severity": "major",
+        "category": "tech",
+        "sources": [
+          { "type": "deck", "ref": "slide 5", "quote": "Real-time sync with Tally and Zoho Books inventory" }
+        ],
+        "status": "contradicted",
+        "question": "Most Indian SMEs run on-premise desktop Tally without cloud APIs. How does your engine achieve real-time two-way stock synchronization without an on-premise Windows daemon?",
+        "resolved": "open",
+        "missing_proof": "Architecture diagram and code repository for the Tally XML connector daemon"
+      },
+      {
+        "id": "T-3",
+        "persona": "tech",
+        "title": "Concurrency and rate-limiting bottlenecks on peak sale days",
+        "detail": "WhatsApp Cloud API imposes strict TPS rate limits. During festival flash sales (e.g. Diwali), order queues may delay or drop confirmation messages.",
+        "severity": "minor",
+        "category": "tech",
+        "sources": [
+          { "type": "inference", "ref": "model", "quote": "Meta WhatsApp Cloud API throughput limits" }
+        ],
+        "status": "unverified",
+        "question": "What is the peak message throughput tested under load, and what message broker handles async retry queues?",
+        "resolved": "open",
+        "missing_proof": "Load test report demonstrating message delivery times at 250+ concurrent customer sessions"
+      },
+      {
+        "id": "T-4",
+        "persona": "tech",
+        "title": "Data protection and customer privacy compliance under India DPDP Act",
+        "detail": "Customer shopping conversations and phone numbers stored in WhatsApp databases must adhere to Digital Personal Data Protection (DPDP) standards.",
+        "severity": "minor",
+        "category": "tech",
+        "sources": [
+          { "type": "inference", "ref": "model", "quote": "India DPDP Act 2023 compliance requirements" }
+        ],
+        "status": "unverified",
+        "question": "How are customer contact numbers and payment screenshots encrypted at rest in accordance with the Indian DPDP Act?",
+        "resolved": "open",
+        "missing_proof": "Security compliance architecture document and data retention policy"
+      }
+    ]
+  }
+]

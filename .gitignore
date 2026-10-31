@@ -17,6 +17,8 @@ out/
 
 # app data (uploaded decks, deal snapshots)
 backend/data/
+**/data/*.json
+**/data/uploads/
 
 # misc
 *.zip
