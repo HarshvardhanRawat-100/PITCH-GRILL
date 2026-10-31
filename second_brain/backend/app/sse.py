@@ -1,11 +1,12 @@
 """Server-Sent Events (SSE) streaming engine with replay and heartbeat."""
+
 import asyncio
 import json
 import logging
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
-from contracts.schemas import SSEEvent
 from app.store import get_events, subscribe, unsubscribe
+from contracts.schemas import SSEEvent
 
 logger = logging.getLogger("app.sse")
 
@@ -36,13 +37,11 @@ async def event_generator(
         while True:
             try:
                 # Wait for next event or heartbeat timeout
-                event: SSEEvent = await asyncio.wait_for(
-                    queue.get(), timeout=heartbeat_interval
-                )
+                event: SSEEvent = await asyncio.wait_for(queue.get(), timeout=heartbeat_interval)
                 if event.seq > last_seq:
                     last_seq = event.seq
                     yield format_sse(event.type, event.model_dump(), event.seq)
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 # Send SSE comment heartbeat
                 yield ": ping\n\n"
 

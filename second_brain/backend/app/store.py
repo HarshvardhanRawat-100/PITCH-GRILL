@@ -1,13 +1,12 @@
 """In-memory store for Deal states, event history, and JSON snapshotting."""
-import asyncio
-import json
-import logging
-import os
-import shutil
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Dict, List, Optional, Set
 
+import asyncio
+import logging
+import shutil
+from datetime import UTC, datetime
+from pathlib import Path
+
+from app.config import settings
 from contracts.schemas import (
     ChecklistItem,
     Concession,
@@ -16,7 +15,6 @@ from contracts.schemas import (
     DeckFacts,
     FinalVerdict,
     FinanceResult,
-    GrillTurn,
     LedgerEntry,
     MarketGrounding,
     MemoryRecord,
@@ -27,14 +25,13 @@ from contracts.schemas import (
     SSEType,
     TechSignals,
 )
-from app.config import settings
 
 logger = logging.getLogger("app.store")
 
 # In-memory storage
-_DEALS: Dict[str, Deal] = {}
-_EVENTS: Dict[str, List[SSEEvent]] = {}
-_SUBSCRIBERS: Dict[str, Set[asyncio.Queue]] = {}
+_DEALS: dict[str, Deal] = {}
+_EVENTS: dict[str, list[SSEEvent]] = {}
+_SUBSCRIBERS: dict[str, set[asyncio.Queue]] = {}
 
 
 def _get_snapshot_path(deal_id: str) -> Path:
@@ -51,7 +48,7 @@ def _write_snapshot(deal: Deal) -> None:
         logger.error("Failed to write snapshot for deal %s: %s", deal.id, e)
 
 
-def get_deal(deal_id: str) -> Optional[Deal]:
+def get_deal(deal_id: str) -> Deal | None:
     """Retrieve deal by ID from memory, or fallback to disk snapshot."""
     if deal_id in _DEALS:
         return _DEALS[deal_id]
@@ -59,7 +56,7 @@ def get_deal(deal_id: str) -> Optional[Deal]:
     path = _get_snapshot_path(deal_id)
     if path.exists():
         try:
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 deal = Deal.model_validate_json(f.read())
                 _DEALS[deal_id] = deal
                 return deal
@@ -75,7 +72,7 @@ def save_deal(deal: Deal) -> Deal:
     return deal
 
 
-def get_events(deal_id: str, since: int = 0) -> List[SSEEvent]:
+def get_events(deal_id: str, since: int = 0) -> list[SSEEvent]:
     """Get all events for a deal with seq > since."""
     events = _EVENTS.get(deal_id, [])
     return [e for e in events if e.seq > since]
@@ -88,7 +85,7 @@ def append_event(deal_id: str, event_type: SSEType, data: dict) -> SSEEvent:
         deal = Deal(
             id=deal_id,
             status="created",
-            created_at=datetime.now(timezone.utc).isoformat(),
+            created_at=datetime.now(UTC).isoformat(),
         )
         _DEALS[deal_id] = deal
 
@@ -96,7 +93,7 @@ def append_event(deal_id: str, event_type: SSEType, data: dict) -> SSEEvent:
         _EVENTS[deal_id] = []
 
     seq = len(_EVENTS[deal_id]) + 1
-    now_iso = datetime.now(timezone.utc).isoformat()
+    now_iso = datetime.now(UTC).isoformat()
 
     event = SSEEvent(
         type=event_type,
@@ -124,7 +121,10 @@ def append_event(deal_id: str, event_type: SSEType, data: dict) -> SSEEvent:
         elif event_type == "tech":
             deal.tech = TechSignals.model_validate(data)
         elif event_type == "persona_report":
-            rep = PersonaReport.model_validate(data)
+            from app.security import sanitize_persona_report
+
+            sanitized_data = sanitize_persona_report(data)
+            rep = PersonaReport.model_validate(sanitized_data)
             # Avoid duplicate reports for same persona
             deal.reports = [r for r in deal.reports if r.persona != rep.persona] + [rep]
         elif event_type == "ledger":
@@ -146,9 +146,7 @@ def append_event(deal_id: str, event_type: SSEType, data: dict) -> SSEEvent:
         elif event_type == "memory":
             # Meko MemoryRecord: REPLACE if id exists, else append
             rec = MemoryRecord.model_validate(data)
-            existing_idx = next(
-                (i for i, r in enumerate(deal.memory_log) if r.id == rec.id), None
-            )
+            existing_idx = next((i for i, r in enumerate(deal.memory_log) if r.id == rec.id), None)
             if existing_idx is not None:
                 deal.memory_log[existing_idx] = rec
             else:
@@ -218,7 +216,7 @@ def delete_deal(deal_id: str) -> bool:
 
 def cleanup_expired_deals(ttl_seconds: int = 3600) -> int:
     """Remove deals older than TTL (default 60 minutes)."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     expired = []
 
     for deal_id, deal in list(_DEALS.items()):

@@ -23,7 +23,7 @@ Rules:
 4. financial_inputs: for each field give value ONLY if the deck states it or it is directly computable from stated numbers
    (set origin="deck", slide=N, note explains computation). Otherwise value=null, origin="assumed". NEVER guess. Units: arpu_monthly per customer per month;
    cac per new customer; percentages 0-100; cash_in_bank and fixed_opex_monthly in INR (fixed_opex excludes customer acquisition spend).
-5. ask: amount_inr, valuation_inr, use_of_funds[]. 
+5. ask: amount_inr, valuation_inr, use_of_funds[].
 6. tech_claims: product/technology/data claims (e.g. "proprietary dataset", "patent-pending model"). website_url / github_url if present.
 7. missing_data: what a serious investor would expect but is absent (e.g. "No cohort retention data", "No CAC by channel", "No cap table").
 OUTPUT: DeckFacts (slides field left empty; the app fills it).

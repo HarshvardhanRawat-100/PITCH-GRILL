@@ -1,6 +1,7 @@
 """PyMuPDF parser: text extraction, slide rendering (150 dpi), and vision need detection."""
+
 from dataclasses import dataclass
-from typing import List
+
 import fitz  # PyMuPDF
 
 
@@ -12,7 +13,7 @@ class ParsedSlide:
     needs_vision: bool = False
 
 
-def parse_pdf(pdf_bytes: bytes, max_pages: int = 40) -> List[ParsedSlide]:
+def parse_pdf(pdf_bytes: bytes, max_pages: int = 40) -> list[ParsedSlide]:
     """Parse a PDF document into slides.
 
     - Validates PDF format and encryption
@@ -30,7 +31,7 @@ def parse_pdf(pdf_bytes: bytes, max_pages: int = 40) -> List[ParsedSlide]:
     try:
         doc = fitz.open(stream=pdf_bytes, filetype="pdf")
     except Exception as e:
-        raise ValueError(f"Corrupt or invalid PDF: {str(e)}") from e
+        raise ValueError(f"Corrupt or invalid PDF: {e!s}") from e
 
     try:
         if doc.is_encrypted:
@@ -44,7 +45,7 @@ def parse_pdf(pdf_bytes: bytes, max_pages: int = 40) -> List[ParsedSlide]:
         if page_count > max_pages:
             raise ValueError(f"PDF exceeds maximum page limit ({page_count} > {max_pages})")
 
-        slides: List[ParsedSlide] = []
+        slides: list[ParsedSlide] = []
 
         for i, page in enumerate(doc):
             slide_num = i + 1

@@ -1,15 +1,15 @@
 """Security utilities: untrusted input wrapping, SSRF guards, and PII redaction."""
+
 import ipaddress
 import re
 import socket
 from urllib.parse import urlparse
+
 import httpx
 
 # Precompiled regexes for PII redaction
 EMAIL_REGEX = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
-PHONE_REGEX = re.compile(
-    r"(?:\+?91[\s.-]?)?(?:\b[6-9]\d{9}\b|\b\d{3}[-.\s]\d{3}[-.\s]\d{4}\b)"
-)
+PHONE_REGEX = re.compile(r"(?:\+?91[\s.-]?)?(?:\b[6-9]\d{9}\b|\b\d{3}[-.\s]\d{3}[-.\s]\d{4}\b)")
 
 # Blocked IP networks
 BLOCKED_NETWORKS = [
@@ -19,11 +19,11 @@ BLOCKED_NETWORKS = [
     ipaddress.ip_network("169.254.0.0/16"),  # Link-local & AWS/GCP/Azure metadata
     ipaddress.ip_network("172.16.0.0/12"),
     ipaddress.ip_network("192.168.0.0/16"),
-    ipaddress.ip_network("224.0.0.0/4"),    # Multicast
-    ipaddress.ip_network("240.0.0.0/4"),    # Reserved
-    ipaddress.ip_network("::1/128"),        # IPv6 loopback
-    ipaddress.ip_network("fc00::/7"),       # IPv6 ULA
-    ipaddress.ip_network("fe80::/10"),      # IPv6 link-local
+    ipaddress.ip_network("224.0.0.0/4"),  # Multicast
+    ipaddress.ip_network("240.0.0.0/4"),  # Reserved
+    ipaddress.ip_network("::1/128"),  # IPv6 loopback
+    ipaddress.ip_network("fc00::/7"),  # IPv6 ULA
+    ipaddress.ip_network("fe80::/10"),  # IPv6 link-local
 ]
 
 BLOCKED_HOSTNAMES = {
@@ -135,3 +135,48 @@ def safe_memory_text(text: str) -> str:
     # Strip any control characters
     sanitized = "".join(ch for ch in sanitized if ch.isprintable() or ch in "\n\r\t")
     return sanitized.strip()
+
+
+# HTML tag stripper regex
+HTML_TAG_REGEX = re.compile(r"<[^>]+>")
+# Control character regex (except newline, tab, carriage return)
+CONTROL_CHAR_REGEX = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]")
+
+
+def sanitize_output(text: str, max_length: int = 5000) -> str:
+    """Strip HTML/script tags and control characters from LLM strings, and cap length."""
+    if not text:
+        return ""
+    # Strip HTML and script tags
+    cleaned = HTML_TAG_REGEX.sub("", text)
+    # Strip control characters
+    cleaned = CONTROL_CHAR_REGEX.sub("", cleaned)
+    # Cap length
+    if len(cleaned) > max_length:
+        cleaned = cleaned[:max_length] + "…"
+    return cleaned.strip()
+
+
+def sanitize_persona_report(report_data: dict) -> dict:
+    """Sanitize headline, title, detail, and questions in persona reports."""
+    if not report_data:
+        return report_data
+    sanitized = dict(report_data)
+    if "headline" in sanitized and isinstance(sanitized["headline"], str):
+        sanitized["headline"] = sanitize_output(sanitized["headline"], max_length=500)
+    if "findings" in sanitized and isinstance(sanitized["findings"], list):
+        clean_findings = []
+        for finding in sanitized["findings"]:
+            if isinstance(finding, dict):
+                f = dict(finding)
+                if "title" in f and isinstance(f["title"], str):
+                    f["title"] = sanitize_output(f["title"], max_length=200)
+                if "detail" in f and isinstance(f["detail"], str):
+                    f["detail"] = sanitize_output(f["detail"], max_length=2000)
+                if "question" in f and isinstance(f["question"], str):
+                    f["question"] = sanitize_output(f["question"], max_length=500)
+                clean_findings.append(f)
+            else:
+                clean_findings.append(finding)
+        sanitized["findings"] = clean_findings
+    return sanitized

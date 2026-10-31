@@ -1,12 +1,17 @@
 """FastAPI Application entrypoint for SecondBrain."""
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
-from contracts.schemas import MekoStatus
+import time
+from collections import defaultdict
+
+from fastapi import FastAPI, Request, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
 from app.config import settings
 from app.llm import get_usage
 from app.routes.deals import router as deals_router
 from app.routes.events import router as events_router
+from contracts.schemas import MekoStatus
 
 app = FastAPI(
     title="SecondBrain for Founders — AI Diligence War Room",
@@ -26,6 +31,48 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# In-memory rate limiter: IP -> list of timestamps
+_POST_RATE_LIMITS: dict[str, list[float]] = defaultdict(list)
+RATE_LIMIT_WINDOW_SECONDS = 60.0
+RATE_LIMIT_MAX_REQUESTS = 20
+
+
+@app.middleware("http")
+async def security_and_rate_limit_middleware(request: Request, call_next):
+    # 1. Rate limiting on POST endpoints
+    if request.method == "POST":
+        client_ip = request.client.host if request.client else "unknown"
+        now = time.time()
+        # Clean older entries
+        timestamps = [
+            t for t in _POST_RATE_LIMITS[client_ip] if now - t < RATE_LIMIT_WINDOW_SECONDS
+        ]
+        if len(timestamps) >= RATE_LIMIT_MAX_REQUESTS:
+            return JSONResponse(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                content={
+                    "detail": {
+                        "error": {
+                            "code": "rate_limit_exceeded",
+                            "message": f"Rate limit of {RATE_LIMIT_MAX_REQUESTS} requests per minute exceeded.",
+                        }
+                    }
+                },
+            )
+        timestamps.append(now)
+        _POST_RATE_LIMITS[client_ip] = timestamps
+
+    # 2. Process request
+    response = await call_next(request)
+
+    # 3. Security headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+
+    return response
+
 
 # Mount routes
 app.include_router(deals_router)
@@ -56,6 +103,7 @@ async def health_check():
     )
     try:
         from app.memory import get_memory
+
         mem = get_memory()
         if hasattr(mem, "status"):
             meko_status = mem.status()

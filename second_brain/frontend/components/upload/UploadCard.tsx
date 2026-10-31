@@ -158,6 +158,11 @@ export function UploadCard() {
             <span>Use Demo Deck (BolBot)</span>
           </button>
         </div>
+
+        {/* Privacy Copy */}
+        <p className="text-center text-xs text-gray-500 pt-2 border-t border-border/50">
+          The PDF itself is session-only. Extracted findings and your defenses are kept in Meko memory for this session and deleted when you delete the deal. Deck text is sent to Google Gemini to analyse it.
+        </p>
       </div>
     </div>
   );
