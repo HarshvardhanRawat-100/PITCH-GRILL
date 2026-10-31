@@ -81,14 +81,14 @@ def main() -> None:
     if bp.already_below_target:
         print(f"Already below {bp.target_runway_months}-month target at deck CAC.")
     elif bp.breaking_cac is not None:
-        print(f"Breaking CAC: ₹{bp.breaking_cac:,.0f}")
-        print(f"  = {bp.pct_increase:+.1f}% over deck CAC (₹{bp.base_cac:,.0f})")
+        print(f"Breaking CAC: Rs. {bp.breaking_cac:,.0f}")
+        print(f"  = {bp.pct_increase:+.1f}% over deck CAC (Rs. {bp.base_cac:,.0f})")
     else:
-        print(f"No break up to 20× CAC (runway stays above {bp.target_runway_months} mo).")
+        print(f"No break up to 20x CAC (runway stays above {bp.target_runway_months} mo).")
 
     # Key metrics
     m = result.metrics
-    print(f"\nLTV: {f'₹{m.ltv:,.0f}' if m.ltv is not None else 'N/A'}")
+    print(f"\nLTV: {f'Rs. {m.ltv:,.0f}' if m.ltv is not None else 'N/A'}")
     print(f"LTV:CAC: {f'{m.ltv_cac:.1f}' if m.ltv_cac is not None else 'N/A'}")
     print(f"Payback: {f'{m.payback_months:.1f} mo' if m.payback_months is not None else 'N/A'}")
     print(
