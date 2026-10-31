@@ -1,0 +1,182 @@
+[
+  {
+    "id": "LIB-01",
+    "title": "DPIIT Recognition Certificate",
+    "why_template": "Verifies Department for Promotion of Industry and Internal Trade startup status for Section 56(2)(viib) angel tax exemptions and public procurement benefits in India.",
+    "tags": ["incorporation", "dpiit", "tax", "regulatory", "legal"],
+    "owner": "legal",
+    "default_priority": "P1",
+    "india_specific": true
+  },
+  {
+    "id": "LIB-02",
+    "title": "Fully Diluted Cap Table & ESOP Pool Documentation",
+    "why_template": "Validates exact founder equity ownership, investor share classes, option grants, and unallocated ESOP reserves prior to investment.",
+    "tags": ["cap_table", "equity", "valuation", "ownership", "finance"],
+    "owner": "finance",
+    "default_priority": "P0",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-03",
+    "title": "Shareholder Agreements (SHA) & Articles of Association (AoA)",
+    "why_template": "Confirms governance rights, liquidation preferences, tag-along/drag-along clauses, and statutory charter alignment with existing institutional investors.",
+    "tags": ["sha", "aoa", "governance", "legal", "investors"],
+    "owner": "legal",
+    "default_priority": "P0",
+    "india_specific": true
+  },
+  {
+    "id": "LIB-04",
+    "title": "Certificate of Incorporation & MCA Filings (Form MGT-7/AOC-4)",
+    "why_template": "Validates statutory compliance with the Ministry of Corporate Affairs, timely annual filing history, and authorized share capital standing.",
+    "tags": ["mca", "incorporation", "statutory", "legal", "compliance"],
+    "owner": "legal",
+    "default_priority": "P0",
+    "india_specific": true
+  },
+  {
+    "id": "LIB-05",
+    "title": "Monthly GST Returns (GSTR-1 & GSTR-3B for Past 12 Months)",
+    "why_template": "Cross-verifies reported top-line revenue against statutory indirect tax return filings with the Indian GST portal.",
+    "tags": ["gst", "revenue", "tax", "finance", "compliance"],
+    "owner": "finance",
+    "default_priority": "P0",
+    "india_specific": true
+  },
+  {
+    "id": "LIB-06",
+    "title": "Audited Financial Statements & CA-Certified MIS",
+    "why_template": "Provides independent auditor assurance of revenue recognition, operating expenses, asset depreciation, and historical net burn.",
+    "tags": ["audit", "financials", "burn", "opex", "finance"],
+    "owner": "finance",
+    "default_priority": "P0",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-07",
+    "title": "Primary Bank Account Statements (Past 12 Months)",
+    "why_template": "Verifies true cash-in-bank liquidity, monthly operating burn rate, customer collections, and absence of undisclosed overdrafts.",
+    "tags": ["bank", "cash", "runway", "burn", "finance"],
+    "owner": "finance",
+    "default_priority": "P0",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-08",
+    "title": "Founder & Employee IP Assignment Agreements",
+    "why_template": "Guarantees that all proprietary software code, algorithms, and technical assets are unequivocally owned by the company rather than individual developers.",
+    "tags": ["ip", "code", "architecture", "tech", "legal"],
+    "owner": "legal",
+    "default_priority": "P0",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-09",
+    "title": "Trademark & Patent Application Filings",
+    "why_template": "Protects brand equity and proprietary technology from infringement under the Indian Trade Marks Registry and Patent Office.",
+    "tags": ["trademark", "patent", "branding", "moat", "legal"],
+    "owner": "legal",
+    "default_priority": "P1",
+    "india_specific": true
+  },
+  {
+    "id": "LIB-10",
+    "title": "DPDP Act 2023 Compliance & Consent Architecture",
+    "why_template": "Ensures processing of personal data, digital consent collection, and user grievance redressal conform to the Digital Personal Data Protection Act 2023.",
+    "tags": ["dpdp", "privacy", "personal_data", "compliance", "legal", "tech"],
+    "owner": "legal",
+    "default_priority": "P0",
+    "india_specific": true
+  },
+  {
+    "id": "LIB-11",
+    "title": "Customer Master Service Agreements (MSAs) & Signed LOIs",
+    "why_template": "Substantiates stated pilot commercial terms, contract values (ACV/TCV), termination covenants, and revenue retention commitments.",
+    "tags": ["contracts", "loi", "traction", "customers", "founder"],
+    "owner": "founder",
+    "default_priority": "P0",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-12",
+    "title": "Cohort Retention & Blended CAC-by-Channel Breakdown",
+    "why_template": "Validates customer payback periods, organic vs paid acquisition efficiency, and net revenue retention across monthly cohorts.",
+    "tags": ["cac", "cohort", "retention", "ltv", "marketing", "finance"],
+    "owner": "finance",
+    "default_priority": "P0",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-13",
+    "title": "Granular Unit-Economics & Sensitivity Model",
+    "why_template": "Audits gross margin durability, contribution margin per transaction, and break-even dependency on scale and marketing efficiency.",
+    "tags": ["unit_economics", "margin", "pricing", "breakeven", "finance"],
+    "owner": "finance",
+    "default_priority": "P1",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-14",
+    "title": "Product Technical Architecture & System Design Document",
+    "why_template": "Validates scalability, latency guarantees, fault-tolerance mechanisms, and third-party infrastructure dependencies for production workloads.",
+    "tags": ["architecture", "infra", "scalability", "tech"],
+    "owner": "tech",
+    "default_priority": "P1",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-15",
+    "title": "Third-Party API Commercial Agreements & Software Licenses",
+    "why_template": "Audits vendor dependency risks, rate limits, enterprise pricing schedules, and open-source license compliance (e.g., GPL contamination).",
+    "tags": ["api", "vendor", "licenses", "tech"],
+    "owner": "tech",
+    "default_priority": "P1",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-16",
+    "title": "Data Sourcing Proof & Training Data Licensing Rights",
+    "why_template": "Confirms training sets, web data, and proprietary corpora were acquired lawfully without scraping violations or copyright infringement.",
+    "tags": ["data_sourcing", "ai", "training_data", "scraping", "legal", "tech"],
+    "owner": "tech",
+    "default_priority": "P0",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-17",
+    "title": "Independent Security Audit & VAPT Certification",
+    "why_template": "Demonstrates enterprise-grade cybersecurity posture and vulnerability remediation by a CERT-In empanelled auditor.",
+    "tags": ["security", "vapt", "cert_in", "audit", "tech"],
+    "owner": "tech",
+    "default_priority": "P1",
+    "india_specific": true
+  },
+  {
+    "id": "LIB-18",
+    "title": "Employment Agreements & Statutory Labor Compliance (PF, ESI, Gratuity)",
+    "why_template": "Guarantees key personnel retention covenants, non-compete enforceability, and statutory remittances to EPFO and ESIC in India.",
+    "tags": ["hr", "employment", "pf", "esi", "legal", "founder"],
+    "owner": "legal",
+    "default_priority": "P2",
+    "india_specific": true
+  },
+  {
+    "id": "LIB-19",
+    "title": "Litigation & Statutory Notice Declaration",
+    "why_template": "Discloses any past, pending, or threatened litigation, arbitrations, tax assessment notices, or regulatory inquiries.",
+    "tags": ["litigation", "disputes", "tax_notices", "legal"],
+    "owner": "legal",
+    "default_priority": "P1",
+    "india_specific": false
+  },
+  {
+    "id": "LIB-20",
+    "title": "FEMA & RBI FDI Compliance Records (FC-GPR / FCGPR Filings)",
+    "why_template": "Mandatory for startups receiving cross-border foreign direct investment to demonstrate timely RBI approval and compliance with FDI sectoral caps.",
+    "tags": ["fema", "rbi", "fdi", "cross_border", "finance", "legal"],
+    "owner": "legal",
+    "default_priority": "P1",
+    "india_specific": true
+  }
+]
