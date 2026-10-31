@@ -36,6 +36,10 @@ except ImportError:
 
 from backend.app.agents.personas import run_persona
 from backend.app.agents.prompts import render_persona_prompt, P_00, P_03, P_04, P_05, P_08
+from backend.app.agents.moderator import run_moderator
+from backend.app.agents.scoring import compute_score
+from backend.app.agents.ledger import build_ledger
+from backend.app.agents.orchestrator import run_analysis, get_memory
 
 
 def load_fixtures():
@@ -514,3 +518,226 @@ async def test_real_llm_persona():
     for f in report.findings:
         assert f.id.startswith("F-")
         assert len(f.sources) >= 1
+
+
+@pytest.mark.asyncio
+async def test_moderator_top_issues_and_fallback():
+    reports = [
+        PersonaReport(
+            persona="finance",
+            headline="Finance issues.",
+            findings=[
+                create_sample_finding(title="Finance crit", severity="critical"),
+                create_sample_finding(title="Finance minor", severity="minor"),
+            ],
+        ),
+        PersonaReport(
+            persona="market",
+            headline="Market issues.",
+            findings=[
+                create_sample_finding(title="Market crit", severity="critical"),
+                create_sample_finding(title="Market major", severity="major"),
+            ],
+        ),
+        PersonaReport(
+            persona="tech",
+            headline="Tech issues.",
+            findings=[
+                create_sample_finding(title="Tech minor", severity="minor"),
+            ],
+        ),
+    ]
+
+    # Set sequential IDs
+    reports[0].findings[0].id = "F-1"
+    reports[0].findings[1].id = "F-2"
+    reports[1].findings[0].id = "M-1"
+    reports[1].findings[1].id = "M-2"
+    reports[2].findings[0].id = "T-1"
+
+    # 1. Deterministic run
+    mod_out = await run_moderator(reports)
+    assert len(mod_out.top_issues) == 3
+    # Critical findings should be prioritized in top_issues
+    assert "F-1" in mod_out.top_issues
+    assert "M-1" in mod_out.top_issues
+    assert len(mod_out.summary) > 0
+
+    # 2. Mock LLM that returns non-existent IDs -> should fallback to valid IDs
+    async def mock_bad_llm(**kwargs):
+        return {
+            "reports": [r.model_dump() for r in reports],
+            "top_issues": ["FAKE-99", "INVALID-1"],
+            "summary": "LLM summary.",
+        }
+
+    mod_out_llm = await run_moderator(reports, llm_generate=mock_bad_llm)
+    assert len(mod_out_llm.top_issues) == 3
+    # Ensure all top issues actually exist in the reports
+    all_ids = {f.id for r in reports for f in r.findings}
+    for tid in mod_out_llm.top_issues:
+        assert tid in all_ids
+
+
+@pytest.mark.asyncio
+async def test_scoring_compute_score():
+    reports = [
+        PersonaReport(
+            persona="finance",
+            headline="Headline",
+            findings=[
+                create_sample_finding(severity="critical", resolved="open"),  # 25 penalty
+                create_sample_finding(severity="major", resolved="open"),     # 12 penalty
+            ],
+        ),
+        PersonaReport(
+            persona="market",
+            headline="Headline",
+            findings=[
+                create_sample_finding(severity="minor", resolved="open"),     # 5 penalty
+            ],
+        ),
+    ]
+
+    # Initial score calculation
+    score_1 = compute_score(reports)
+    assert score_1.initial > 0
+    assert score_1.current == score_1.initial
+
+    # Finance score: 100 - (25 + 12) = 63.0
+    f_score = next(p for p in score_1.by_persona if p.persona == "finance")
+    assert f_score.initial == 63.0
+    assert f_score.current == 63.0
+
+    # Market score: 100 - 5 = 95.0
+    m_score = next(p for p in score_1.by_persona if p.persona == "market")
+    assert m_score.initial == 95.0
+    assert m_score.current == 95.0
+
+    # Now resolve critical finding in finance
+    reports[0].findings[0].resolved = "resolved"  # penalty factor 0.0, recovered
+    score_2 = compute_score(reports, existing_score=score_1)
+
+    # Initial score preserved
+    assert score_2.initial == score_1.initial
+    f_score_2 = next(p for p in score_2.by_persona if p.persona == "finance")
+    assert f_score_2.initial == 63.0
+    # Current score improved: 100 - 12 = 88.0
+    assert f_score_2.current == 88.0
+    assert score_2.current > score_1.current
+
+
+@pytest.mark.asyncio
+async def test_ledger_confidence_and_sources():
+    deck, finance, market, tech = load_fixtures()
+    reports = [
+        PersonaReport(
+            persona="finance",
+            headline="Finance findings",
+            findings=[
+                create_sample_finding(
+                    title="Calc based finding",
+                    severity="critical",
+                    sources=[SourceRef(type="calc", ref="finance_engine", quote="calc quote")],
+                )
+            ],
+        )
+    ]
+
+    entries = build_ledger(deck, reports, finance, market, tech)
+    assert len(entries) > 0
+
+    # Check deck claims confidence: 0.4
+    deck_entries = [e for e in entries if e.source.type == "deck"]
+    assert len(deck_entries) > 0
+    for e in deck_entries:
+        assert e.confidence == 0.4
+        assert e.status == "unverified"
+
+    # Check calc source confidence: 0.9
+    calc_entries = [e for e in entries if e.source.type == "calc" and e.finding_id]
+    assert len(calc_entries) > 0
+    for e in calc_entries:
+        assert e.confidence == 0.9
+
+    # Check verified web competitor confidence: 0.85
+    comp_entries = [e for e in entries if "Market Competitor:" in e.claim_text]
+    assert len(comp_entries) > 0
+    verified_comp = [c for c in comp_entries if c.status == "verified"]
+    for c in verified_comp:
+        assert c.confidence == 0.85
+
+    # Check assumed financial input confidence: 0.2
+    assumed_entries = [e for e in entries if e.status == "assumed"]
+    for a in assumed_entries:
+        assert a.confidence == 0.2
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_run_analysis_full_pipeline():
+    deck, finance, market, tech = load_fixtures()
+
+    async def mock_agent_llm(prompt: str, schema: type, **kwargs):
+        severities = ["critical", "major", "minor", "minor"]
+        if "FINANCE INVESTOR" in prompt:
+            return PersonaReport(
+                persona="finance",
+                headline="Finance critique headline.",
+                findings=[create_sample_finding(title=f"Fin finding {i}", severity=severities[i]) for i in range(4)],
+            )
+        elif "MARKET INVESTOR" in prompt:
+            return PersonaReport(
+                persona="market",
+                headline="Market critique headline.",
+                findings=[create_sample_finding(title=f"Mkt finding {i}", category="market", severity=severities[i]) for i in range(4)],
+            )
+        elif "TECHNICAL INVESTOR" in prompt:
+            return PersonaReport(
+                persona="tech",
+                headline="Tech critique headline.",
+                findings=[create_sample_finding(title=f"Tech finding {i}", category="tech", severity=severities[i]) for i in range(4)],
+            )
+        return schema()
+
+    deal = await run_analysis("deal_test_123", llm_generate=mock_agent_llm)
+
+    assert deal.id == "deal_test_123"
+    assert deal.status == "ready"
+    assert deal.finance is not None
+    assert deal.market is not None
+    assert deal.tech is not None
+    assert len(deal.reports) == 3
+    assert len(deal.top_issues) == 3
+    assert deal.score is not None
+    assert deal.score.initial > 0
+    assert len(deal.ledger) > 0
+    assert len(deal.checklist) > 0
+
+    # MEKO ADDENDUM (M3) assertion:
+    # deal.memory_log has >= 1 record per top finding
+    assert len(deal.memory_log) >= len(deal.top_issues)
+    finding_memories = [m for m in deal.memory_log if "FINDING" in m.text]
+    assert len(finding_memories) >= 12  # 3 personas * 4 findings each
+
+
+@pytest.mark.asyncio
+async def test_orchestrator_tool_failure_recovery(monkeypatch):
+    # Simulate tool failure
+    import backend.app.agents.orchestrator as orch
+
+    async def failing_tool(*args, **kwargs):
+        raise RuntimeError("External network connection timeout")
+
+    monkeypatch.setattr(orch, "_run_finance_tool", failing_tool)
+
+    # run_analysis should gracefully handle failure and continue with unverified / fallback
+    events_emitted = []
+    def mock_append_event(deal_id, event_type, data):
+        events_emitted.append((event_type, data))
+
+    monkeypatch.setattr(orch, "append_event", mock_append_event)
+
+    deal = await run_analysis("deal_resilience_test")
+    assert deal.status == "ready"
+    assert deal.score is not None
+
