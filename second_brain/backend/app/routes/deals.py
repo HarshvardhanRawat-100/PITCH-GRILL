@@ -34,123 +34,181 @@ def _load_fixture(filename: str):
 
 
 async def run_pipeline(deal_id: str):
-    """Execute analysis pipeline for a deal. In MOCK mode, replays realistic fixtures with delays."""
+    """Execute analysis pipeline for a deal. In MOCK mode, replays realistic fixtures with delays.
+    In real mode, runs the ingestion pipeline (parser -> vision -> extractor -> orchestrator)."""
     deal = get_deal(deal_id)
     if not deal:
         logger.error("Pipeline run failed: deal %s not found", deal_id)
         return
 
-    logger.info("Starting pipeline for deal %s (MOCK=%s)", deal_id, settings.MOCK)
+    upload_pdf_path = settings.DATA_DIR / "uploads" / f"{deal_id}.pdf"
+    is_real_run = (not settings.MOCK) and upload_pdf_path.exists()
 
-    # 1. Parsing stage
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "parsing", "message": "Parsing pitch deck slides and extracting text...", "progress": 0.1},
-    )
-    await asyncio.sleep(0.3)
+    logger.info("Starting pipeline for deal %s (real=%s, MOCK=%s)", deal_id, is_real_run, settings.MOCK)
 
-    # 2. Extracting stage & Deck facts
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "extracting", "message": "Extracting claims and financial inputs with Gemini...", "progress": 0.25},
-    )
-    await asyncio.sleep(0.3)
+    if not is_real_run:
+        # Mock / Demo replay pipeline
+        # 1. Parsing stage
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "parsing", "message": "Parsing pitch deck slides and extracting text...", "progress": 0.1},
+        )
+        await asyncio.sleep(0.3)
 
-    deck_data = _load_fixture("deck.json")
-    append_event(deal_id, "deck", deck_data)
-    await asyncio.sleep(0.2)
+        # 2. Extracting stage & Deck facts
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "extracting", "message": "Extracting claims and financial inputs with Gemini...", "progress": 0.25},
+        )
+        await asyncio.sleep(0.3)
 
-    # 3. Parallel Tools: Finance, Market, Tech
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "finance", "message": "Simulating 36-month financial engine and CAC break point...", "progress": 0.4},
-    )
-    finance_data = _load_fixture("finance.json")
-    append_event(deal_id, "finance", finance_data)
-    await asyncio.sleep(0.25)
-
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "market", "message": "Grounding competitors and TAM claims with live web search...", "progress": 0.55},
-    )
-    market_data = _load_fixture("market.json")
-    append_event(deal_id, "market", market_data)
-    await asyncio.sleep(0.25)
-
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "tech", "message": "Inspecting product website and GitHub repository signals...", "progress": 0.65},
-    )
-    tech_data = _load_fixture("tech.json")
-    append_event(deal_id, "tech", tech_data)
-    await asyncio.sleep(0.25)
-
-    # 4. Persona reports (Finance, Market, Tech)
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "moderating", "message": "Synthesizing red-team findings across three investor personas...", "progress": 0.75},
-    )
-    reports = _load_fixture("reports.json")
-    for rep in reports:
-        append_event(deal_id, "persona_report", rep)
+        deck_data = _load_fixture("deck.json")
+        append_event(deal_id, "deck", deck_data)
         await asyncio.sleep(0.2)
 
-    # 5. Evidence Ledger
-    ledger = _load_fixture("ledger.json")
-    append_event(deal_id, "ledger", {"entries": ledger})
-    await asyncio.sleep(0.2)
+        # 3. Parallel Tools: Finance, Market, Tech
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "finance", "message": "Simulating 36-month financial engine and CAC break point...", "progress": 0.4},
+        )
+        finance_data = _load_fixture("finance.json")
+        append_event(deal_id, "finance", finance_data)
+        await asyncio.sleep(0.25)
 
-    # 6. Readiness Score
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "scoring", "message": "Computing initial Pitch Readiness Score...", "progress": 0.85},
-    )
-    score_data = {
-        "initial": 52.0,
-        "current": 52.0,
-        "by_persona": [
-          {"persona": "finance", "initial": 48.0, "current": 48.0},
-          {"persona": "market", "initial": 50.0, "current": 50.0},
-          {"persona": "tech", "initial": 58.0, "current": 58.0}
-        ]
-    }
-    append_event(deal_id, "score", score_data)
-    await asyncio.sleep(0.2)
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "market", "message": "Grounding competitors and TAM claims with live web search...", "progress": 0.55},
+        )
+        market_data = _load_fixture("market.json")
+        append_event(deal_id, "market", market_data)
+        await asyncio.sleep(0.25)
 
-    # 7. Data Room Checklist
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "checklist", "message": "Generating India due-diligence data room checklist...", "progress": 0.92},
-    )
-    checklist = _load_fixture("checklist.json")
-    append_event(deal_id, "checklist", {"items": checklist})
-    await asyncio.sleep(0.2)
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "tech", "message": "Inspecting product website and GitHub repository signals...", "progress": 0.65},
+        )
+        tech_data = _load_fixture("tech.json")
+        append_event(deal_id, "tech", tech_data)
+        await asyncio.sleep(0.25)
 
-    # 8. Memory records (replay top findings remembered to Meko)
+        # 4. Persona reports (Finance, Market, Tech)
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "moderating", "message": "Synthesizing red-team findings across three investor personas...", "progress": 0.75},
+        )
+        reports = _load_fixture("reports.json")
+        for rep in reports:
+            append_event(deal_id, "persona_report", rep)
+            await asyncio.sleep(0.2)
+
+        # 5. Evidence Ledger
+        ledger = _load_fixture("ledger.json")
+        append_event(deal_id, "ledger", {"entries": ledger})
+        await asyncio.sleep(0.2)
+
+        # 6. Readiness Score
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "scoring", "message": "Computing initial Pitch Readiness Score...", "progress": 0.85},
+        )
+        score_data = {
+            "initial": 52.0,
+            "current": 52.0,
+            "by_persona": [
+              {"persona": "finance", "initial": 48.0, "current": 48.0},
+              {"persona": "market", "initial": 50.0, "current": 50.0},
+              {"persona": "tech", "initial": 58.0, "current": 58.0}
+            ]
+        }
+        append_event(deal_id, "score", score_data)
+        await asyncio.sleep(0.2)
+
+        # 7. Data Room Checklist
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "checklist", "message": "Generating India due-diligence data room checklist...", "progress": 0.92},
+        )
+        checklist = _load_fixture("checklist.json")
+        append_event(deal_id, "checklist", {"items": checklist})
+        await asyncio.sleep(0.2)
+
+        # 8. Memory records (replay top findings remembered to Meko)
+        try:
+            mem_records = _load_fixture("memory_log.json")
+            for rec in mem_records[:4]:
+                append_event(deal_id, "memory", rec)
+                await asyncio.sleep(0.1)
+        except Exception as e:
+            logger.warning("Could not replay memory fixture: %s", e)
+
+        # 9. Ready & Done
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "ready", "message": "Analysis complete. War room is ready for defense.", "progress": 1.0},
+        )
+        append_event(deal_id, "done", {"phase": "analysis"})
+        logger.info("Pipeline completed successfully for deal %s", deal_id)
+        return
+
+    # Real Ingestion Mode
     try:
-        mem_records = _load_fixture("memory_log.json")
-        for rec in mem_records[:4]:
-            append_event(deal_id, "memory", rec)
-            await asyncio.sleep(0.1)
-    except Exception as e:
-        logger.warning("Could not replay memory fixture: %s", e)
+        # Step 1: Parsing
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "parsing", "message": "Parsing pitch deck slides and rendering high-res pages...", "progress": 0.1},
+        )
+        with open(upload_pdf_path, "rb") as f:
+            pdf_bytes = f.read()
 
-    # 9. Ready & Done
-    append_event(
-        deal_id,
-        "stage",
-        {"stage": "ready", "message": "Analysis complete. War room is ready for defense.", "progress": 1.0},
-    )
-    append_event(deal_id, "done", {"phase": "analysis"})
-    logger.info("Pipeline completed successfully for deal %s", deal_id)
+        from app.ingest.parser import parse_pdf
+        slides = parse_pdf(pdf_bytes)
+
+        # Step 2: Vision transcription for flagged slides
+        from app.ingest.vision import transcribe_slides
+        slides, vision_notes = await transcribe_slides(slides)
+
+        # Step 3: Structured extraction via Gemini
+        append_event(
+            deal_id,
+            "stage",
+            {"stage": "extracting", "message": "Extracting structured claims and financial metrics with Gemini...", "progress": 0.3},
+        )
+        from app.ingest.extractor import extract_deck_facts
+        deck_facts = await extract_deck_facts(slides, extra_notes=vision_notes)
+
+        # Emit deck event
+        append_event(deal_id, "deck", deck_facts.model_dump())
+
+        # Step 4: Hand-off to Orchestrator (P2) if present
+        try:
+            from app.agents.orchestrator import run_analysis
+            await run_analysis(deal_id)
+        except (ImportError, AttributeError):
+            logger.info("Orchestrator not yet present (P2 package); setting status to ready")
+            append_event(
+                deal_id,
+                "stage",
+                {"stage": "ready", "message": "Deck extraction complete. War room ready for analysis.", "progress": 1.0},
+            )
+            append_event(deal_id, "done", {"phase": "analysis"})
+
+    except Exception as e:
+        logger.error("Real ingestion pipeline failed for deal %s: %s", deal_id, e, exc_info=True)
+        append_event(
+            deal_id,
+            "error",
+            {"code": "ingest_error", "message": str(e), "recoverable": False},
+        )
 
 
 @router.post("", status_code=status.HTTP_201_CREATED)
