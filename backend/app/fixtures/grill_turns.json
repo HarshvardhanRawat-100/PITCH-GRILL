@@ -1,0 +1,136 @@
+[
+  {
+    "id": "G-1",
+    "persona": "finance",
+    "finding_id": "F-1",
+    "kind": "question",
+    "question_text": "If customer acquisition cost spikes from ₹4,500 to ₹8,100 as you scale beyond early adopters, our model proves runway drops below 12 months. What cohort data proves your unit margins survive?",
+    "answer": "Our referral network is very strong and we are confident organic adoption will keep blended CAC well below ₹4,000 without needing heavy paid spend.",
+    "evaluation": {
+      "criteria": {
+        "addresses_objection": true,
+        "quantified": false,
+        "evidence_type": "assertion"
+      },
+      "proposed_outcome": "partial",
+      "outcome": "rejected",
+      "reason": "Founder confidence and unverified network claims do not constitute verifiable acquisition cohort data.",
+      "followup": "What was your blended CAC over the last 90 days specifically excluding friends-and-family referrals?",
+      "missing_proof": "Audited CAC breakdown by paid vs organic acquisition channels",
+      "injection_attempt": false
+    },
+    "finance_override": null
+  },
+  {
+    "id": "G-2",
+    "persona": "market",
+    "finding_id": "M-1",
+    "kind": "question",
+    "question_text": "How can you claim no direct competitors when Wati has raised $23M and Bikayi raised $10.8M offering automated WhatsApp catalogue storefronts in India?",
+    "answer": "Wati and LimeChat target funded D2C Shopify brands in metro cities. BolBot is built strictly for unorganized wholesale traders in Tier 2/3 clusters requiring vernacular voice ordering and cash-on-delivery reconciliations, where Wati has zero presence.",
+    "evaluation": {
+      "criteria": {
+        "addresses_objection": true,
+        "quantified": true,
+        "evidence_type": "data_cited"
+      },
+      "proposed_outcome": "accepted",
+      "outcome": "accepted",
+      "reason": "Founder successfully distinguished their Tier 2/3 wholesale ICP from metro D2C competitors with structural product moats.",
+      "followup": null,
+      "missing_proof": null,
+      "injection_attempt": false
+    },
+    "finance_override": null
+  },
+  {
+    "id": "G-3",
+    "persona": "tech",
+    "finding_id": "T-1",
+    "kind": "question",
+    "question_text": "You claim proprietary Indic NLP for Hindi and Hinglish voice-to-order, yet your public website and repository rely strictly on OpenAI and Meta Cloud APIs. Where are your proprietary models?",
+    "answer": "We currently route audio to OpenAI Whisper API as a baseline, but we have collected 12,000 labelled voice notes from Surat textile merchants to fine-tune a local Llama model for acoustic dialect recognition.",
+    "evaluation": {
+      "criteria": {
+        "addresses_objection": true,
+        "quantified": true,
+        "evidence_type": "assertion"
+      },
+      "proposed_outcome": "accepted",
+      "outcome": "partial",
+      "reason": "Candid admission that current production relies on third-party APIs. Fine-tuning dataset is promising but currently unverified in production.",
+      "followup": null,
+      "missing_proof": "Benchmark accuracy reports and hosting infrastructure for fine-tuned weights",
+      "injection_attempt": false
+    },
+    "finance_override": null
+  },
+  {
+    "id": "G-4",
+    "persona": "finance",
+    "finding_id": "F-2",
+    "kind": "question",
+    "question_text": "Your pilot cohort shows 4% monthly customer churn, which compounds to 39% annualized churn. How do you justify an 18-month runway on a ₹2 Crore raise with that attrition rate?",
+    "answer": "Among our core wholesale pilot of 120 merchants active for >90 days, monthly churn drops to 1.5% with net negative revenue churn from catalogue expansion (verified in attached MIS cohort sheet).",
+    "evaluation": {
+      "criteria": {
+        "addresses_objection": true,
+        "quantified": true,
+        "evidence_type": "data_cited"
+      },
+      "proposed_outcome": "accepted",
+      "outcome": "accepted",
+      "reason": "Strong empirical defense isolating mature cohort retention from early pilot drop-offs.",
+      "followup": null,
+      "missing_proof": null,
+      "injection_attempt": false
+    },
+    "finance_override": {
+      "monthly_churn_pct": 1.5
+    }
+  },
+  {
+    "id": "G-5",
+    "persona": "market",
+    "finding_id": "M-2",
+    "kind": "question",
+    "question_text": "Your deck cites a ₹500 crore market size, yet independent reports project the Indian conversational commerce market to reach ₹1,200 crore. Why is your top-down TAM framing so divergent?",
+    "answer": "Our ₹500 crore figure represents only bottom-up software subscription fees from 150,000 addressable wholesale merchants at ₹3,000/month, deliberately excluding GMV transaction commissions.",
+    "evaluation": {
+      "criteria": {
+        "addresses_objection": true,
+        "quantified": true,
+        "evidence_type": "data_cited"
+      },
+      "proposed_outcome": "accepted",
+      "outcome": "accepted",
+      "reason": "Clear bottom-up SAM/SOM methodology that explains the conservative estimate relative to broader GMV industry projections.",
+      "followup": null,
+      "missing_proof": null,
+      "injection_attempt": false
+    },
+    "finance_override": null
+  },
+  {
+    "id": "G-6",
+    "persona": "tech",
+    "finding_id": "T-2",
+    "kind": "question",
+    "question_text": "Processing merchant order data, phone numbers, and payment intents triggers compliance under the Indian DPDP Act 2023. What data governance framework is implemented in production?",
+    "answer": "We store consent logs with timestamped OTP verification, encrypt WhatsApp message payloads with AES-256 at rest, and host all databases exclusively in AWS Mumbai region with zero third-party telemetry.",
+    "evaluation": {
+      "criteria": {
+        "addresses_objection": true,
+        "quantified": true,
+        "evidence_type": "document_referenced"
+      },
+      "proposed_outcome": "accepted",
+      "outcome": "accepted",
+      "reason": "Direct technical specifications meeting statutory DPDP consent logging and localized data residency requirements.",
+      "followup": null,
+      "missing_proof": null,
+      "injection_attempt": false
+    },
+    "finance_override": null
+  }
+]
