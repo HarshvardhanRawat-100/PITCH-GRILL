@@ -136,11 +136,17 @@ def append_event(deal_id: str, event_type: SSEType, data: dict) -> SSEEvent:
             items = data.get("items", [])
             deal.checklist = [ChecklistItem.model_validate(i) for i in items]
         elif event_type == "concession":
-            deal.concessions.append(Concession.model_validate(data))
+            c_obj = Concession.model_validate(data)
+            if not any(c.turn_id == c_obj.turn_id and c.finding_id == c_obj.finding_id for c in deal.concessions):
+                deal.concessions.append(c_obj)
         elif event_type == "crosstalk":
-            deal.crosstalk.append(CrossTalk.model_validate(data))
+            ct_obj = CrossTalk.model_validate(data)
+            if not any(ct.after_turn_id == ct_obj.after_turn_id and ct.from_persona == ct_obj.from_persona for ct in deal.crosstalk):
+                deal.crosstalk.append(ct_obj)
         elif event_type == "verdict":
-            deal.verdicts.append(FinalVerdict.model_validate(data))
+            v_obj = FinalVerdict.model_validate(data)
+            if not any(v.persona == v_obj.persona for v in deal.verdicts):
+                deal.verdicts.append(v_obj)
         elif event_type == "narrative":
             deal.narrative = Narrative.model_validate(data)
         elif event_type == "memory":

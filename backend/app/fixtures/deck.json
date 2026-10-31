@@ -1,0 +1,154 @@
+{
+  "company_name": "BolBot",
+  "one_liner": "WhatsApp AI sales assistant for Indian SMEs to automate catalogue browsing and payments.",
+  "sector": "SaaS / Commerce AI",
+  "stage": "Seed",
+  "website_url": "https://bolbot.ai",
+  "github_url": "https://github.com/bolbot-ai/core",
+  "ask": {
+    "amount_inr": 20000000.0,
+    "valuation_inr": 100000000.0,
+    "use_of_funds": [
+      "Product engineering & WhatsApp Business API integration",
+      "Sales and SME merchant acquisition in Tier-1/Tier-2 hubs"
+    ]
+  },
+  "claims": [
+    {
+      "id": "c1",
+      "text": "Indian SME conversational commerce market is ₹500 crore and rapidly growing.",
+      "category": "market",
+      "slide": 3,
+      "quote": "Indian SME conversational commerce market is ₹500 crore and rapidly growing"
+    },
+    {
+      "id": "c2",
+      "text": "BolBot has no direct competitors offering end-to-end WhatsApp conversational checkout in India.",
+      "category": "competition",
+      "slide": 5,
+      "quote": "No direct competitors offering end-to-end WhatsApp conversational checkout"
+    },
+    {
+      "id": "c3",
+      "text": "Current CAC is ₹4,500 with an ARPU of ₹3,000 per month.",
+      "category": "finance",
+      "slide": 7,
+      "quote": "CAC is ₹4,500 with an ARPU of ₹3,000 per month"
+    }
+  ],
+  "financial_inputs": {
+    "arpu_monthly": {
+      "value": 3000.0,
+      "origin": "deck",
+      "slide": 7,
+      "note": "Stated on slide 7"
+    },
+    "cac": {
+      "value": 4500.0,
+      "origin": "deck",
+      "slide": 7,
+      "note": "Stated on slide 7"
+    },
+    "gross_margin_pct": {
+      "value": 75.0,
+      "origin": "deck",
+      "slide": 7,
+      "note": "Software gross margin"
+    },
+    "monthly_churn_pct": {
+      "value": 4.0,
+      "origin": "deck",
+      "slide": 7,
+      "note": "Reported pilot churn"
+    },
+    "cash_in_bank": {
+      "value": 20000000.0,
+      "origin": "deck",
+      "slide": 9,
+      "note": "Raise amount requested"
+    },
+    "fixed_opex_monthly": {
+      "value": 800000.0,
+      "origin": "deck",
+      "slide": 9,
+      "note": "Current monthly team burn"
+    },
+    "current_customers": {
+      "value": 150.0,
+      "origin": "deck",
+      "slide": 6,
+      "note": "Live SME pilot merchants"
+    },
+    "new_customers_monthly": {
+      "value": 40.0,
+      "origin": "deck",
+      "slide": 6,
+      "note": "Current monthly onboarding run-rate"
+    },
+    "new_customer_growth_pct_monthly": {
+      "value": 10.0,
+      "origin": "deck",
+      "slide": 6,
+      "note": "Target MoM merchant acquisition growth"
+    }
+  },
+  "tam_claim_text": "₹500 crore",
+  "tam_claim_inr": 5000000000.0,
+  "no_competitor_claim": true,
+  "stated_competitors": [],
+  "tech_claims": [
+    "Proprietary Indic NLP models for Hindi and Hinglish voice-to-order",
+    "Seamless Meta WhatsApp Cloud API webhooks with 99.9% uptime"
+  ],
+  "missing_data": [
+    "No audited cohort retention data",
+    "No CAC breakdown by acquisition channel"
+  ],
+  "slides": [
+    {
+      "n": 1,
+      "text": "BolBot - WhatsApp AI Sales Assistant for Indian SMEs",
+      "used_vision": false
+    },
+    {
+      "n": 2,
+      "text": "Problem: SMEs lose 65% of potential inbound customers on WhatsApp due to slow replies.",
+      "used_vision": false
+    },
+    {
+      "n": 3,
+      "text": "Market: Indian SME conversational commerce market is ₹500 crore and rapidly growing.",
+      "used_vision": false
+    },
+    {
+      "n": 4,
+      "text": "Product: Automated multilingual catalogue, cart management, UPI payment links inside WhatsApp.",
+      "used_vision": false
+    },
+    {
+      "n": 5,
+      "text": "Competition: No direct competitors offering end-to-end WhatsApp conversational checkout.",
+      "used_vision": false
+    },
+    {
+      "n": 6,
+      "text": "Traction: 150 live SME merchants, 40 new merchants added per month, 10% MoM growth.",
+      "used_vision": false
+    },
+    {
+      "n": 7,
+      "text": "Unit Economics: ARPU ₹3,000/mo, CAC ₹4,500, Gross Margin 75%, Churn 4%/mo.",
+      "used_vision": false
+    },
+    {
+      "n": 8,
+      "text": "Team: Ex-Flipkart product lead and IIT Bombay ML researcher.",
+      "used_vision": false
+    },
+    {
+      "n": 9,
+      "text": "The Ask: ₹2.0 Crore at ₹10 Crore valuation for 18 months runway (₹8 Lakh fixed monthly burn).",
+      "used_vision": false
+    }
+  ]
+}
