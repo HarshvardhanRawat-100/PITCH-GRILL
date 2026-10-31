@@ -221,7 +221,9 @@ export default function DealPage() {
   const params = useParams();
   const dealId = params?.id as string;
 
-  const { hydrate, connectSSE, reset } = useDealStore();
+  const hydrate = useDealStore((s) => s.hydrate);
+  const connectSSE = useDealStore((s) => s.connectSSE);
+  const reset = useDealStore((s) => s.reset);
   const deal = useDeal();
   const { message: stageMessage, progress: stageProgress } = useStageProgress();
   const loading = useDealStore((s) => s.loading);
@@ -242,7 +244,8 @@ export default function DealPage() {
     return () => {
       disconnect();
     };
-  }, [dealId, hydrate, connectSSE, reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dealId]);
 
   if (loading) {
     return (
