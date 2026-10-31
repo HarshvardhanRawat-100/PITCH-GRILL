@@ -1,0 +1,60 @@
+{
+  "competitors": [
+    {
+      "name": "Bikayi",
+      "url": "https://bikayi.com",
+      "what_they_do": "WhatsApp e-commerce enablement and automated catalogue storefronts for Indian merchants.",
+      "overlap": "high",
+      "funding": {
+        "text": "raised $10.8 million in Series A funding led by Sequoia Capital India",
+        "source_url": "https://techcrunch.com/2021/09/20/bikayi-series-a"
+      },
+      "evidence_quote": "Bikayi enables merchants to set up digital storefronts on WhatsApp with payments integration",
+      "verified": true
+    },
+    {
+      "name": "Wati",
+      "url": "https://wati.io",
+      "what_they_do": "Customer engagement and conversational commerce platform built on WhatsApp Business API.",
+      "overlap": "high",
+      "funding": {
+        "text": "secured $23M Series B led by Tiger Global",
+        "source_url": "https://inc42.com/buzz/wati-series-b"
+      },
+      "evidence_quote": "Wati provides CRM and automated sales bots for SMEs via the WhatsApp API",
+      "verified": true
+    },
+    {
+      "name": "QuickSell",
+      "url": "https://quicksell.co",
+      "what_they_do": "Mobile commerce and digital catalogue app with WhatsApp sharing and analytics.",
+      "overlap": "medium",
+      "funding": null,
+      "evidence_quote": "QuickSell helps wholesalers and retailers showcase catalogues and receive orders on WhatsApp",
+      "verified": true
+    }
+  ],
+  "tam_evidence": [
+    {
+      "figure_text": "₹1,200 crore",
+      "figure_inr": 12000000000.0,
+      "source_url": "https://entrackr.com/reports/indian-conversational-commerce",
+      "year": 2024,
+      "quote": "Indian conversational commerce market projected to reach ₹1,200 crore by 2026"
+    }
+  ],
+  "tam_verdict": "supported",
+  "tam_note": "Deck claim of ₹500 crore is conservative relative to Entrackr's ₹1,200 crore estimate.",
+  "no_competitor_claim_contradicted": true,
+  "funnel": {
+    "tam_inr": 5000000000.0,
+    "sam_inr": 1200000000.0,
+    "som_inr": 150000000.0,
+    "assumptions": [
+      "TAM based on 63M Indian MSMEs with 10% smartphone sales penetration",
+      "SAM targeted at top-10 tier 1/2 commercial retail clusters"
+    ]
+  },
+  "from_cache": false,
+  "generated_at": "2026-10-31T12:00:00Z"
+}
