@@ -298,7 +298,7 @@ export default function DealPage() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   isActive
                     ? "bg-surface-elevated text-white border border-border shadow-sm"
                     : "text-gray-400 hover:text-gray-200 hover:bg-surface/50"
@@ -339,7 +339,12 @@ export default function DealPage() {
                   <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4">
                     Detailed Findings
                   </h2>
-                  <ReportView deal={deal} />
+                  <ReportView
+                    deal={deal}
+                    onJumpToGrill={(findingId) => {
+                      setActiveTab("grill");
+                    }}
+                  />
                 </div>
               )}
             </div>

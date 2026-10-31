@@ -401,7 +401,7 @@ async def delete_deal_endpoint(deal_id: str):
 
 @router.get("/{deal_id}/export.md")
 async def export_deal_markdown(deal_id: str):
-    """Export deal diligence report as Markdown."""
+    """Export complete deal due diligence report as Markdown."""
     deal = get_deal(deal_id)
     if not deal:
         raise HTTPException(
@@ -410,35 +410,160 @@ async def export_deal_markdown(deal_id: str):
         )
 
     company_name = deal.deck.company_name if deal.deck else "Unknown Startup"
-    score_str = f"{deal.score.current:.1f}/100" if deal.score else "N/A"
+    initial_score = deal.score.initial if deal.score else 50.0
+    current_score = deal.score.current if deal.score else initial_score
+    score_delta = current_score - initial_score
 
     lines = [
         f"# SecondBrain Due Diligence Report: {company_name}",
-        f"Generated at: {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')}",
-        f"**Pitch Readiness Score**: {score_str}",
+        f"**Generated**: {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')} | **Deal ID**: `{deal_id}`",
+        f"**Sector**: {deal.deck.sector if deal.deck else 'N/A'} | **Stage**: {deal.deck.stage if deal.deck else 'N/A'}",
         "",
-        "## Executive Summary",
-        deal.deck.one_liner if deal.deck else "No summary available.",
+        "---",
         "",
-        "## Red-Team Findings",
+        "## 1. Pitch Readiness Score",
+        f"- **Initial Score**: `{initial_score:.1f}/100`",
+        f"- **Current Score**: `{current_score:.1f}/100` ({'+' if score_delta >= 0 else ''}{score_delta:.1f})",
     ]
 
-    for rep in deal.reports:
-        lines.append(f"### {rep.persona.title()} Investor")
-        lines.append(f"_{rep.headline}_")
-        for f in rep.findings:
-            lines.append(f"- **[{f.severity.upper()}] {f.title}**: {f.detail}")
-            lines.append(f'  - Status: `{f.status}` | Question: *"{f.question}"*')
-        lines.append("")
+    if deal.score and deal.score.by_persona:
+        lines.append("- **By Persona**:")
+        for ps in deal.score.by_persona:
+            lines.append(
+                f"  - **{ps.persona.title()}**: Initial `{ps.initial:.1f}` → Current `{ps.current:.1f}`"
+            )
 
     lines.extend(
         [
-            "## Due Diligence Data Room Checklist",
+            "",
+            "## 2. Executive Summary & Deck Facts",
+            deal.deck.one_liner if deal.deck else "No executive summary available.",
+            "",
         ]
     )
-    for item in deal.checklist:
-        lines.append(f"- [{item.priority}] **{item.title}** ({item.owner}) - Status: {item.status}")
-        lines.append(f"  - _Why: {item.why}_")
+
+    if deal.deck:
+        if deal.deck.ask:
+            ask_val = (
+                f"₹{deal.deck.ask.amount_inr:,.0f}" if deal.deck.ask.amount_inr else "Not specified"
+            )
+            val_val = (
+                f"₹{deal.deck.ask.valuation_inr:,.0f}"
+                if deal.deck.ask.valuation_inr
+                else "Not specified"
+            )
+            lines.append(f"- **Ask Amount**: {ask_val}")
+            lines.append(f"- **Valuation**: {val_val}")
+            if deal.deck.ask.use_of_funds:
+                lines.append(f"- **Use of Funds**: {', '.join(deal.deck.ask.use_of_funds)}")
+
+        if deal.deck.tam_claim_text:
+            lines.append(f"- **Stated TAM**: {deal.deck.tam_claim_text}")
+        if deal.deck.stated_competitors:
+            lines.append(f"- **Stated Competitors**: {', '.join(deal.deck.stated_competitors)}")
+
+    if deal.deck and deal.deck.missing_data:
+        lines.extend(
+            [
+                "",
+                "### Missing Data & Diligence Flags",
+            ]
+        )
+        for missing in deal.deck.missing_data:
+            lines.append(f"- ⚠️ {missing}")
+
+    lines.extend(
+        [
+            "",
+            "## 3. Red-Team Investor Findings",
+        ]
+    )
+
+    for rep in deal.reports:
+        lines.append(f"### {rep.persona.title()} Investor Report")
+        lines.append(f'> "{rep.headline}"')
+        lines.append("")
+        for f in rep.findings:
+            lines.append(f"#### [{f.severity.upper()}] {f.title} (`{f.id}`)")
+            lines.append(f"{f.detail}")
+            lines.append(f"- **Status**: `{f.status}` | **Category**: `{f.category}`")
+            if f.missing_proof:
+                lines.append(f"- **Missing Proof**: _{f.missing_proof}_")
+            if f.sources:
+                source_strs = [f"`{s.type}`: {s.ref}" for s in f.sources]
+                lines.append(f"- **Sources**: {'; '.join(source_strs)}")
+            lines.append(f'- **Question**: *"{f.question}"*')
+            lines.append("")
+
+    # 4. Evidence Ledger Table
+    if deal.ledger:
+        lines.extend(
+            [
+                "## 4. Evidence Ledger",
+                "| ID | Claim | Source | Status | Confidence |",
+                "|---|---|---|---|---|",
+            ]
+        )
+        for entry in deal.ledger:
+            clean_claim = entry.claim_text.replace("|", "/")
+            lines.append(
+                f"| `{entry.id}` | {clean_claim} | `{entry.source.type}`: {entry.source.ref} | `{entry.status}` | {entry.confidence * 100:.0f}% |"
+            )
+        lines.append("")
+
+    # 5. Due Diligence Data Room Checklist
+    if deal.checklist:
+        lines.extend(
+            [
+                "## 5. Due Diligence Data Room Checklist",
+                "| Priority | Item | Owner | Status | Rationale |",
+                "|---|---|---|---|---|",
+            ]
+        )
+        for item in deal.checklist:
+            clean_why = item.why.replace("|", "/")
+            lines.append(
+                f"| **{item.priority}** | {item.title} | `{item.owner}` | `{item.status}` | {clean_why} |"
+            )
+        lines.append("")
+
+    # 6. Final Verdicts
+    if deal.verdicts:
+        lines.extend(
+            [
+                "## 6. Investment Committee Final Verdicts",
+            ]
+        )
+        for v in deal.verdicts:
+            lines.append(f"- **{v.persona.title()} Investor**: `{v.verdict.upper()}`")
+            lines.append(f"  - {v.rationale}")
+        lines.append("")
+
+    # 7. Refined Pitch Narrative
+    if deal.narrative:
+        lines.extend(
+            [
+                "## 7. Refined Pitch Narrative",
+                f"**Positioning**: {deal.narrative.positioning}",
+                f"**One-Liner**: {deal.narrative.one_liner}",
+                f"**TAM Reframe**: {deal.narrative.tam_reframe}",
+                "",
+                deal.narrative.narrative_md,
+                "",
+            ]
+        )
+        if deal.narrative.changes:
+            lines.append("**Key Narrative Refinements**:")
+            for ch in deal.narrative.changes:
+                lines.append(f"- {ch}")
+            lines.append("")
+
+    lines.extend(
+        [
+            "---",
+            "_Confidential Due Diligence Memo generated by SecondBrain Diligence War Room powered by Google Gemini & Yugabyte Meko._",
+        ]
+    )
 
     content = "\n".join(lines)
     return PlainTextResponse(content, media_type="text/markdown")

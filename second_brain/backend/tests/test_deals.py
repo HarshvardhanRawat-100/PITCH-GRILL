@@ -53,6 +53,14 @@ async def test_deal_demo_creation_and_lifecycle():
         deal_data = resp_get.json()
         assert deal_data["id"] == deal_id
 
+        # Test Markdown Export endpoint
+        resp_export = await client.get(f"/api/deals/{deal_id}/export.md")
+        assert resp_export.status_code == 200
+        assert "text/markdown" in resp_export.headers.get("content-type", "")
+        export_text = resp_export.text
+        assert "# SecondBrain Due Diligence Report" in export_text
+        assert "Pitch Readiness Score" in export_text
+
         # Delete deal
         resp_del = await client.delete(f"/api/deals/{deal_id}")
         assert resp_del.status_code == 200

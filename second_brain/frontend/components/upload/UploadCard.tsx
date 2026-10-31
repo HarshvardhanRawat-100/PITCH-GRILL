@@ -59,6 +59,15 @@ export function UploadCard() {
 
         {/* Drag and Drop Zone */}
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Upload pitch deck PDF"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              document.getElementById("file-upload")?.click();
+            }
+          }}
           onDragOver={(e) => {
             e.preventDefault();
             setIsDragOver(true);
@@ -71,7 +80,7 @@ export function UploadCard() {
               setFile(e.dataTransfer.files[0]);
             }
           }}
-          className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer ${
+          className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             isDragOver
               ? "border-blue-500 bg-blue-950/20"
               : file

@@ -7,93 +7,138 @@ An adversarial, multi-agent due-diligence platform where founders upload their p
 
 ---
 
-## 🏆 Sponsor Tracks: Google Gemini & Yugabyte Meko
+## 🏆 Built with Gemini + Meko
 
-SecondBrain is built exclusively for and powered by:
-- **Google Gemini API (`google-genai`)**: The **only** LLM SDK in the entire codebase. Used with strict structured output (`response_schema`), multimodal vision fallback for image-heavy slides, and resilient model fallback routing.
-- **Yugabyte Meko**: The cross-agent shared memory layer over MCP (`https://mcp.mekodata.ai/mcp`). Enables agents to record findings, recall earlier concessions, maintain auditable session traces, and promote generalized lessons to shared knowledge with transparent local fallback.
+SecondBrain was built from day zero specifically for the **Google Gemini API** and **Yugabyte Meko** sponsor tracks. Rule: if a judge asks "where is Gemini / where is Meko?", we can point at a live screen within 5 seconds.
+
+### The 5 Google Gemini Touchpoints
+Gemini is the **only** LLM provider in the codebase (zero references to openai/anthropic).
+1. **Structured Output Enforcement (`response_schema`)**: Every LLM extraction and persona synthesis call passes a strict Pydantic model (`DeckFacts`, `PersonaReport`, `Evaluation`) directly to Gemini via `google-genai`. This guarantees schema compliance without hallucinated JSON envelopes.
+2. **Multimodal Vision Fallback (`LLM_MODEL_VISION`)**: Scanned, non-searchable, or graphic-heavy slides (< 40 text characters or > 60% image area) are rendered to 150 DPI in-memory PNGs and transcribed with Gemini vision under a 20-second concurrent budget.
+3. **Resilient Model Routing & Fallback**: Fast inference models (`gemini-2.5-flash`) handle extraction and vision with an automatic fallback sequence to `gemini-2.5-pro` (`LLM_FALLBACK_MODEL`) on retry. Model names are dynamically validated using `scripts/list_models.py`.
+4. **Parallel Agent Execution**: The three persona investors analyze simultaneously via `asyncio.gather`, streaming findings in real-time over SSE.
+5. **Visible Real-time Usage Telemetry**: The persistent application footer exposes a live status chip (`Gemini <model> · N calls`) driven by `/api/health` and request telemetry.
+
+### The 11 Yugabyte Meko Integration Points
+Cross-agent shared memory operates over MCP (`https://mcp.mekodata.ai/mcp`), namespaced per deal:
+1. **M1 — Resilient Memory Wrapper & Fallback**: `backend/app/memory/` supports `live`, `local`, and `off` modes. Every call enforces an 8-second timeout, 1 retry, call budgeting (`MEKO_CALL_BUDGET`), and honest local fallback.
+2. **M2 — Deal Lifecycle & Cleanup**: Deal creation initializes a Meko session trace (`conversation_id`). Calling `DELETE /api/deals/{id}` executes `memory.forget_deal(deal_id)` to purge all session memories.
+3. **M3 — Persona Findings Remembered**: Each investor's critical findings are written to Meko memory (`memory_add`), tagged by `agent_id = "<persona>:<deal_id>"`.
+4. **M4 — Cross-Persona Recall in Grill Room**: When interrogating the founder, the evaluator recalls cross-persona memories (`memory_search`) so the Tech investor can follow up on contradictions discovered by the Finance investor.
+5. **M5 — Defenses & Concessions Remembered**: Founder answers and concessions are stored to memory after evaluation and posted to the Meko trace (`conversation_add_message`).
+6. **M6 — Promotion Gate in Code**: Only verified lessons from resolved findings pass `allowed_by_policy()` to be promoted (`memory_promote`) to Shared Knowledge. Deck text, company names, and raw founder answers are strictly blocked from promotion.
+7. **M7 — Knowledge Base Grounding**: India compliance checklists (`checklist_library.json`) and investor rubrics are seeded into Meko Knowledge; the data room generator grounds items using `knowledgebase_search`.
+8. **M8 — Live Memory Panel & Search**: The War Room UI includes a live memory feed (`memory_log`), latency counters, and a deal memory search box.
+9. **M9 — Restart-Proof Memory State**: Even if the backend process restarts, the war room resumes and restores prior defenses directly from Meko.
+10. **M10 — Live Audit Trail Demo**: Open the Meko **Observe hub** to show judges the immutable session trace.
+11. **M11 — Function-Calling Tool Integration**: Read-only MCP tools for retrieval grounded in code.
+
+#### Force Local Memory Switch
+To force offline / local-fallback mode (e.g. for unreliable venue Wi-Fi), set:
+```bash
+MEKO_MODE=local
+```
+The UI status chip immediately turns amber and displays `Meko local fallback`, continuing operation without network calls to MCP.
 
 ---
 
-## 🚀 Quickstart Commands
+## ⚡ One-Command Run Options
 
-### 1. Backend Setup
+### Option 1: Native Launcher Script (Recommended for Development)
+Runs both Backend (FastAPI on `:8000`) and Frontend (Next.js on `:3000`) concurrently with automatic cleanup on `Ctrl+C`:
+```bash
+./run_all.sh
+```
+
+### Option 2: Docker Compose (Clean Containerized Environment)
+Runs isolated containers with volume mapping for persistence:
+```bash
+docker compose up --build
+```
+- Frontend: [http://localhost:3000](http://localhost:3000)
+- Backend: [http://localhost:8000](http://localhost:8000)
+- API Health: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+
+### Option 3: Manual Split Terminals
+**Terminal 1 (Backend):**
 ```bash
 cd backend
-python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
-
-# Run in Mock Mode
-MOCK=1 uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 2. Frontend Setup
+**Terminal 2 (Frontend):**
 ```bash
 cd frontend
-npm install
-NEXT_PUBLIC_API_URL=http://localhost:8000 npm run dev
-```
-
-Visit [http://localhost:3000](http://localhost:3000) to open the War Room. Click **"Use Demo Deck (BolBot)"** to immediately stream the full due diligence analysis.
-
-### 3. Run Automated Tests & Utilities
-```bash
-# Backend pytest suite (SSRF, store, fixtures, SSE, LLM mock-rejection)
-cd backend && .venv/bin/pytest -q
-
-# Frontend production build
-cd frontend && npm run build
-
-# Check available Gemini models for your API key
-python scripts/list_models.py
+npm run dev
 ```
 
 ---
 
-## 🏗️ Architecture & Team Ownership
+## ☁️ Cloud Deployment Guide (Backup Instances)
 
-```
-second_brain/
-  contracts/        schemas.py (Pydantic source of truth), types.ts (TypeScript mirror)
-  backend/app/
-    main.py         FastAPI app, CORS, /api/health                          [P1]
-    config.py       Environment settings & sponsor configuration             [P1]
-    llm.py          Gemini-only wrapper with structured output & telemetry  [P1]
-    store.py        In-memory deal store, event lists, JSON snapshots       [P1]
-    sse.py          Server-Sent Events streaming engine with replay         [P1]
-    security.py     SSRF protection, is_safe_url, PII redaction             [P1]
-    routes/deals.py Deal lifecycle endpoints & mock pipeline runner         [P1]
-    routes/events.py SSE event stream endpoint                              [P1]
-    memory/         Meko MCP memory client & local fallback                 [P4]
-    ingest/         PDF parser, vision fallback, claim extractor            [P1]
-    agents/         Personas, orchestrator, scoring, grill state machine    [P2]
-    tools/          Deterministic finance engine, market search, tech check  [P3, P4]
-    fixtures/       Complete contract-validated BolBot fixtures             [All]
-  frontend/
-    app/            Next.js App Router (upload page, deal war room)         [P1]
-    components/     Shell, report, grill, finance, market, data room        [All]
-    lib/            api.ts, sse.ts                                          [P1]
-```
+For demo day safety, deploy a live cloud backup:
+
+### 1. Backend on Render / Railway
+Deploy from the repository root:
+- **Build Command**: `pip install -r backend/requirements.txt`
+- **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+- **Root Directory**: `backend`
+- **Environment Variables**:
+  | Variable | Value / Description |
+  |---|---|
+  | `MOCK` | `0` (or `1` for pure mock replay) |
+  | `DEMO_MODE` | `cached` |
+  | `GEMINI_API_KEY` | Your Google AI Studio API Key |
+  | `TAVILY_API_KEY` | Your Tavily Search API Key |
+  | `MEKO_MODE` | `live` (set `local` for local fallback) |
+  | `MEKO_API_KEY` | Your Yugabyte Meko API Key |
+  | `MEKO_DATAPACK_ID` | Datapack UUID from `mcp.mekodata.ai` |
+  | `MEKO_MCP_URL` | `https://mcp.mekodata.ai/mcp` |
+  | `MEKO_CALL_BUDGET` | `200` |
+  | `MEKO_TIMEOUT_S` | `8` |
+  | `LLM_MODEL` | `gemini-2.5-flash` |
+  | `LLM_MODEL_VISION`| `gemini-2.5-flash` |
+  | `LLM_FALLBACK_MODEL` | `gemini-2.5-pro` |
+
+Verify backend health: `curl https://your-backend.onrender.com/api/health`
+
+### 2. Frontend on Vercel
+Deploy the `frontend/` directory:
+- **Framework Preset**: Next.js
+- **Root Directory**: `frontend`
+- **Build Command**: `npm run build`
+- **Environment Variables**:
+  | Variable | Value |
+  |---|---|
+  | `NEXT_PUBLIC_API_URL` | `https://your-backend.onrender.com` |
 
 ---
 
-## 🔐 Environment Variables (`.env`)
+## 📋 Demo Day Runbook
 
-Copy `.env.example` to `.env`:
-```ini
-GEMINI_API_KEY=your_gemini_api_key
-LLM_MODEL=gemini-2.5-flash
-LLM_MODEL_VISION=gemini-2.5-flash
-LLM_FALLBACK_MODEL=gemini-1.5-flash
-
-TAVILY_API_KEY=your_tavily_api_key
-
-MEKO_MODE=live
-MEKO_API_KEY=your_meko_key
-MEKO_DATAPACK_ID=your_datapack_uuid
-MEKO_MCP_URL=https://mcp.mekodata.ai/mcp
-MEKO_CALL_BUDGET=200
-
-MOCK=1
-```
+### Fast Start (Before Pitching)
+1. **Cold-start check**:
+   ```bash
+   curl -s http://localhost:8000/api/health | jq .
+   ```
+   Verify `"ok": true`, Gemini call counter, and Meko mode.
+2. **Switching to Cached Demo Mode**:
+   If live web search or external Wi-Fi is spotty during the pitch, set:
+   ```bash
+   DEMO_MODE=cached
+   MEKO_MODE=local
+   ```
+   This serves pre-grounded market facts and local memory without hitting external rate limits.
+3. **Refreshing Cached Grounding Data**:
+   To re-run market intelligence and refresh the demo cache:
+   ```bash
+   python scripts/build_cache.py
+   ```
+4. **Happy Path Demo Steps**:
+   - Open [http://localhost:3000](http://localhost:3000).
+   - Click **"Use Demo Deck (BolBot)"**.
+   - Watch the animated War Room investor cards analyze unit economics, competitors, and code moats live.
+   - Review top critical red flags, missing data checklist, and persona findings.
+   - Click **"Export .md"** or **"Print / PDF"** to demonstrate instant export.
+   - Switch to the Grill Room tab to defend against the hostile investor interrogation.
