@@ -392,3 +392,60 @@ def test_changed_inputs():
     res2 = compute(inp2, FinanceRequest())
     diff = changed_inputs(res1, res2)
     assert diff == {"cac": 1500.0}
+
+
+@pytest.mark.asyncio
+async def test_grill_finance_hook_override_and_evidence_concession(demo_deck: DeckFacts, monkeypatch):
+    """Prompt 3.6 QA: Answer with assertion-only updates finance override, but clamp blocks concession;
+    subsequent answer with pilot cohort data citations allows concession.
+    """
+    from contracts.schemas import EvalCriteria, clamp_outcome
+
+    deal = Deal(id="deal_grill_p36", deck=demo_deck)
+    deal.finance = compute_base(demo_deck)
+    base_cac = deal.finance.inputs.cac.value
+    assert base_cac is not None
+
+    mock_save = MagicMock(side_effect=lambda d: d)
+    monkeypatch.setattr(store, "save_deal", mock_save)
+
+    # 1. Turn 1: Assertion answer "referrals will cut our CAC by 40%"
+    mock_gen1 = AsyncMock(
+        return_value=OverrideExtraction(
+            items=[OverrideItem(key="cac", kind="change_pct", value=-40.0)],
+            claims=["Referrals will cut CAC by 40%"],
+        )
+    )
+    monkeypatch.setattr(llm, "generate_json", mock_gen1)
+
+    res1 = await apply_answer(deal, "Referrals will cut our CAC by 40%")
+    assert res1 is not None
+    assert abs(res1.inputs.cac.value - base_cac * 0.6) < 1e-4
+
+    # Evaluator clamp on Turn 1: assertion only -> clamp MUST NOT accept
+    criteria1 = EvalCriteria(addresses_objection=True, quantified=True, evidence_type="assertion")
+    clamped1 = clamp_outcome(criteria1, "accepted")
+    assert clamped1 in {"partial", "rejected"}
+    assert clamped1 != "accepted"
+
+    # 2. Turn 2: Evidence-backed answer "pilot data: referral cohort of 120 customers at ₹2,900 CAC (sheet attached)"
+    mock_gen2 = AsyncMock(
+        return_value=OverrideExtraction(
+            items=[OverrideItem(key="cac", kind="set", value=2900.0)],
+            claims=["Pilot referral cohort of 120 customers at Rs 2,900 CAC"],
+        )
+    )
+    monkeypatch.setattr(llm, "generate_json", mock_gen2)
+
+    res2 = await apply_answer(
+        deal,
+        "pilot data: referral cohort of 120 customers at ₹2,900 CAC (sheet attached)"
+    )
+    assert res2 is not None
+    assert res2.inputs.cac.value == 2900.0
+
+    # Evaluator clamp on Turn 2: document_referenced -> clamp allows accepted
+    criteria2 = EvalCriteria(addresses_objection=True, quantified=True, evidence_type="document_referenced")
+    clamped2 = clamp_outcome(criteria2, "accepted")
+    assert clamped2 == "accepted"
+

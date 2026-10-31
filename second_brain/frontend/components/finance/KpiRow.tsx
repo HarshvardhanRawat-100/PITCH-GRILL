@@ -47,11 +47,13 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
       value: runwayDisplay,
       color: "text-white",
       note: m?.runway_capped ? "Survives 36-mo horizon" : undefined,
+      tooltip: "Months of operating cash remaining until balance reaches zero under active scenario.",
     },
     {
       label: "LTV",
       value: m?.ltv !== null && m?.ltv !== undefined ? formatINR(m.ltv) : "—",
       color: "text-white",
+      tooltip: "Customer Lifetime Value = (ARPU × Gross Margin) / Monthly Churn Rate.",
     },
     {
       label: "LTV : CAC",
@@ -60,7 +62,7 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
           ? formatMultiple(m.ltv_cac)
           : "—",
       color: ltvCacColor,
-      title: "3× is a commonly cited rule of thumb, not a guarantee",
+      tooltip: "Ratio of Customer Lifetime Value to Acquisition Cost (3.0× is a healthy VC benchmark).",
     },
     {
       label: "Payback Period",
@@ -69,16 +71,19 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
           ? `${m.payback_months.toFixed(1)} mo`
           : "—",
       color: "text-white",
+      tooltip: "Months required to recover customer acquisition spend from gross profit contribution.",
     },
     {
       label: "Breakeven",
       value: breakevenDisplay,
       color: "text-white",
+      tooltip: "First calendar month where gross profit exceeds total fixed and variable acquisition burn.",
     },
     {
       label: "Month-0 Net Burn",
       value: month0Display,
       color: "text-white",
+      tooltip: "Initial net monthly cash burn rate calculated as Operating Expenses minus Gross Profit.",
     },
   ];
 
@@ -87,8 +92,9 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
       {cards.map((c, i) => (
         <div
           key={i}
-          title={c.title}
-          className="bg-surface rounded-xl p-3.5 border border-border flex flex-col justify-between"
+          title={c.tooltip}
+          aria-label={`${c.label}: ${c.value}. ${c.tooltip}`}
+          className="bg-surface rounded-xl p-3.5 border border-border flex flex-col justify-between hover:border-gray-700 transition-colors cursor-help"
         >
           <div className="text-[11px] font-medium text-gray-400">{c.label}</div>
           <div className={`text-base sm:text-lg font-bold font-mono mt-1 ${c.color}`}>

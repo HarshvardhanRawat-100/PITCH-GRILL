@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import type {
   FinanceResult,
   FinancialInputKey,
@@ -38,6 +38,16 @@ export function SliderPanel({
   const currentInputs = displayedResult?.inputs;
   const baselineInputs: FinancialInputs | undefined = baseline?.inputs;
 
+  // 20-second guided "Try it" hint pointing at the CAC slider
+  const [showHint, setShowHint] = useState<boolean>(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowHint(false);
+    }, 20000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between pb-1">
@@ -48,6 +58,31 @@ export function SliderPanel({
           Interactive Scenario
         </span>
       </div>
+
+      {/* Guided 20-second onboarding hint */}
+      {showHint && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="relative flex items-center justify-between gap-3 p-3 rounded-xl bg-amber-950/40 border border-amber-500/50 text-amber-200 text-xs shadow-md"
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-base select-none">💡</span>
+            <div className="leading-snug">
+              <strong className="text-white">Try it:</strong> Drag the{" "}
+              <span className="font-semibold text-amber-300 underline underline-offset-2">CAC slider</span> higher to test ad cost inflation and watch the cash runway cross into the red danger zone.
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowHint(false)}
+            className="text-gray-400 hover:text-white p-1 rounded-md text-xs font-mono transition-colors"
+            aria-label="Dismiss guide hint"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <div className="space-y-2.5">
         {SLIDER_KEYS.map((key) => {
