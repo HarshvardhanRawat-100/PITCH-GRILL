@@ -1,0 +1,25 @@
+{
+  "site_url": "https://bolbot.ai",
+  "site_reachable": true,
+  "site_summary": "Landing page showcases WhatsApp automation for retail merchants with live demo bot link and pricing tiers.",
+  "claims_supported": [
+    "Seamless Meta WhatsApp Cloud API webhooks with 99.9% uptime"
+  ],
+  "claims_unsupported": [
+    "Proprietary Indic NLP models for Hindi and Hinglish voice-to-order"
+  ],
+  "github": {
+    "repo": "bolbot-ai/core",
+    "stars": 42,
+    "last_commit": "2026-10-25T14:22:00Z",
+    "languages": [
+      "Python",
+      "TypeScript"
+    ]
+  },
+  "notes": [
+    "Site references standard OpenAI and Meta Cloud APIs rather than custom-hosted Indic NLP weights.",
+    "GitHub repo contains webhook handlers and Next.js merchant dashboard."
+  ],
+  "from_cache": false
+}

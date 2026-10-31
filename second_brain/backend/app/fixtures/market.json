@@ -1,6 +1,7 @@
 {
   "competitors": [
     {
+<<<<<<< HEAD
       "name": "Wati",
       "url": "https://www.wati.io",
       "what_they_do": "WhatsApp customer engagement software and CRM for growing businesses and SMEs across Asia and Latin America.",
@@ -34,11 +35,47 @@
         "source_url": "https://yourstory.com/2022/04/funding-conversational-commerce-startup-limechat-seed-round-stellaris"
       },
       "evidence_quote": "LimeChat enables brands to deliver human-like conversational shopping experiences across WhatsApp with automated support and order booking.",
+=======
+      "name": "LimeChat",
+      "url": "https://limechat.ai",
+      "what_they_do": "Level 3 conversational AI assistant for D2C and SME WhatsApp sales in India",
+      "overlap": "high",
+      "funding": {
+        "text": "LimeChat raised $4.2M in Seed round led by Stellaris Venture Partners",
+        "source_url": "https://inc42.com/buzz/limechat-raises-seed-funding"
+      },
+      "evidence_quote": "conversational commerce platform enabling WhatsApp catalog checkouts for Indian merchants",
+      "verified": true
+    },
+    {
+      "name": "BiteSpeed",
+      "url": "https://bitespeed.co",
+      "what_they_do": "WhatsApp conversational commerce and marketing automation suite for e-commerce brands",
+      "overlap": "high",
+      "funding": {
+        "text": "BiteSpeed secures $3.4M in seed funding led by Surge by Peak XV",
+        "source_url": "https://entrackr.com/2022/02/bitespeed-secures-funding"
+      },
+      "evidence_quote": "omnichannel conversational sales assistant powering store catalog ordering",
+      "verified": true
+    },
+    {
+      "name": "Gallabox",
+      "url": "https://gallabox.com",
+      "what_they_do": "No-code WhatsApp chatbot and shared team inbox for small and medium businesses in India",
+      "overlap": "medium",
+      "funding": {
+        "text": "Gallabox raises $1.2M in seed round from Prime Venture Partners",
+        "source_url": "https://yourstory.com/2022/08/funding-alert-gallabox-seed-prime-venture-partners"
+      },
+      "evidence_quote": "WhatsApp Business API solution for automated orders and lead generation",
+>>>>>>> 4e0c116720f10c8fa76a1c65b78c8bf645ff529e
       "verified": true
     }
   ],
   "tam_evidence": [
     {
+<<<<<<< HEAD
       "figure_text": "₹420 crore in 2025, reaching ₹1,100 crore by 2028",
       "figure_inr": 4200000000.0,
       "source_url": "https://inc42.com/reports/indian-conversational-commerce-market-2025",
@@ -57,6 +94,26 @@
       "TAM: ₹500 Crore (63M MSMEs total conversational commerce market claim)",
       "SAM: ₹125 Crore (25% reachable segment — 15M active WhatsApp Business accounts)",
       "SOM: ₹18.75 Crore (15% target market share of high-growth retail & D2C traders within 3 years)"
+=======
+      "figure_text": "Indian conversational commerce market projected to reach $1.2B by 2026",
+      "figure_inr": 99600000000.0,
+      "source_url": "https://economictimes.indiatimes.com/tech/startups/conversational-commerce-india-report",
+      "year": 2024,
+      "quote": "Indian conversational commerce ecosystem is expanding at 38% CAGR towards $1.2 billion"
+    }
+  ],
+  "tam_verdict": "contradicted",
+  "tam_note": "Deck claims a ₹500 Cr TAM, whereas industry market research benchmarks Indian conversational commerce at ₹9,960 Cr ($1.2B), indicating the deck's TAM is either artificially constrained or significantly miscalculated.",
+  "no_competitor_claim_contradicted": true,
+  "funnel": {
+    "tam_inr": 99600000000.0,
+    "sam_inr": 12000000000.0,
+    "som_inr": 600000000.0,
+    "assumptions": [
+      "TAM: Total conversational commerce spend across all Indian retail",
+      "SAM: WhatsApp-first transactions for registered GST MSMEs",
+      "SOM: 5% addressable market capture in target regional SME hubs"
+>>>>>>> 4e0c116720f10c8fa76a1c65b78c8bf645ff529e
     ]
   },
   "from_cache": true,

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "D-1",
+    "title": "Merchant Acquisition Cohort Analysis & Blended CAC Report",
+    "why": "Required by Finance Investor to prove unit economics withstand Meta ad inflation beyond 180 pilot merchants.",
+    "finding_id": "F-1",
+    "priority": "P0",
+    "owner": "finance",
+    "status": "todo",
+    "india_specific": false
+  },
+  {
+    "id": "D-2",
+    "title": "Competitive Differentiation Matrix vs LimeChat & BiteSpeed",
+    "why": "Required by Market Investor to replace refuted 'no direct competitors' claim with defensible niche positioning.",
+    "finding_id": "M-1",
+    "priority": "P0",
+    "owner": "founder",
+    "status": "todo",
+    "india_specific": false
+  },
+  {
+    "id": "D-3",
+    "title": "WhatsApp Cloud API Rate Card & Unit Cost Analysis",
+    "why": "Proves gross margins won't decay below 60% as message volume increases in India.",
+    "finding_id": "F-2",
+    "priority": "P0",
+    "owner": "finance",
+    "status": "todo",
+    "india_specific": true
+  },
+  {
+    "id": "D-4",
+    "title": "Indic Speech Engine Architecture & Benchmarks",
+    "why": "Technical validation for proprietary voice-to-cart claims across Hindi and vernacular dialects.",
+    "finding_id": "T-1",
+    "priority": "P1",
+    "owner": "tech",
+    "status": "todo",
+    "india_specific": true
+  },
+  {
+    "id": "D-5",
+    "title": "Tally Connector Windows Daemon Specification",
+    "why": "Clarifies architectural mechanism for two-way synchronization with offline SME accounting software.",
+    "finding_id": "T-2",
+    "priority": "P1",
+    "owner": "tech",
+    "status": "todo",
+    "india_specific": true
+  },
+  {
+    "id": "D-6",
+    "title": "DPDP Act 2023 Compliance & Data Retention Protocol",
+    "why": "Assures institutional investors that personal phone numbers and payment data comply with Indian statutory requirements.",
+    "finding_id": "T-4",
+    "priority": "P1",
+    "owner": "legal",
+    "status": "todo",
+    "india_specific": true
+  },
+  {
+    "id": "D-7",
+    "title": "UPI Recurring Autopay Success & Drop-off Logs",
+    "why": "Validates payment collection efficiency and subscriber churn predictability.",
+    "finding_id": "F-4",
+    "priority": "P2",
+    "owner": "finance",
+    "status": "todo",
+    "india_specific": true
+  }
+]

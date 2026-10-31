@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "site_url": "https://bolbot.in",
   "site_reachable": true,
   "site_summary": "BolBot is an AI-powered conversational sales platform designed for Indian businesses to qualify leads, send interactive catalogs, and accept UPI payments via WhatsApp.",
@@ -9,10 +10,22 @@
   ],
   "claims_unsupported": [
     "Proprietary 8B SLM training dataset (no technical documentation or whitepaper found on site)"
+=======
+  "site_url": "https://bolbot.ai",
+  "site_reachable": true,
+  "site_summary": "Landing page demonstrating automated WhatsApp sales workflows, SME catalog integrations, and Hindi/Hinglish audio demo samples.",
+  "claims_supported": [
+    "WhatsApp catalog checkout demo",
+    "Vernacular voice note query handling"
+  ],
+  "claims_unsupported": [
+    "Real-time Tally / Zoho Books automated 2-way sync (no developer documentation or API connector active on site)"
+>>>>>>> 4e0c116720f10c8fa76a1c65b78c8bf645ff529e
   ],
   "github": {
     "repo": "bolbot-ai/bolbot-core",
     "stars": 42,
+<<<<<<< HEAD
     "last_commit": "2026-10-25T14:30:00Z",
     "languages": [
       "Python",
@@ -23,6 +36,14 @@
   "notes": [
     "Site reachable and SSL valid.",
     "GitHub repo exists with active Python/TypeScript codebase."
+=======
+    "last_commit": "2026-10-28T09:15:00Z",
+    "languages": ["Python", "TypeScript", "FastAPI"]
+  },
+  "notes": [
+    "Public repo shows a functional webhook receiver for Meta WhatsApp Cloud API.",
+    "No proprietary Indic ASR weights stored in public repo; relies on external Whisper/Bhashini endpoints."
+>>>>>>> 4e0c116720f10c8fa76a1c65b78c8bf645ff529e
   ],
   "from_cache": true
 }

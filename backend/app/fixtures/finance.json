@@ -1,0 +1,75 @@
+{
+  "inputs": {
+    "arpu_monthly": { "value": 3000.0, "origin": "deck", "slide": 7 },
+    "cac": { "value": 4500.0, "origin": "deck", "slide": 7 },
+    "gross_margin_pct": { "value": 75.0, "origin": "deck", "slide": 7 },
+    "monthly_churn_pct": { "value": 4.0, "origin": "deck", "slide": 7 },
+    "cash_in_bank": { "value": 20000000.0, "origin": "deck", "slide": 9 },
+    "fixed_opex_monthly": { "value": 800000.0, "origin": "deck", "slide": 9 },
+    "current_customers": { "value": 150.0, "origin": "deck", "slide": 6 },
+    "new_customers_monthly": { "value": 40.0, "origin": "deck", "slide": 6 },
+    "new_customer_growth_pct_monthly": { "value": 10.0, "origin": "deck", "slide": 6 }
+  },
+  "mode": "hold_growth",
+  "horizon_months": 36,
+  "metrics": {
+    "ltv": 56250.0,
+    "ltv_cac": 12.5,
+    "payback_months": 2.0,
+    "runway_months": 18.2,
+    "runway_capped": false,
+    "breakeven_month": 14,
+    "month0_net_burn": 642500.0
+  },
+  "series": [
+    {
+      "month": 0,
+      "customers": 150.0,
+      "revenue": 450000.0,
+      "gross_profit": 337500.0,
+      "acquisition_spend": 180000.0,
+      "net_burn": 642500.0,
+      "cash": 19357500.0
+    },
+    {
+      "month": 1,
+      "customers": 184.0,
+      "revenue": 552000.0,
+      "gross_profit": 414000.0,
+      "acquisition_spend": 198000.0,
+      "net_burn": 584000.0,
+      "cash": 18773500.0
+    }
+  ],
+  "break_point": {
+    "target_runway_months": 12,
+    "base_cac": 4500.0,
+    "breaking_cac": 8100.0,
+    "pct_increase": 80.0,
+    "already_below_target": false
+  },
+  "tornado": [
+    {
+      "variable": "cac",
+      "label": "CAC",
+      "runway_low": 21.0,
+      "runway_high": 16.0,
+      "delta_months": 5.0
+    },
+    {
+      "variable": "monthly_churn_pct",
+      "label": "Monthly Churn",
+      "runway_low": 20.2,
+      "runway_high": 16.5,
+      "delta_months": 3.7
+    }
+  ],
+  "assumptions_used": [
+    "Used stated ARPU ₹3,000 and CAC ₹4,500 from slide 7",
+    "Model assumes 75% gross margin on software subscription"
+  ],
+  "formulas": [
+    "LTV = ARPU * Gross Margin / Churn Rate",
+    "Runway = Months until cash balance drops <= 0"
+  ]
+}

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 Memory module export and factory.
 
@@ -66,3 +67,6 @@ __all__ = [
     "MekoClient",
     "NullMemoryClient",
 ]
+=======
+# P4: memory package placeholder
+>>>>>>> 4e0c116720f10c8fa76a1c65b78c8bf645ff529e
