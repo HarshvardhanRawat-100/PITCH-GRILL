@@ -1,13 +1,14 @@
 """Comprehensive test suite for the ingestion pipeline (parser, vision, extractor)."""
-import io
-import fitz  # PyMuPDF
-import pytest
+
 from unittest.mock import AsyncMock, patch
 
-from contracts.schemas import Claim, DeckFacts, FinancialInputs, Sourced
+import fitz  # PyMuPDF
+import pytest
+
 from app.ingest.extractor import extract_deck_facts, post_process_deck_facts
 from app.ingest.parser import ParsedSlide, parse_pdf
 from app.ingest.vision import SlideTranscription, transcribe_slides
+from contracts.schemas import Claim, DeckFacts, FinancialInputs, Sourced
 
 
 def create_sample_pdf(num_pages: int = 3, text_prefix: str = "Slide content") -> bytes:
@@ -17,7 +18,7 @@ def create_sample_pdf(num_pages: int = 3, text_prefix: str = "Slide content") ->
         page = doc.new_page(width=800, height=600)
         page.insert_text(
             (50, 100),
-            f"{text_prefix} for page {i+1}. We are building conversational sales software.",
+            f"{text_prefix} for page {i + 1}. We are building conversational sales software.",
             fontsize=20,
         )
     pdf_bytes = doc.tobytes()
@@ -171,8 +172,12 @@ def test_extractor_post_processing_rules():
             ),
         ],
         financial_inputs=FinancialInputs(
-            cac=Sourced(value=2500.0, origin="assumed", slide=2),  # origin should be corrected to 'deck'
-            arpu_monthly=Sourced(value=None, origin="deck"),        # origin should be corrected to 'assumed'
+            cac=Sourced(
+                value=2500.0, origin="assumed", slide=2
+            ),  # origin should be corrected to 'deck'
+            arpu_monthly=Sourced(
+                value=None, origin="deck"
+            ),  # origin should be corrected to 'assumed'
         ),
         missing_data=[],
     )
@@ -196,14 +201,26 @@ def test_extractor_post_processing_rules():
     assert processed.tam_claim_inr == 5000000000.0
 
     # 5. Prompt injection canary detected and flagged
-    assert any("Possible prompt-injection text found on slide 2" in note for note in processed.missing_data)
+    assert any(
+        "Possible prompt-injection text found on slide 2" in note for note in processed.missing_data
+    )
 
 
 @pytest.mark.asyncio
 async def test_extract_deck_facts_end_to_end():
     slides = [
-        ParsedSlide(n=1, text="BolBot - WhatsApp AI assistant for retailers", png_bytes=b"", needs_vision=False),
-        ParsedSlide(n=2, text="Market opportunity is ₹500 crore in Tier 2 cities", png_bytes=b"", needs_vision=False),
+        ParsedSlide(
+            n=1,
+            text="BolBot - WhatsApp AI assistant for retailers",
+            png_bytes=b"",
+            needs_vision=False,
+        ),
+        ParsedSlide(
+            n=2,
+            text="Market opportunity is ₹500 crore in Tier 2 cities",
+            png_bytes=b"",
+            needs_vision=False,
+        ),
     ]
 
     mock_facts = DeckFacts(

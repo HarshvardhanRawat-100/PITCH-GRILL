@@ -1,14 +1,14 @@
 """Extract structured DeckFacts from parsed slides using Gemini and strict code post-processing."""
+
 import logging
 import re
-from typing import List, Optional
 
-from contracts.schemas import Claim, DeckFacts, FinancialInputs, SlideText, Sourced
 from app.config import settings
 from app.ingest.parser import ParsedSlide
 from app.ingest.prompts import P00_PREAMBLE, P01_DECK_EXTRACTION
 from app.llm import generate_json
 from app.security import wrap_untrusted
+from contracts.schemas import Claim, DeckFacts, SlideText, Sourced
 
 logger = logging.getLogger("app.ingest.extractor")
 
@@ -16,6 +16,7 @@ INJECTION_PATTERNS = [
     re.compile(r"ignore\s+previous", re.IGNORECASE),
     re.compile(r"system\s+prompt", re.IGNORECASE),
     re.compile(r"give\s+.*(?:100|full|high)\s+.*score", re.IGNORECASE),
+    re.compile(r"rate\s+.*(?:100|full|perfect)", re.IGNORECASE),
     re.compile(r"disregard\s+(?:all|previous)", re.IGNORECASE),
     re.compile(r"you\s+are\s+now\s+in\s+developer\s+mode", re.IGNORECASE),
 ]
@@ -31,7 +32,7 @@ def _normalize_ws(text: str) -> str:
     return " ".join(text.split())
 
 
-def _convert_inr_text(tam_text: str) -> Optional[float]:
+def _convert_inr_text(tam_text: str) -> float | None:
     """Fallback regex conversion for Indian currency expressions (e.g. ₹500 crore)."""
     if not tam_text:
         return None
@@ -54,8 +55,8 @@ def _convert_inr_text(tam_text: str) -> Optional[float]:
 
 def post_process_deck_facts(
     deck: DeckFacts,
-    slides: List[ParsedSlide],
-    extra_notes: Optional[List[str]] = None,
+    slides: list[ParsedSlide],
+    extra_notes: list[str] | None = None,
 ) -> DeckFacts:
     """Code post-processing enforcing Golden Rules:
 
@@ -67,17 +68,14 @@ def post_process_deck_facts(
     6. Scans slides for prompt injection attempts and flags in missing_data
     """
     # 1. Fill SlideText
-    slide_texts = [
-        SlideText(n=s.n, text=s.text, used_vision=s.needs_vision)
-        for s in slides
-    ]
+    slide_texts = [SlideText(n=s.n, text=s.text, used_vision=s.needs_vision) for s in slides]
     deck.slides = slide_texts
 
     # Map 1-based slide index to normalized text
     slide_map = {s.n: _normalize_ws(s.text).lower() for s in slides}
 
     # 2 & 3. Drop unverified claim quotes and cap length to 25 words
-    valid_claims: List[Claim] = []
+    valid_claims: list[Claim] = []
     for claim in deck.claims:
         if not claim.quote:
             continue
@@ -148,8 +146,8 @@ def post_process_deck_facts(
 
 
 async def extract_deck_facts(
-    slides: List[ParsedSlide],
-    extra_notes: Optional[List[str]] = None,
+    slides: list[ParsedSlide],
+    extra_notes: list[str] | None = None,
 ) -> DeckFacts:
     """Extract structured facts from slides via Gemini structured output and code post-processing."""
     # Build slide text block

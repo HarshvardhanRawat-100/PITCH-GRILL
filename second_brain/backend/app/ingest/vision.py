@@ -1,7 +1,8 @@
 """Multimodal vision transcription for image-heavy slides using Google Gemini."""
+
 import asyncio
 import logging
-from typing import List, Tuple
+
 from pydantic import BaseModel
 
 from app.config import settings
@@ -19,7 +20,7 @@ class SlideTranscription(BaseModel):
 async def _transcribe_single_slide(
     slide: ParsedSlide,
     semaphore: asyncio.Semaphore,
-) -> Tuple[int, str, bool]:
+) -> tuple[int, str, bool]:
     """Transcribe a single slide image via Gemini vision under semaphore limit."""
     async with semaphore:
         try:
@@ -48,10 +49,10 @@ async def _transcribe_single_slide(
 
 
 async def transcribe_slides(
-    slides: List[ParsedSlide],
+    slides: list[ParsedSlide],
     max_vision_pages: int = 8,
     total_budget_s: float = 20.0,
-) -> Tuple[List[ParsedSlide], List[str]]:
+) -> tuple[list[ParsedSlide], list[str]]:
     """Transcribe flagged slides concurrently using Gemini Vision.
 
     - Caps vision processing at `max_vision_pages` (default 8)
@@ -66,7 +67,7 @@ async def transcribe_slides(
     vision_targets = flagged[:max_vision_pages]
     overflow = flagged[max_vision_pages:]
 
-    missing_notes: List[str] = []
+    missing_notes: list[str] = []
     for ov in overflow:
         ov.text = "[unreadable]"
         missing_notes.append(
@@ -81,12 +82,12 @@ async def transcribe_slides(
             asyncio.gather(*tasks, return_exceptions=True),
             timeout=total_budget_s,
         )
-    except asyncio.TimeoutError:
+    except TimeoutError:
         logger.warning("Vision transcription exceeded %.1fs total budget", total_budget_s)
-        results = [
-            (s.n, "[unreadable]", False) for s in vision_targets
-        ]
-        missing_notes.append("Vision transcription exceeded 20s budget; remaining slides marked unreadable")
+        results = [(s.n, "[unreadable]", False) for s in vision_targets]
+        missing_notes.append(
+            "Vision transcription exceeded 20s budget; remaining slides marked unreadable"
+        )
 
     # Map transcriptions back to slides
     transcription_map = {}
