@@ -1,0 +1,28 @@
+{
+  "site_url": "https://bolbot.in",
+  "site_reachable": true,
+  "site_summary": "BolBot is an AI-powered conversational sales platform designed for Indian businesses to qualify leads, send interactive catalogs, and accept UPI payments via WhatsApp.",
+  "claims_supported": [
+    "WhatsApp Business Meta Cloud API integration",
+    "Razorpay UPI automated payment link generation",
+    "Vernacular Hindi and English conversational understanding"
+  ],
+  "claims_unsupported": [
+    "Proprietary 8B SLM training dataset (no technical documentation or whitepaper found on site)"
+  ],
+  "github": {
+    "repo": "bolbot-ai/bolbot-core",
+    "stars": 42,
+    "last_commit": "2026-10-25T14:30:00Z",
+    "languages": [
+      "Python",
+      "TypeScript",
+      "Docker"
+    ]
+  },
+  "notes": [
+    "Site reachable and SSL valid.",
+    "GitHub repo exists with active Python/TypeScript codebase."
+  ],
+  "from_cache": true
+}

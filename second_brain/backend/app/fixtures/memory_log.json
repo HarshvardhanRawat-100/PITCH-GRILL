@@ -1,0 +1,99 @@
+[
+  {
+    "id": "MR-1",
+    "deal_id": "demo-bolbot",
+    "persona": "finance",
+    "kind": "memory_add",
+    "text": "[deal:demo-bolbot] FINDING F-1 (critical, finance): 18-month runway claim depends on unverified ₹22.4L monthly fixed opex assumption. With CAC at ₹7,000, margin of safety is narrow.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 142,
+    "meko_id": "meko_rec_f1_98234",
+    "created_at": "2026-10-31T10:15:20Z"
+  },
+  {
+    "id": "MR-2",
+    "deal_id": "demo-bolbot",
+    "persona": "market",
+    "kind": "memory_add",
+    "text": "[deal:demo-bolbot] FINDING M-1 (critical, market): Deck claims 'no direct competitors' in SME WhatsApp AI sales, but live web grounding discovered 3 funded vernacular platforms including Wati ($35M) and Interakt ($12M).",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 118,
+    "meko_id": "meko_rec_m1_98235",
+    "created_at": "2026-10-31T10:15:21Z"
+  },
+  {
+    "id": "MR-3",
+    "deal_id": "demo-bolbot",
+    "persona": "tech",
+    "kind": "memory_add",
+    "text": "[deal:demo-bolbot] FINDING T-1 (major, tech): Meta Cloud API pricing change or WhatsApp Business BSP suspension risk not mitigated. No enterprise SLA disclosed.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 95,
+    "meko_id": "meko_rec_t1_98236",
+    "created_at": "2026-10-31T10:15:22Z"
+  },
+  {
+    "id": "MR-4",
+    "deal_id": "demo-bolbot",
+    "persona": "finance",
+    "kind": "memory_recall",
+    "text": "What did the founder concede about CAC?",
+    "hits": [
+      "[deal:demo-bolbot] CONCESSION G-2 F-1 partial (+4 pts): Founder conceded paid acquisition CAC is ₹9,200 but cited referral pilot reducing blended CAC to ₹6,800 with 120 customer cohort sheet.",
+      "[deal:demo-bolbot] FINDING F-1 (critical, finance): CAC sensitivity shows plan breaks at CAC ₹9,100."
+    ],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 86,
+    "meko_id": null,
+    "created_at": "2026-10-31T10:20:05Z"
+  },
+  {
+    "id": "MR-5",
+    "deal_id": "demo-bolbot",
+    "persona": null,
+    "kind": "kb_search",
+    "text": "India MSME SaaS standard diligence requirements",
+    "hits": [
+      "India Diligence Checklist: GST-12 month returns, CA-certified MIS, and DPIIT startup recognition certificate required before term sheet execution.",
+      "DPDP Act 2023 compliance: End-to-end data consent logging for WhatsApp business transcripts."
+    ],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 130,
+    "meko_id": null,
+    "created_at": "2026-10-31T10:22:15Z"
+  },
+  {
+    "id": "MR-6",
+    "deal_id": "demo-bolbot",
+    "persona": null,
+    "kind": "trace",
+    "text": "Grill Turn 1 (Finance): Question regarding CAC break point and founder defense citing cohort pilot.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 55,
+    "meko_id": null,
+    "created_at": "2026-10-31T10:22:40Z"
+  },
+  {
+    "id": "MR-7",
+    "deal_id": "demo-bolbot",
+    "persona": null,
+    "kind": "promote",
+    "text": "promoted 1 memories to Shared Knowledge: LESSON (finance/unit_economics): A hostile finance objection regarding unit economics was accepted only after audited cohort metrics was cited.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 164,
+    "meko_id": null,
+    "created_at": "2026-10-31T10:25:00Z"
+  }
+]

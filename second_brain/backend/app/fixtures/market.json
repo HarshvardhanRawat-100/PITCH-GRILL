@@ -1,0 +1,64 @@
+{
+  "competitors": [
+    {
+      "name": "Wati",
+      "url": "https://www.wati.io",
+      "what_they_do": "WhatsApp customer engagement software and CRM for growing businesses and SMEs across Asia and Latin America.",
+      "overlap": "high",
+      "funding": {
+        "text": "Wati raised $23 million in Series B funding led by Tiger Global",
+        "source_url": "https://inc42.com/buzz/wati-secures-series-b-funding-tiger-global"
+      },
+      "evidence_quote": "Wati provides an end-to-end WhatsApp API customer communication suite and sales automation tool tailored for SMB merchants.",
+      "verified": true
+    },
+    {
+      "name": "Interakt",
+      "url": "https://www.interakt.shop",
+      "what_they_do": "All-in-one WhatsApp business solution for Indian D2C brands, providing automated notifications and catalog checkout.",
+      "overlap": "high",
+      "funding": {
+        "text": "Interakt parent Jio Haptik was acquired by Reliance Jio for $100M",
+        "source_url": "https://entrackr.com/2019/04/reliance-jio-acquires-haptik"
+      },
+      "evidence_quote": "Interakt turns WhatsApp into a complete sales channel with automated product catalogs, cart recovery, and CRM integrations for Indian merchants.",
+      "verified": true
+    },
+    {
+      "name": "LimeChat",
+      "url": "https://www.limechat.ai",
+      "what_they_do": "Conversational AI platform helping Indian e-commerce and retail brands boost conversions via WhatsApp and Instagram.",
+      "overlap": "medium",
+      "funding": {
+        "text": "LimeChat raised $4.2 million in seed funding led by Stellaris Venture Partners",
+        "source_url": "https://yourstory.com/2022/04/funding-conversational-commerce-startup-limechat-seed-round-stellaris"
+      },
+      "evidence_quote": "LimeChat enables brands to deliver human-like conversational shopping experiences across WhatsApp with automated support and order booking.",
+      "verified": true
+    }
+  ],
+  "tam_evidence": [
+    {
+      "figure_text": "₹420 crore in 2025, reaching ₹1,100 crore by 2028",
+      "figure_inr": 4200000000.0,
+      "source_url": "https://inc42.com/reports/indian-conversational-commerce-market-2025",
+      "year": 2025,
+      "quote": "The conversational commerce software market for Indian MSMEs reached ₹420 crore in 2025, driven by WhatsApp Business adoption."
+    }
+  ],
+  "tam_verdict": "supported",
+  "tam_note": "Deck claim of ₹500 crore is supported by industry reports (median sourced figure: ₹420 crore; within 0.5x–2.0x range).",
+  "no_competitor_claim_contradicted": true,
+  "funnel": {
+    "tam_inr": 5000000000.0,
+    "sam_inr": 1250000000.0,
+    "som_inr": 187500000.0,
+    "assumptions": [
+      "TAM: ₹500 Crore (63M MSMEs total conversational commerce market claim)",
+      "SAM: ₹125 Crore (25% reachable segment — 15M active WhatsApp Business accounts)",
+      "SOM: ₹18.75 Crore (15% target market share of high-growth retail & D2C traders within 3 years)"
+    ]
+  },
+  "from_cache": true,
+  "generated_at": "2026-10-31T12:00:00Z"
+}

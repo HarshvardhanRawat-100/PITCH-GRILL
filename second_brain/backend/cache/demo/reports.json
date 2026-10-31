@@ -1,0 +1,22 @@
+{
+  "demo_deck_sha256": "bolbot_clean_canonical_sha256",
+  "generated_at": "2026-10-31T13:37:33.030193+00:00",
+  "cached_run": true,
+  "reports": [
+    {
+      "persona": "finance",
+      "headline": "18-month runway claim is fragile without customer cohort retention verification.",
+      "findings": []
+    },
+    {
+      "persona": "market",
+      "headline": "Zero-competitor claim is directly contradicted by 3 funded WhatsApp SaaS platforms in India.",
+      "findings": []
+    },
+    {
+      "persona": "tech",
+      "headline": "Product relies heavily on Meta Cloud API without multi-BSP redundancy or documented SLM weights.",
+      "findings": []
+    }
+  ]
+}
