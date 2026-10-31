@@ -1,4 +1,5 @@
 """SSE events route."""
+
 from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
 

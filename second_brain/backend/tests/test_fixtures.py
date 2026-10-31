@@ -1,9 +1,10 @@
 """Tests ensuring all mock fixtures strictly validate against contracts/schemas.py."""
+
 import json
-from pathlib import Path
+
+from app.config import settings
 from contracts.schemas import (
     ChecklistItem,
-    Deal,
     DeckFacts,
     FinanceResult,
     GrillTurn,
@@ -13,13 +14,12 @@ from contracts.schemas import (
     PersonaReport,
     TechSignals,
 )
-from app.config import settings
 
 
 def _read_fixture(filename: str):
     path = settings.FIXTURES_DIR / filename
     assert path.exists(), f"Fixture file {filename} does not exist"
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 

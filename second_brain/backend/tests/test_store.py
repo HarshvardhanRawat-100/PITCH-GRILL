@@ -1,7 +1,7 @@
 """Tests for store module: CRUD, monotonic events, and memory_log replacement."""
-import pytest
-from contracts.schemas import Deal, MemoryRecord
+
 from app.store import append_event, delete_deal, get_deal, get_events, save_deal
+from contracts.schemas import Deal, MemoryRecord
 
 
 def test_deal_crud_and_events():

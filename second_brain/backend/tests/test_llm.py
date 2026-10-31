@@ -1,6 +1,8 @@
 """Tests for Gemini LLM wrapper."""
+
 import pytest
 from pydantic import BaseModel
+
 from app.config import settings
 from app.llm import generate_json, generate_text, get_usage
 
