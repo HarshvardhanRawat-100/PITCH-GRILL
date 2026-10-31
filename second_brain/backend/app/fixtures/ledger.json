@@ -1,0 +1,72 @@
+[
+  {
+    "id": "L-1",
+    "claim_text": "Indian SME conversational commerce is a ₹500 crore market growing at 45% CAGR",
+    "source": { "type": "deck", "ref": "slide 3", "quote": "₹500 crore market opportunity in India" },
+    "status": "contradicted",
+    "confidence": 0.85,
+    "persona": "market",
+    "finding_id": "M-2",
+    "updated_at": "2026-10-31T12:00:00Z"
+  },
+  {
+    "id": "L-2",
+    "claim_text": "No direct competitors offering end-to-end catalog checkout on WhatsApp for Indian MSMEs",
+    "source": { "type": "web", "ref": "https://inc42.com/buzz/limechat-raises-seed-funding", "quote": "conversational commerce platform enabling WhatsApp catalog checkouts for Indian merchants" },
+    "status": "contradicted",
+    "confidence": 0.95,
+    "persona": "market",
+    "finding_id": "M-1",
+    "updated_at": "2026-10-31T12:00:00Z"
+  },
+  {
+    "id": "L-3",
+    "claim_text": "Acquiring customers at ₹2,500 CAC with a payback period under 2 months",
+    "source": { "type": "calc", "ref": "finance_engine", "quote": "payback_months = cac / (arpu * gross_margin) = 0.95 mo" },
+    "status": "unverified",
+    "confidence": 0.75,
+    "persona": "finance",
+    "finding_id": "F-1",
+    "updated_at": "2026-10-31T12:00:00Z"
+  },
+  {
+    "id": "L-4",
+    "claim_text": "Proprietary multilingual voice-to-cart engine supporting Hindi and Hinglish",
+    "source": { "type": "deck", "ref": "slide 5", "quote": "Proprietary multilingual voice-to-cart engine" },
+    "status": "unverified",
+    "confidence": 0.40,
+    "persona": "tech",
+    "finding_id": "T-1",
+    "updated_at": "2026-10-31T12:00:00Z"
+  },
+  {
+    "id": "L-5",
+    "claim_text": "Competitor LimeChat raised $4.2M from Stellaris Venture Partners",
+    "source": { "type": "web", "ref": "https://inc42.com/buzz/limechat-raises-seed-funding", "quote": "LimeChat raised $4.2M in Seed round led by Stellaris Venture Partners" },
+    "status": "verified",
+    "confidence": 0.90,
+    "persona": "market",
+    "finding_id": "M-1",
+    "updated_at": "2026-10-31T12:00:00Z"
+  },
+  {
+    "id": "L-6",
+    "claim_text": "Competitor BiteSpeed secured $3.4M led by Surge by Peak XV",
+    "source": { "type": "web", "ref": "https://entrackr.com/2022/02/bitespeed-secures-funding", "quote": "BiteSpeed secures $3.4M in seed funding led by Surge by Peak XV" },
+    "status": "verified",
+    "confidence": 0.90,
+    "persona": "market",
+    "finding_id": "M-1",
+    "updated_at": "2026-10-31T12:00:00Z"
+  },
+  {
+    "id": "L-7",
+    "claim_text": "Monthly churn assumption of 4.5%",
+    "source": { "type": "deck", "ref": "slide 6", "quote": "Gross Margin 75%. Churn 4.5%." },
+    "status": "assumed",
+    "confidence": 0.50,
+    "persona": "finance",
+    "finding_id": "F-3",
+    "updated_at": "2026-10-31T12:00:00Z"
+  }
+]
