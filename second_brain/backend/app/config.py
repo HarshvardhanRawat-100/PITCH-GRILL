@@ -1,8 +1,9 @@
 """Configuration settings for SecondBrain backend."""
-import os
+
 import sys
 from pathlib import Path
 from typing import Literal
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Ensure repo root is on sys.path so 'contracts.schemas' can be imported anywhere

@@ -1,26 +1,28 @@
 """Deals route: creation, retrieval, deletion, markdown export, and mock pipeline execution."""
+
 import asyncio
 import json
 import logging
 import uuid
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Optional
+from datetime import UTC, datetime
 
-from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Query, UploadFile, status
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    File,
+    Form,
+    HTTPException,
+    Query,
+    UploadFile,
+    status,
+)
 from fastapi.responses import PlainTextResponse
 
-from contracts.schemas import (
-    Deal,
-    DeckFacts,
-    FinanceResult,
-    MarketGrounding,
-    PersonaReport,
-    ReadinessScore,
-    TechSignals,
-)
 from app.config import settings
 from app.store import append_event, delete_deal, get_deal, save_deal
+from contracts.schemas import (
+    Deal,
+)
 
 logger = logging.getLogger("app.deals")
 
@@ -29,7 +31,7 @@ router = APIRouter(prefix="/api/deals", tags=["deals"])
 
 def _load_fixture(filename: str):
     path = settings.FIXTURES_DIR / filename
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -44,7 +46,9 @@ async def run_pipeline(deal_id: str):
     upload_pdf_path = settings.DATA_DIR / "uploads" / f"{deal_id}.pdf"
     is_real_run = (not settings.MOCK) and upload_pdf_path.exists()
 
-    logger.info("Starting pipeline for deal %s (real=%s, MOCK=%s)", deal_id, is_real_run, settings.MOCK)
+    logger.info(
+        "Starting pipeline for deal %s (real=%s, MOCK=%s)", deal_id, is_real_run, settings.MOCK
+    )
 
     if not is_real_run:
         # Mock / Demo replay pipeline
@@ -52,7 +56,11 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "parsing", "message": "Parsing pitch deck slides and extracting text...", "progress": 0.1},
+            {
+                "stage": "parsing",
+                "message": "Parsing pitch deck slides and extracting text...",
+                "progress": 0.1,
+            },
         )
         await asyncio.sleep(0.3)
 
@@ -60,7 +68,11 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "extracting", "message": "Extracting claims and financial inputs with Gemini...", "progress": 0.25},
+            {
+                "stage": "extracting",
+                "message": "Extracting claims and financial inputs with Gemini...",
+                "progress": 0.25,
+            },
         )
         await asyncio.sleep(0.3)
 
@@ -72,7 +84,11 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "finance", "message": "Simulating 36-month financial engine and CAC break point...", "progress": 0.4},
+            {
+                "stage": "finance",
+                "message": "Simulating 36-month financial engine and CAC break point...",
+                "progress": 0.4,
+            },
         )
         finance_data = _load_fixture("finance.json")
         append_event(deal_id, "finance", finance_data)
@@ -81,7 +97,11 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "market", "message": "Grounding competitors and TAM claims with live web search...", "progress": 0.55},
+            {
+                "stage": "market",
+                "message": "Grounding competitors and TAM claims with live web search...",
+                "progress": 0.55,
+            },
         )
         market_data = _load_fixture("market.json")
         append_event(deal_id, "market", market_data)
@@ -90,7 +110,11 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "tech", "message": "Inspecting product website and GitHub repository signals...", "progress": 0.65},
+            {
+                "stage": "tech",
+                "message": "Inspecting product website and GitHub repository signals...",
+                "progress": 0.65,
+            },
         )
         tech_data = _load_fixture("tech.json")
         append_event(deal_id, "tech", tech_data)
@@ -100,7 +124,11 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "moderating", "message": "Synthesizing red-team findings across three investor personas...", "progress": 0.75},
+            {
+                "stage": "moderating",
+                "message": "Synthesizing red-team findings across three investor personas...",
+                "progress": 0.75,
+            },
         )
         reports = _load_fixture("reports.json")
         for rep in reports:
@@ -116,16 +144,20 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "scoring", "message": "Computing initial Pitch Readiness Score...", "progress": 0.85},
+            {
+                "stage": "scoring",
+                "message": "Computing initial Pitch Readiness Score...",
+                "progress": 0.85,
+            },
         )
         score_data = {
             "initial": 52.0,
             "current": 52.0,
             "by_persona": [
-              {"persona": "finance", "initial": 48.0, "current": 48.0},
-              {"persona": "market", "initial": 50.0, "current": 50.0},
-              {"persona": "tech", "initial": 58.0, "current": 58.0}
-            ]
+                {"persona": "finance", "initial": 48.0, "current": 48.0},
+                {"persona": "market", "initial": 50.0, "current": 50.0},
+                {"persona": "tech", "initial": 58.0, "current": 58.0},
+            ],
         }
         append_event(deal_id, "score", score_data)
         await asyncio.sleep(0.2)
@@ -134,7 +166,11 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "checklist", "message": "Generating India due-diligence data room checklist...", "progress": 0.92},
+            {
+                "stage": "checklist",
+                "message": "Generating India due-diligence data room checklist...",
+                "progress": 0.92,
+            },
         )
         checklist = _load_fixture("checklist.json")
         append_event(deal_id, "checklist", {"items": checklist})
@@ -153,7 +189,11 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "ready", "message": "Analysis complete. War room is ready for defense.", "progress": 1.0},
+            {
+                "stage": "ready",
+                "message": "Analysis complete. War room is ready for defense.",
+                "progress": 1.0,
+            },
         )
         append_event(deal_id, "done", {"phase": "analysis"})
         logger.info("Pipeline completed successfully for deal %s", deal_id)
@@ -165,25 +205,36 @@ async def run_pipeline(deal_id: str):
         append_event(
             deal_id,
             "stage",
-            {"stage": "parsing", "message": "Parsing pitch deck slides and rendering high-res pages...", "progress": 0.1},
+            {
+                "stage": "parsing",
+                "message": "Parsing pitch deck slides and rendering high-res pages...",
+                "progress": 0.1,
+            },
         )
         with open(upload_pdf_path, "rb") as f:
             pdf_bytes = f.read()
 
         from app.ingest.parser import parse_pdf
+
         slides = parse_pdf(pdf_bytes)
 
         # Step 2: Vision transcription for flagged slides
         from app.ingest.vision import transcribe_slides
+
         slides, vision_notes = await transcribe_slides(slides)
 
         # Step 3: Structured extraction via Gemini
         append_event(
             deal_id,
             "stage",
-            {"stage": "extracting", "message": "Extracting structured claims and financial metrics with Gemini...", "progress": 0.3},
+            {
+                "stage": "extracting",
+                "message": "Extracting structured claims and financial metrics with Gemini...",
+                "progress": 0.3,
+            },
         )
         from app.ingest.extractor import extract_deck_facts
+
         deck_facts = await extract_deck_facts(slides, extra_notes=vision_notes)
 
         # Emit deck event
@@ -192,13 +243,18 @@ async def run_pipeline(deal_id: str):
         # Step 4: Hand-off to Orchestrator (P2) if present
         try:
             from app.agents.orchestrator import run_analysis
+
             await run_analysis(deal_id)
         except (ImportError, AttributeError):
             logger.info("Orchestrator not yet present (P2 package); setting status to ready")
             append_event(
                 deal_id,
                 "stage",
-                {"stage": "ready", "message": "Deck extraction complete. War room ready for analysis.", "progress": 1.0},
+                {
+                    "stage": "ready",
+                    "message": "Deck extraction complete. War room ready for analysis.",
+                    "progress": 1.0,
+                },
             )
             append_event(deal_id, "done", {"phase": "analysis"})
 
@@ -214,9 +270,9 @@ async def run_pipeline(deal_id: str):
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_deal(
     background_tasks: BackgroundTasks,
-    file: Optional[UploadFile] = File(default=None),
-    website_url: Optional[str] = Form(default=None),
-    github_url: Optional[str] = Form(default=None),
+    file: UploadFile | None = File(default=None),
+    website_url: str | None = Form(default=None),
+    github_url: str | None = Form(default=None),
     demo: bool = Query(default=False),
 ):
     """Upload a pitch deck PDF or start demo mode. Kicks off the diligence analysis pipeline."""
@@ -225,7 +281,12 @@ async def create_deal(
     if not demo and not file:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail={"error": {"code": "missing_input", "message": "Must provide a PDF file or set demo=true"}},
+            detail={
+                "error": {
+                    "code": "missing_input",
+                    "message": "Must provide a PDF file or set demo=true",
+                }
+            },
         )
 
     # Validate PDF if provided
@@ -236,33 +297,49 @@ async def create_deal(
         if len(content) > 20 * 1024 * 1024:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail={"error": {"code": "file_too_large", "message": "Pitch deck PDF must be under 20 MB"}},
+                detail={
+                    "error": {
+                        "code": "file_too_large",
+                        "message": "Pitch deck PDF must be under 20 MB",
+                    }
+                },
             )
 
         # Check magic bytes
         if not content.startswith(b"%PDF-"):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail={"error": {"code": "invalid_pdf", "message": "File does not start with valid PDF magic bytes"}},
+                detail={
+                    "error": {
+                        "code": "invalid_pdf",
+                        "message": "File does not start with valid PDF magic bytes",
+                    }
+                },
             )
 
         # Check page count with PyMuPDF
         try:
             import fitz
+
             doc = fitz.open(stream=content, filetype="pdf")
             page_count = doc.page_count
             doc.close()
             if page_count > 40:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail={"error": {"code": "too_many_pages", "message": f"PDF has {page_count} pages (cap is 40)"}},
+                    detail={
+                        "error": {
+                            "code": "too_many_pages",
+                            "message": f"PDF has {page_count} pages (cap is 40)",
+                        }
+                    },
                 )
         except HTTPException:
             raise
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail={"error": {"code": "corrupt_pdf", "message": f"Could not parse PDF: {str(e)}"}},
+                detail={"error": {"code": "corrupt_pdf", "message": f"Could not parse PDF: {e!s}"}},
             )
 
         # Persist uploaded file
@@ -274,7 +351,7 @@ async def create_deal(
     deal = Deal(
         id=deal_id,
         status="parsing",
-        created_at=datetime.now(timezone.utc).isoformat(),
+        created_at=datetime.now(UTC).isoformat(),
     )
     save_deal(deal)
 
@@ -309,6 +386,7 @@ async def delete_deal_endpoint(deal_id: str):
     # Meko forget-on-delete (guarded until P4 memory module is present)
     try:
         from app.memory import get_memory
+
         mem = get_memory()
         if hasattr(mem, "forget_deal"):
             await mem.forget_deal(deal_id)
@@ -323,7 +401,7 @@ async def delete_deal_endpoint(deal_id: str):
 
 @router.get("/{deal_id}/export.md")
 async def export_deal_markdown(deal_id: str):
-    """Export deal diligence report as Markdown."""
+    """Export complete deal due diligence report as Markdown."""
     deal = get_deal(deal_id)
     if not deal:
         raise HTTPException(
@@ -332,33 +410,160 @@ async def export_deal_markdown(deal_id: str):
         )
 
     company_name = deal.deck.company_name if deal.deck else "Unknown Startup"
-    score_str = f"{deal.score.current:.1f}/100" if deal.score else "N/A"
+    initial_score = deal.score.initial if deal.score else 50.0
+    current_score = deal.score.current if deal.score else initial_score
+    score_delta = current_score - initial_score
 
     lines = [
         f"# SecondBrain Due Diligence Report: {company_name}",
-        f"Generated at: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
-        f"**Pitch Readiness Score**: {score_str}",
+        f"**Generated**: {datetime.now(UTC).strftime('%Y-%m-%d %H:%M UTC')} | **Deal ID**: `{deal_id}`",
+        f"**Sector**: {deal.deck.sector if deal.deck else 'N/A'} | **Stage**: {deal.deck.stage if deal.deck else 'N/A'}",
         "",
-        "## Executive Summary",
-        deal.deck.one_liner if deal.deck else "No summary available.",
+        "---",
         "",
-        "## Red-Team Findings",
+        "## 1. Pitch Readiness Score",
+        f"- **Initial Score**: `{initial_score:.1f}/100`",
+        f"- **Current Score**: `{current_score:.1f}/100` ({'+' if score_delta >= 0 else ''}{score_delta:.1f})",
     ]
 
+    if deal.score and deal.score.by_persona:
+        lines.append("- **By Persona**:")
+        for ps in deal.score.by_persona:
+            lines.append(
+                f"  - **{ps.persona.title()}**: Initial `{ps.initial:.1f}` → Current `{ps.current:.1f}`"
+            )
+
+    lines.extend(
+        [
+            "",
+            "## 2. Executive Summary & Deck Facts",
+            deal.deck.one_liner if deal.deck else "No executive summary available.",
+            "",
+        ]
+    )
+
+    if deal.deck:
+        if deal.deck.ask:
+            ask_val = (
+                f"₹{deal.deck.ask.amount_inr:,.0f}" if deal.deck.ask.amount_inr else "Not specified"
+            )
+            val_val = (
+                f"₹{deal.deck.ask.valuation_inr:,.0f}"
+                if deal.deck.ask.valuation_inr
+                else "Not specified"
+            )
+            lines.append(f"- **Ask Amount**: {ask_val}")
+            lines.append(f"- **Valuation**: {val_val}")
+            if deal.deck.ask.use_of_funds:
+                lines.append(f"- **Use of Funds**: {', '.join(deal.deck.ask.use_of_funds)}")
+
+        if deal.deck.tam_claim_text:
+            lines.append(f"- **Stated TAM**: {deal.deck.tam_claim_text}")
+        if deal.deck.stated_competitors:
+            lines.append(f"- **Stated Competitors**: {', '.join(deal.deck.stated_competitors)}")
+
+    if deal.deck and deal.deck.missing_data:
+        lines.extend(
+            [
+                "",
+                "### Missing Data & Diligence Flags",
+            ]
+        )
+        for missing in deal.deck.missing_data:
+            lines.append(f"- ⚠️ {missing}")
+
+    lines.extend(
+        [
+            "",
+            "## 3. Red-Team Investor Findings",
+        ]
+    )
+
     for rep in deal.reports:
-        lines.append(f"### {rep.persona.title()} Investor")
-        lines.append(f"_{rep.headline}_")
+        lines.append(f"### {rep.persona.title()} Investor Report")
+        lines.append(f'> "{rep.headline}"')
+        lines.append("")
         for f in rep.findings:
-            lines.append(f"- **[{f.severity.upper()}] {f.title}**: {f.detail}")
-            lines.append(f"  - Status: `{f.status}` | Question: *\"{f.question}\"*")
+            lines.append(f"#### [{f.severity.upper()}] {f.title} (`{f.id}`)")
+            lines.append(f"{f.detail}")
+            lines.append(f"- **Status**: `{f.status}` | **Category**: `{f.category}`")
+            if f.missing_proof:
+                lines.append(f"- **Missing Proof**: _{f.missing_proof}_")
+            if f.sources:
+                source_strs = [f"`{s.type}`: {s.ref}" for s in f.sources]
+                lines.append(f"- **Sources**: {'; '.join(source_strs)}")
+            lines.append(f'- **Question**: *"{f.question}"*')
+            lines.append("")
+
+    # 4. Evidence Ledger Table
+    if deal.ledger:
+        lines.extend(
+            [
+                "## 4. Evidence Ledger",
+                "| ID | Claim | Source | Status | Confidence |",
+                "|---|---|---|---|---|",
+            ]
+        )
+        for entry in deal.ledger:
+            clean_claim = entry.claim_text.replace("|", "/")
+            lines.append(
+                f"| `{entry.id}` | {clean_claim} | `{entry.source.type}`: {entry.source.ref} | `{entry.status}` | {entry.confidence * 100:.0f}% |"
+            )
         lines.append("")
 
-    lines.extend([
-        "## Due Diligence Data Room Checklist",
-    ])
-    for item in deal.checklist:
-        lines.append(f"- [{item.priority}] **{item.title}** ({item.owner}) - Status: {item.status}")
-        lines.append(f"  - _Why: {item.why}_")
+    # 5. Due Diligence Data Room Checklist
+    if deal.checklist:
+        lines.extend(
+            [
+                "## 5. Due Diligence Data Room Checklist",
+                "| Priority | Item | Owner | Status | Rationale |",
+                "|---|---|---|---|---|",
+            ]
+        )
+        for item in deal.checklist:
+            clean_why = item.why.replace("|", "/")
+            lines.append(
+                f"| **{item.priority}** | {item.title} | `{item.owner}` | `{item.status}` | {clean_why} |"
+            )
+        lines.append("")
+
+    # 6. Final Verdicts
+    if deal.verdicts:
+        lines.extend(
+            [
+                "## 6. Investment Committee Final Verdicts",
+            ]
+        )
+        for v in deal.verdicts:
+            lines.append(f"- **{v.persona.title()} Investor**: `{v.verdict.upper()}`")
+            lines.append(f"  - {v.rationale}")
+        lines.append("")
+
+    # 7. Refined Pitch Narrative
+    if deal.narrative:
+        lines.extend(
+            [
+                "## 7. Refined Pitch Narrative",
+                f"**Positioning**: {deal.narrative.positioning}",
+                f"**One-Liner**: {deal.narrative.one_liner}",
+                f"**TAM Reframe**: {deal.narrative.tam_reframe}",
+                "",
+                deal.narrative.narrative_md,
+                "",
+            ]
+        )
+        if deal.narrative.changes:
+            lines.append("**Key Narrative Refinements**:")
+            for ch in deal.narrative.changes:
+                lines.append(f"- {ch}")
+            lines.append("")
+
+    lines.extend(
+        [
+            "---",
+            "_Confidential Due Diligence Memo generated by SecondBrain Diligence War Room powered by Google Gemini & Yugabyte Meko._",
+        ]
+    )
 
     content = "\n".join(lines)
     return PlainTextResponse(content, media_type="text/markdown")

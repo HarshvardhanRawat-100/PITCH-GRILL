@@ -1,9 +1,10 @@
 """Tests for SSE streaming generator."""
-import asyncio
+
 import pytest
+
+from app.sse import event_generator
 from app.store import append_event, delete_deal, save_deal
 from contracts.schemas import Deal
-from app.sse import event_generator
 
 
 @pytest.mark.asyncio

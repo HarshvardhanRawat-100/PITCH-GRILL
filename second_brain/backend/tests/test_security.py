@@ -1,6 +1,15 @@
-"""Tests for security module: SSRF prevention, untrusted wrapper, and PII redaction."""
+"""Tests for security module: SSRF prevention, untrusted wrapper, PII redaction, and output sanitization."""
+
 import pytest
-from app.security import is_safe_url, redact_pii, safe_memory_text, wrap_untrusted
+
+from app.security import (
+    is_safe_url,
+    redact_pii,
+    safe_memory_text,
+    sanitize_output,
+    sanitize_persona_report,
+    wrap_untrusted,
+)
 
 
 def test_wrap_untrusted():
@@ -24,6 +33,45 @@ def test_safe_memory_text():
     assert "[EMAIL_REDACTED]" in cleaned
     assert "[PHONE_REDACTED]" in cleaned
     assert "\x00" not in cleaned
+
+
+def test_sanitize_output_strips_html_and_control_chars():
+    dirty = "<script>alert('xss')</script>Hello <b>World</b>\x00\x08!"
+    cleaned = sanitize_output(dirty)
+    assert "<script>" not in cleaned
+    assert "alert('xss')" in cleaned
+    assert "<b>" not in cleaned
+    assert "Hello World!" in cleaned
+    assert "\x00" not in cleaned
+    assert "\x08" not in cleaned
+
+
+def test_sanitize_output_caps_length():
+    long_str = "a" * 1000
+    capped = sanitize_output(long_str, max_length=100)
+    assert len(capped) == 101  # 100 + ellipsis character
+    assert capped.endswith("…")
+
+
+def test_sanitize_persona_report():
+    report = {
+        "persona": "finance",
+        "headline": "Dangerous <script>run()</script>headline\x00",
+        "findings": [
+            {
+                "id": "F-01",
+                "title": "Title <b>bold</b>",
+                "detail": "<iframe src='evil.com'></iframe>Detail",
+                "question": "What is <script>evil</script>CAC?",
+            }
+        ],
+    }
+    sanitized = sanitize_persona_report(report)
+    assert "<script>" not in sanitized["headline"]
+    assert "\x00" not in sanitized["headline"]
+    assert "<b>" not in sanitized["findings"][0]["title"]
+    assert "<iframe" not in sanitized["findings"][0]["detail"]
+    assert "<script>" not in sanitized["findings"][0]["question"]
 
 
 @pytest.mark.parametrize(

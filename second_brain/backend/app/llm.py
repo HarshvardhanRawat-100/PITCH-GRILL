@@ -1,8 +1,10 @@
 """Gemini-only LLM wrapper with structured output, fallback routing, and telemetry."""
+
 import asyncio
 import logging
 import time
-from typing import Any, Dict, List, Optional, Type, TypeVar
+from typing import Any, TypeVar
+
 from pydantic import BaseModel
 
 from app.config import settings
@@ -12,7 +14,7 @@ logger = logging.getLogger("app.llm")
 T = TypeVar("T", bound=BaseModel)
 
 # Module-level usage counters
-_USAGE: Dict[str, Any] = {
+_USAGE: dict[str, Any] = {
     "calls": 0,
     "input_tokens": 0,
     "output_tokens": 0,
@@ -20,7 +22,7 @@ _USAGE: Dict[str, Any] = {
 }
 
 
-def get_usage() -> Dict[str, Any]:
+def get_usage() -> dict[str, Any]:
     """Return a snapshot of LLM token and call usage."""
     return {
         "calls": _USAGE["calls"],
@@ -45,21 +47,22 @@ def _record_usage(model_name: str, input_tokens: int, output_tokens: int) -> Non
 def _get_genai_client():
     """Lazily instantiate the google-genai client."""
     from google import genai
+
     return genai.Client(api_key=settings.GEMINI_API_KEY)
 
 
 async def _execute_generate(
     model: str,
-    contents: List[Any],
+    contents: list[Any],
     *,
-    system: Optional[str] = None,
-    schema: Optional[Type[BaseModel]] = None,
+    system: str | None = None,
+    schema: type[BaseModel] | None = None,
     temperature: float = 0.2,
 ) -> Any:
     from google.genai import types
 
     client = _get_genai_client()
-    config_args: Dict[str, Any] = {"temperature": temperature}
+    config_args: dict[str, Any] = {"temperature": temperature}
 
     if system:
         config_args["system_instruction"] = system
@@ -79,11 +82,11 @@ async def _execute_generate(
 
 async def generate_json(
     prompt: str,
-    schema: Type[T],
+    schema: type[T],
     *,
-    system: Optional[str] = None,
-    images: Optional[List[Any]] = None,
-    model: Optional[str] = None,
+    system: str | None = None,
+    images: list[Any] | None = None,
+    model: str | None = None,
     temperature: float = 0.2,
 ) -> T:
     """Generate structured JSON conforming to `schema` via Google Gemini.
@@ -100,12 +103,12 @@ async def generate_json(
         )
 
     target_model = model or settings.LLM_MODEL
-    contents: List[Any] = [prompt]
+    contents: list[Any] = [prompt]
     if images:
         contents.extend(images)
 
     t0 = time.time()
-    last_err: Optional[Exception] = None
+    last_err: Exception | None = None
 
     # Try target model (1 attempt + 1 retry), then fallback model
     model_sequence = [target_model, target_model, settings.LLM_FALLBACK_MODEL]
@@ -152,24 +155,20 @@ async def generate_json(
 
         except Exception as e:
             last_err = e
-            logger.warning(
-                "Gemini %s attempt %d failed: %s", current_model, attempt + 1, str(e)
-            )
+            logger.warning("Gemini %s attempt %d failed: %s", current_model, attempt + 1, str(e))
             if attempt < len(model_sequence) - 1:
                 await asyncio.sleep(1.0)
                 continue
 
-    raise RuntimeError(
-        f"generate_json failed after retries and fallback: {last_err}"
-    ) from last_err
+    raise RuntimeError(f"generate_json failed after retries and fallback: {last_err}") from last_err
 
 
 async def generate_text(
     prompt: str,
     *,
-    system: Optional[str] = None,
-    images: Optional[List[Any]] = None,
-    model: Optional[str] = None,
+    system: str | None = None,
+    images: list[Any] | None = None,
+    model: str | None = None,
     temperature: float = 0.2,
 ) -> str:
     """Generate free-form text via Google Gemini."""
@@ -179,12 +178,12 @@ async def generate_text(
         )
 
     target_model = model or settings.LLM_MODEL
-    contents: List[Any] = [prompt]
+    contents: list[Any] = [prompt]
     if images:
         contents.extend(images)
 
     t0 = time.time()
-    last_err: Optional[Exception] = None
+    last_err: Exception | None = None
 
     model_sequence = [target_model, target_model, settings.LLM_FALLBACK_MODEL]
 
@@ -218,6 +217,4 @@ async def generate_text(
                 await asyncio.sleep(1.0)
                 continue
 
-    raise RuntimeError(
-        f"generate_text failed after retries and fallback: {last_err}"
-    ) from last_err
+    raise RuntimeError(f"generate_text failed after retries and fallback: {last_err}") from last_err

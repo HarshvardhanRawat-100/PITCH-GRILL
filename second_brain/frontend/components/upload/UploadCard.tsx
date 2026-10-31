@@ -59,6 +59,15 @@ export function UploadCard() {
 
         {/* Drag and Drop Zone */}
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Upload pitch deck PDF"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              document.getElementById("file-upload")?.click();
+            }
+          }}
           onDragOver={(e) => {
             e.preventDefault();
             setIsDragOver(true);
@@ -71,7 +80,7 @@ export function UploadCard() {
               setFile(e.dataTransfer.files[0]);
             }
           }}
-          className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer ${
+          className={`border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 ${
             isDragOver
               ? "border-blue-500 bg-blue-950/20"
               : file
@@ -158,6 +167,11 @@ export function UploadCard() {
             <span>Use Demo Deck (BolBot)</span>
           </button>
         </div>
+
+        {/* Privacy Copy */}
+        <p className="text-center text-xs text-gray-500 pt-2 border-t border-border/50">
+          The PDF itself is session-only. Extracted findings and your defenses are kept in Meko memory for this session and deleted when you delete the deal. Deck text is sent to Google Gemini to analyse it.
+        </p>
       </div>
     </div>
   );
