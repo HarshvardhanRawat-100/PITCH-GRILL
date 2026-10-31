@@ -1,4 +1,3 @@
-from typing import List, Optional
 
 try:
     from contracts.schemas import (
@@ -10,7 +9,7 @@ try:
         readiness,
     )
 except ImportError:
-    from second_brain.contracts.schemas import (
+    from contracts.schemas import (
         PersonaReport,
         PersonaScore,
         ReadinessScore,
@@ -21,16 +20,16 @@ except ImportError:
 
 
 def compute_score(
-    reports: List[PersonaReport],
-    existing_score: Optional[ReadinessScore] = None,
+    reports: list[PersonaReport],
+    existing_score: ReadinessScore | None = None,
 ) -> ReadinessScore:
     """
     Wrap schemas.initial_persona_score, persona_score, and readiness.
     Initial score is fixed once at analysis end; current is recomputed as findings resolve.
     """
-    by_persona: List[PersonaScore] = []
-    initial_scores: List[float] = []
-    current_scores: List[float] = []
+    by_persona: list[PersonaScore] = []
+    initial_scores: list[float] = []
+    current_scores: list[float] = []
 
     for r in reports:
         existing_p = (

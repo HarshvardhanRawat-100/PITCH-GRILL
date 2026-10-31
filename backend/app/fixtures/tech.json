@@ -1,25 +1,29 @@
 {
-  "site_url": "https://bolbot.ai",
+  "site_url": "https://bolbot.in",
   "site_reachable": true,
-  "site_summary": "Landing page showcases WhatsApp automation for retail merchants with live demo bot link and pricing tiers.",
+  "site_summary": "BolBot is an AI-powered conversational sales platform designed for Indian businesses to qualify leads, send interactive catalogs, and accept UPI payments via WhatsApp.",
   "claims_supported": [
-    "Seamless Meta WhatsApp Cloud API webhooks with 99.9% uptime"
+    "WhatsApp Business Meta Cloud API integration",
+    "Razorpay UPI automated payment link generation",
+    "Vernacular Hindi and English conversational understanding"
   ],
   "claims_unsupported": [
-    "Proprietary Indic NLP models for Hindi and Hinglish voice-to-order"
+    "Proprietary 8B SLM training dataset (no technical documentation or whitepaper found on site)"
   ],
   "github": {
-    "repo": "bolbot-ai/core",
+    "repo": "bolbot-ai/bolbot-core",
     "stars": 42,
-    "last_commit": "2026-10-25T14:22:00Z",
+    "last_commit": "2026-10-25T14:30:00Z",
     "languages": [
       "Python",
-      "TypeScript"
+      "TypeScript",
+      "Docker"
     ]
   },
   "notes": [
-    "Site references standard OpenAI and Meta Cloud APIs rather than custom-hosted Indic NLP weights.",
-    "GitHub repo contains webhook handlers and Next.js merchant dashboard."
+    "Site reachable and SSL valid.",
+    "GitHub repo exists with active Python/TypeScript codebase.",
+    "Vernacular claims verified on marketing copy; proprietary LLM weights not open-source."
   ],
-  "from_cache": false
+  "from_cache": true
 }

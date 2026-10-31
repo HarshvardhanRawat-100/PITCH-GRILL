@@ -2,14 +2,14 @@ import json
 import os
 import sys
 from pathlib import Path
+
 import pytest
 
-# Ensure repo root and second_brain are on sys.path
+# Ensure repo root and backend are on sys.path
 REPO_ROOT = Path(__file__).resolve().parents[2]
-SECOND_BRAIN = REPO_ROOT / "second_brain"
 BACKEND = REPO_ROOT / "backend"
 
-for path in [str(REPO_ROOT), str(SECOND_BRAIN), str(BACKEND)]:
+for path in [str(REPO_ROOT), str(BACKEND)]:
     if path not in sys.path:
         sys.path.insert(0, path)
 
@@ -25,7 +25,7 @@ try:
         TechSignals,
     )
 except ImportError:
-    from second_brain.contracts.schemas import (
+    from contracts.schemas import (
         Deal,
         DeckFacts,
         FinanceResult,
@@ -36,14 +36,14 @@ except ImportError:
         TechSignals,
     )
 
-from backend.app.agents.personas import run_persona
-from backend.app.agents.prompts import render_persona_prompt, P_00, P_03, P_04, P_05, P_08
-from backend.app.agents.moderator import run_moderator
-from backend.app.agents.scoring import compute_score
-from backend.app.agents.ledger import build_ledger
-from backend.app.agents.orchestrator import run_analysis, get_memory
-from backend.app.agents.evaluator import evaluate_answer
-from backend.app.agents.grill import plan_grill, start_grill, submit_answer
+from app.agents.evaluator import evaluate_answer
+from app.agents.grill import start_grill, submit_answer
+from app.agents.ledger import build_ledger
+from app.agents.moderator import run_moderator
+from app.agents.orchestrator import run_analysis
+from app.agents.personas import run_persona
+from app.agents.prompts import P_00, P_03, P_04, P_05, P_08, render_persona_prompt
+from app.agents.scoring import compute_score
 
 
 def load_fixtures():
@@ -920,7 +920,7 @@ async def test_grill_memory_timeout_and_injection_resilience(monkeypatch):
     # 1. Memory timeout resilience: recall times out or raises
     class SlowOrFailingMemory:
         async def recall(self, *args, **kwargs):
-            raise asyncio.TimeoutError("Meko MCP timeout")
+            raise TimeoutError("Meko MCP timeout")
         async def remember(self, *args, **kwargs):
             return None
         async def trace(self, *args, **kwargs):

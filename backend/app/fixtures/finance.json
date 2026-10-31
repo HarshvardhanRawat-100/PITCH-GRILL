@@ -1,75 +1,56 @@
 {
   "inputs": {
-    "arpu_monthly": { "value": 3000.0, "origin": "deck", "slide": 7 },
-    "cac": { "value": 4500.0, "origin": "deck", "slide": 7 },
-    "gross_margin_pct": { "value": 75.0, "origin": "deck", "slide": 7 },
-    "monthly_churn_pct": { "value": 4.0, "origin": "deck", "slide": 7 },
-    "cash_in_bank": { "value": 20000000.0, "origin": "deck", "slide": 9 },
-    "fixed_opex_monthly": { "value": 800000.0, "origin": "deck", "slide": 9 },
-    "current_customers": { "value": 150.0, "origin": "deck", "slide": 6 },
-    "new_customers_monthly": { "value": 40.0, "origin": "deck", "slide": 6 },
-    "new_customer_growth_pct_monthly": { "value": 10.0, "origin": "deck", "slide": 6 }
+    "arpu_monthly": { "value": 3500.0, "origin": "deck", "slide": 6, "note": "Average monthly subscription per MSME" },
+    "cac": { "value": 2500.0, "origin": "deck", "slide": 6, "note": "Blended customer acquisition cost" },
+    "gross_margin_pct": { "value": 75.0, "origin": "deck", "slide": 6, "note": "Software margin minus WhatsApp Cloud API fees" },
+    "monthly_churn_pct": { "value": 4.5, "origin": "deck", "slide": 6, "note": "Monthly store churn rate" },
+    "cash_in_bank": { "value": 25000000.0, "origin": "deck", "slide": 8, "note": "Pro-forma post-round cash reserve" },
+    "fixed_opex_monthly": { "value": 1100000.0, "origin": "deck", "slide": 8, "note": "Salaries, servers, and office" },
+    "current_customers": { "value": 180.0, "origin": "deck", "slide": 5, "note": "Paying MSMEs on platform" },
+    "new_customers_monthly": { "value": 45.0, "origin": "deck", "slide": 5, "note": "Monthly net new customer additions" },
+    "new_customer_growth_pct_monthly": { "value": 8.0, "origin": "deck", "slide": 5, "note": "Monthly cohort growth" }
   },
   "mode": "hold_growth",
   "horizon_months": 36,
   "metrics": {
-    "ltv": 56250.0,
-    "ltv_cac": 12.5,
-    "payback_months": 2.0,
+    "ltv": 58333.33,
+    "ltv_cac": 23.33,
+    "payback_months": 0.95,
     "runway_months": 18.2,
     "runway_capped": false,
-    "breakeven_month": 14,
-    "month0_net_burn": 642500.0
+    "breakeven_month": 16,
+    "month0_net_burn": 739750.0
   },
   "series": [
-    {
-      "month": 0,
-      "customers": 150.0,
-      "revenue": 450000.0,
-      "gross_profit": 337500.0,
-      "acquisition_spend": 180000.0,
-      "net_burn": 642500.0,
-      "cash": 19357500.0
-    },
-    {
-      "month": 1,
-      "customers": 184.0,
-      "revenue": 552000.0,
-      "gross_profit": 414000.0,
-      "acquisition_spend": 198000.0,
-      "net_burn": 584000.0,
-      "cash": 18773500.0
-    }
+    { "month": 0, "customers": 180.0, "revenue": 630000.0, "gross_profit": 472500.0, "acquisition_spend": 112500.0, "net_burn": 740000.0, "cash": 24260000.0 },
+    { "month": 1, "customers": 216.9, "revenue": 759150.0, "gross_profit": 569362.5, "acquisition_spend": 121500.0, "net_burn": 652137.5, "cash": 23607862.5 },
+    { "month": 2, "customers": 259.7, "revenue": 908950.0, "gross_profit": 681712.5, "acquisition_spend": 131220.0, "net_burn": 549507.5, "cash": 23058355.0 },
+    { "month": 3, "customers": 309.2, "revenue": 1082200.0, "gross_profit": 811650.0, "acquisition_spend": 141717.6, "net_burn": 430067.6, "cash": 22628287.4 },
+    { "month": 4, "customers": 366.4, "revenue": 1282400.0, "gross_profit": 961800.0, "acquisition_spend": 153055.0, "net_burn": 291255.0, "cash": 22337032.4 },
+    { "month": 5, "customers": 432.4, "revenue": 1513400.0, "gross_profit": 1135050.0, "acquisition_spend": 165299.4, "net_burn": 130249.4, "cash": 22206783.0 },
+    { "month": 6, "customers": 508.4, "revenue": 1779400.0, "gross_profit": 1334550.0, "acquisition_spend": 178523.4, "net_burn": -56026.6, "cash": 22262809.6 }
   ],
   "break_point": {
     "target_runway_months": 12,
-    "base_cac": 4500.0,
-    "breaking_cac": 8100.0,
-    "pct_increase": 80.0,
+    "base_cac": 2500.0,
+    "breaking_cac": 3410.0,
+    "pct_increase": 36.4,
     "already_below_target": false
   },
   "tornado": [
-    {
-      "variable": "cac",
-      "label": "CAC",
-      "runway_low": 21.0,
-      "runway_high": 16.0,
-      "delta_months": 5.0
-    },
-    {
-      "variable": "monthly_churn_pct",
-      "label": "Monthly Churn",
-      "runway_low": 20.2,
-      "runway_high": 16.5,
-      "delta_months": 3.7
-    }
+    { "variable": "cac", "label": "Customer Acquisition Cost", "runway_low": 21.4, "runway_high": 15.1, "delta_months": 6.3 },
+    { "variable": "gross_margin_pct", "label": "Gross Margin %", "runway_low": 15.5, "runway_high": 20.9, "delta_months": 5.4 },
+    { "variable": "monthly_churn_pct", "label": "Monthly Churn %", "runway_low": 20.3, "runway_high": 16.2, "delta_months": 4.1 },
+    { "variable": "arpu_monthly", "label": "Monthly ARPU", "runway_low": 16.4, "runway_high": 19.8, "delta_months": 3.4 },
+    { "variable": "fixed_opex_monthly", "label": "Fixed Opex", "runway_low": 19.7, "runway_high": 16.8, "delta_months": 2.9 },
+    { "variable": "new_customers_monthly", "label": "New Customers / mo", "runway_low": 17.2, "runway_high": 19.1, "delta_months": 1.9 }
   ],
   "assumptions_used": [
-    "Used stated ARPU ₹3,000 and CAC ₹4,500 from slide 7",
-    "Model assumes 75% gross margin on software subscription"
+    "WhatsApp Meta conversation fees assumed included in 75% gross margin baseline",
+    "Net customer acquisition cost modeled with constant 8% monthly cohort growth"
   ],
   "formulas": [
-    "LTV = ARPU * Gross Margin / Churn Rate",
-    "Runway = Months until cash balance drops <= 0"
+    "net_burn = fixed_opex + (new_customers * cac) - (customers * arpu * gross_margin)",
+    "runway = months until cash balance reaches zero under selected mode"
   ]
 }

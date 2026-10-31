@@ -1,6 +1,5 @@
 import pytest
-from contracts.schemas import Deal, EvalCriteria, Finding, Outcome, SourceRef, clamp_outcome
-from app.agents.evaluator import INJECTION_REGEX, evaluate_answer
+from contracts.schemas import Deal, EvalCriteria, clamp_outcome
 from scripts.redteam_grill import (
     ADVERSARIAL_CASES,
     FINDINGS,
@@ -8,6 +7,8 @@ from scripts.redteam_grill import (
     format_table,
     run_redteam_suite,
 )
+
+from app.agents.evaluator import INJECTION_REGEX, evaluate_answer
 
 
 @pytest.mark.asyncio
