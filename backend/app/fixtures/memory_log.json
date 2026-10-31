@@ -1,0 +1,141 @@
+[
+  {
+    "id": "MR-1",
+    "deal_id": "bolbot_mock",
+    "persona": "finance",
+    "kind": "memory_add",
+    "text": "[deal:bolbot_mock] FINDING F-1 (critical, unit_economics): CAC break point at ₹3,410 leaves only 36% margin of error before runway falls below 12 months.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 142,
+    "meko_id": "meko_rec_001",
+    "created_at": "2026-10-31T12:01:00Z"
+  },
+  {
+    "id": "MR-2",
+    "deal_id": "bolbot_mock",
+    "persona": "finance",
+    "kind": "memory_add",
+    "text": "[deal:bolbot_mock] FINDING F-2 (critical, gross_margin): Meta conversation markup (~₹0.78 per message) will compress gross margin from 75% to 52% at volume.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 118,
+    "meko_id": "meko_rec_002",
+    "created_at": "2026-10-31T12:01:02Z"
+  },
+  {
+    "id": "MR-3",
+    "deal_id": "bolbot_mock",
+    "persona": "market",
+    "kind": "memory_add",
+    "text": "[deal:bolbot_mock] FINDING M-1 (critical, competition): Deck claims no competitors but LimeChat ($4.2M) and BiteSpeed ($3.4M) operate in same space.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 165,
+    "meko_id": "meko_rec_003",
+    "created_at": "2026-10-31T12:01:04Z"
+  },
+  {
+    "id": "MR-4",
+    "deal_id": "bolbot_mock",
+    "persona": "tech",
+    "kind": "memory_add",
+    "text": "[deal:bolbot_mock] FINDING T-1 (critical, ip_moat): No proprietary acoustic weights found for Indic voice-to-cart engine in code audits.",
+    "hits": [],
+    "source": "local_fallback",
+    "status": "ok",
+    "latency_ms": 12,
+    "meko_id": "local_rec_004",
+    "created_at": "2026-10-31T12:01:06Z"
+  },
+  {
+    "id": "MR-5",
+    "deal_id": "bolbot_mock",
+    "persona": "finance",
+    "kind": "memory_add",
+    "text": "[deal:bolbot_mock] CONCESSION (finance): Founder conceded paid acquisition is speculative; referral pilot CAC verified at ₹2,900 for 120 merchants.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 134,
+    "meko_id": "meko_rec_005",
+    "created_at": "2026-10-31T12:02:15Z"
+  },
+  {
+    "id": "MR-6",
+    "deal_id": "bolbot_mock",
+    "persona": "market",
+    "kind": "memory_recall",
+    "text": "LimeChat BiteSpeed ICP overlap Tier 2 wholesale",
+    "hits": [
+      "[deal:bolbot_mock] FINDING M-1: LimeChat ($4.2M) and BiteSpeed operate in conversational commerce",
+      "LimeChat targets D2C brands on Shopify in metro clusters"
+    ],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 182,
+    "meko_id": null,
+    "created_at": "2026-10-31T12:02:40Z"
+  },
+  {
+    "id": "MR-7",
+    "deal_id": "bolbot_mock",
+    "persona": "finance",
+    "kind": "memory_recall",
+    "text": "referral cohort retention unit economics",
+    "hits": [
+      "[deal:bolbot_mock] CONCESSION: referral pilot CAC verified at ₹2,900 for 120 merchants"
+    ],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 140,
+    "meko_id": null,
+    "created_at": "2026-10-31T12:03:00Z"
+  },
+  {
+    "id": "MR-8",
+    "deal_id": "bolbot_mock",
+    "persona": "tech",
+    "kind": "memory_recall",
+    "text": "Bhashini Indic speech benchmarks",
+    "hits": [
+      "Bhashini open-source models demonstrate 14% WER on Conversational Hindi dialects"
+    ],
+    "source": "local_fallback",
+    "status": "ok",
+    "latency_ms": 9,
+    "meko_id": null,
+    "created_at": "2026-10-31T12:03:10Z"
+  },
+  {
+    "id": "MR-9",
+    "deal_id": "bolbot_mock",
+    "persona": null,
+    "kind": "kb_search",
+    "text": "India DPDP statutory data compliance for messaging startups",
+    "hits": [
+      "DPDP Act 2023: Section 8 data fiduciary obligations mandate encryption and purpose limitation on merchant logs"
+    ],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 195,
+    "meko_id": null,
+    "created_at": "2026-10-31T12:03:30Z"
+  },
+  {
+    "id": "MR-10",
+    "deal_id": "bolbot_mock",
+    "persona": "market",
+    "kind": "promote",
+    "text": "LESSON (competition/tier2_sme): In Indian conversational commerce, focusing on Tier 2/3 wholesalers with voice and COD is a defensible differentiator against metro D2C competitors.",
+    "hits": [],
+    "source": "meko_live",
+    "status": "ok",
+    "latency_ms": 230,
+    "meko_id": "shared_kb_010",
+    "created_at": "2026-10-31T12:04:00Z"
+  }
+]

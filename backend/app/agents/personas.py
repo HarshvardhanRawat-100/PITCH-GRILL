@@ -1,11 +1,12 @@
 import re
-from typing import Any, Awaitable, Callable, List, Optional
+from collections.abc import Awaitable, Callable
+from typing import Any
 
 try:
     from contracts.schemas import Finding, Persona, PersonaReport, SourceRef
 except ImportError:
     try:
-        from second_brain.contracts.schemas import Finding, Persona, PersonaReport, SourceRef
+        from contracts.schemas import Finding, Persona, PersonaReport, SourceRef
     except ImportError:
         import sys
         from pathlib import Path
@@ -27,7 +28,7 @@ try:
     from app.llm import generate_json as _app_generate_json
 except ImportError:
     try:
-        from backend.app.llm import generate_json as _app_generate_json
+        from app.llm import generate_json as _app_generate_json
     except ImportError:
         _app_generate_json = None
 
@@ -44,8 +45,8 @@ SEVERITY_ORDER = {"critical": 0, "major": 1, "minor": 2}
 PERSONA_PREFIX = {"finance": "F", "market": "M", "tech": "T"}
 
 
-def _get_allowed_competitor_names(tool_output: Any) -> List[str]:
-    names: List[str] = []
+def _get_allowed_competitor_names(tool_output: Any) -> list[str]:
+    names: list[str] = []
     if hasattr(tool_output, "competitors"):
         for comp in tool_output.competitors:
             name = getattr(comp, "name", None)
@@ -60,7 +61,7 @@ def _get_allowed_competitor_names(tool_output: Any) -> List[str]:
     return names
 
 
-def _sanitize_market_competitors(finding: Finding, allowed_names: List[str]) -> None:
+def _sanitize_market_competitors(finding: Finding, allowed_names: list[str]) -> None:
     allowed_lower = {name.lower() for name in allowed_names if name}
     combined_text = f"{finding.title} {finding.detail}".lower()
     has_allowed = any(name in combined_text for name in allowed_lower)
@@ -173,7 +174,7 @@ async def run_persona(
     deck: Any,
     tool_output: Any,
     *,
-    llm_generate: Optional[Callable[..., Awaitable[PersonaReport]]] = None,
+    llm_generate: Callable[..., Awaitable[PersonaReport]] | None = None,
 ) -> PersonaReport:
     prompt = render_persona_prompt(persona, deck, tool_output)
 

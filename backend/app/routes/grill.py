@@ -1,4 +1,5 @@
-from typing import Any, Dict, Optional
+from typing import Any
+
 from pydantic import BaseModel
 
 try:
@@ -9,7 +10,7 @@ except ImportError:
     HTTPException = Exception  # type: ignore
     status = None  # type: ignore
 
-from backend.app.agents.grill import get_deal, start_grill, submit_answer
+from app.agents.grill import get_deal, start_grill, submit_answer
 
 
 class AnswerRequest(BaseModel):
@@ -21,7 +22,7 @@ if APIRouter is not None:
     router = APIRouter(prefix="/api/deals", tags=["grill"])
 
     @router.post("/{deal_id}/grill/start")
-    async def route_start_grill(deal_id: str) -> Dict[str, Any]:
+    async def route_start_grill(deal_id: str) -> dict[str, Any]:
         deal = get_deal(deal_id)
         if deal is None:
             raise HTTPException(status_code=404, detail="Deal not found")
@@ -32,8 +33,8 @@ if APIRouter is not None:
     async def route_submit_answer(
         deal_id: str,
         body: AnswerRequest,
-        background_tasks: Optional[BackgroundTasks] = None,
-    ) -> Dict[str, Any]:
+        background_tasks: BackgroundTasks,
+    ) -> dict[str, Any]:
         deal = get_deal(deal_id)
         if deal is None:
             raise HTTPException(status_code=404, detail="Deal not found")

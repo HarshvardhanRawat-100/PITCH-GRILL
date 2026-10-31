@@ -1,4 +1,3 @@
-from typing import Any, List, Optional
 
 try:
     from contracts.schemas import (
@@ -12,7 +11,7 @@ try:
         all_findings,
     )
 except ImportError:
-    from second_brain.contracts.schemas import (
+    from contracts.schemas import (
         DeckFacts,
         FinanceResult,
         LedgerEntry,
@@ -41,13 +40,13 @@ CONFIDENCE_MAP = {
 
 
 def build_ledger(
-    deck: Optional[DeckFacts],
-    reports: List[PersonaReport],
-    finance: Optional[FinanceResult] = None,
-    market: Optional[MarketGrounding] = None,
-    tech: Optional[TechSignals] = None,
-) -> List[LedgerEntry]:
-    entries: List[LedgerEntry] = []
+    deck: DeckFacts | None,
+    reports: list[PersonaReport],
+    finance: FinanceResult | None = None,
+    market: MarketGrounding | None = None,
+    tech: TechSignals | None = None,
+) -> list[LedgerEntry]:
+    entries: list[LedgerEntry] = []
     seq = 1
 
     # 1. Deck Claims (deck-only 0.4, unverified)

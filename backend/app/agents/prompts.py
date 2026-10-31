@@ -5,7 +5,7 @@ try:
     from app.security import wrap_untrusted
 except ImportError:
     try:
-        from backend.app.security import wrap_untrusted
+        from app.security import wrap_untrusted
     except ImportError:
         def wrap_untrusted(label: str, text: str) -> str:
             return f"<untrusted_{label}>\n{text}\n</untrusted_{label}>"
@@ -108,7 +108,7 @@ P_12 = """ROLE: You are the {from_persona_name}. You just heard the {to_persona_
 TASK: In <=25 words, add ONE sharp interjection that connects to a real finding or fact in the deal memory (e.g. "Finance, your margin point is moot if their CAC claim is false — Market found 3 funded competitors"). No new facts.
 OUTPUT: CrossTalk"""
 
-P_13 = """ROLE: You are the {persona_name}. The app computed your verdict: {verdict} (score {score}). 
+P_13 = """ROLE: You are the {persona_name}. The app computed your verdict: {verdict} (score {score}).
 Write a 2-sentence rationale in character: the single biggest reason, and the one thing that would change your decision. Reference finding ids and concessions actually made.
 OUTPUT: FinalVerdict"""
 

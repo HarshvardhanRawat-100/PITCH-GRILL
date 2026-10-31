@@ -1,43 +1,26 @@
 import asyncio
 import logging
 import os
-from typing import Any, Awaitable, Callable, Dict, List, Optional, Tuple
+from collections.abc import Callable
+from typing import Any
 
-try:
-    from contracts.schemas import (
-        ChecklistItem,
-        Concession,
-        CrossTalk,
-        Deal,
-        FinalVerdict,
-        Finding,
-        GrillTurn,
-        MemoryRecord,
-        Narrative,
-        Persona,
-        clamp_outcome,
-        resolution_for,
-        verdict_for,
-    )
-except ImportError:
-    from second_brain.contracts.schemas import (
-        ChecklistItem,
-        Concession,
-        CrossTalk,
-        Deal,
-        FinalVerdict,
-        Finding,
-        GrillTurn,
-        MemoryRecord,
-        Narrative,
-        Persona,
-        clamp_outcome,
-        resolution_for,
-        verdict_for,
-    )
+from contracts.schemas import (
+    ChecklistItem,
+    Concession,
+    CrossTalk,
+    Deal,
+    FinalVerdict,
+    Finding,
+    GrillTurn,
+    MemoryRecord,
+    Narrative,
+    Persona,
+    resolution_for,
+    verdict_for,
+)
 
 from .evaluator import evaluate_answer
-from .prompts import P_00, P_12, P_13, wrap_untrusted
+from .prompts import P_00, P_12, wrap_untrusted
 from .scoring import compute_score
 
 logger = logging.getLogger(__name__)
@@ -47,11 +30,11 @@ try:
     from app.store import append_event, get_deal, save_deal
 except ImportError:
     try:
-        from backend.app.store import append_event, get_deal, save_deal
+        from app.store import append_event, get_deal, save_deal
     except ImportError:
-        _DEALS_CACHE: Dict[str, Deal] = {}
+        _DEALS_CACHE: dict[str, Deal] = {}
 
-        def get_deal(deal_id: str) -> Optional[Deal]:
+        def get_deal(deal_id: str) -> Deal | None:
             return _DEALS_CACHE.get(deal_id)
 
         def save_deal(deal: Deal) -> None:
@@ -65,10 +48,10 @@ except ImportError:
 class _LocalGrillMemoryClient:
     def __init__(self) -> None:
         self._seq = 1
-        self._memories: List[MemoryRecord] = []
+        self._memories: list[MemoryRecord] = []
 
     async def remember(
-        self, deal_id: str, persona: Optional[str], text: str, tag: str
+        self, deal_id: str, persona: str | None, text: str, tag: str
     ) -> MemoryRecord:
         rec = MemoryRecord(
             id=f"MR-{self._seq}",
@@ -84,7 +67,7 @@ class _LocalGrillMemoryClient:
         return rec
 
     async def recall(
-        self, deal_id: str, query: str, persona: Optional[str] = None, k: int = 3
+        self, deal_id: str, query: str, persona: str | None = None, k: int = 3
     ) -> MemoryRecord:
         hits = [m.text for m in self._memories if m.deal_id == deal_id][-k:]
         rec = MemoryRecord(
@@ -123,7 +106,7 @@ try:
     from app.memory import get_memory
 except ImportError:
     try:
-        from backend.app.memory import get_memory
+        from app.memory import get_memory
     except ImportError:
         def get_memory() -> Any:
             return _local_grill_memory
@@ -136,11 +119,11 @@ def _emit_event(deal_id: str, event_type: str, data: Any) -> None:
         logger.warning(f"Failed to append event {event_type}: {e}")
 
 
-def plan_grill(deal: Deal) -> List[Tuple[Persona, Finding]]:
+def plan_grill(deal: Deal) -> list[tuple[Persona, Finding]]:
     """
     Plan top-2 open findings per persona in order: F1, M1, T1, F2, M2, T2.
     """
-    by_persona: Dict[str, List[Finding]] = {"finance": [], "market": [], "tech": []}
+    by_persona: dict[str, list[Finding]] = {"finance": [], "market": [], "tech": []}
     for report in deal.reports:
         open_findings = [f for f in report.findings if f.resolved == "open"]
         # Already sorted by severity in post-processing
@@ -150,7 +133,7 @@ def plan_grill(deal: Deal) -> List[Tuple[Persona, Finding]]:
     m_list = by_persona.get("market", [])
     t_list = by_persona.get("tech", [])
 
-    plan: List[Tuple[Persona, Finding]] = []
+    plan: list[tuple[Persona, Finding]] = []
     # Round 1: F1, M1, T1
     if len(f_list) > 0:
         plan.append(("finance", f_list[0]))
@@ -170,7 +153,7 @@ def plan_grill(deal: Deal) -> List[Tuple[Persona, Finding]]:
     return plan
 
 
-def _find_finding_by_id(deal: Deal, finding_id: str) -> Optional[Finding]:
+def _find_finding_by_id(deal: Deal, finding_id: str) -> Finding | None:
     for r in deal.reports:
         for f in r.findings:
             if f.id == finding_id:
@@ -178,7 +161,7 @@ def _find_finding_by_id(deal: Deal, finding_id: str) -> Optional[Finding]:
     return None
 
 
-async def start_grill(deal_id: str, deal: Optional[Deal] = None) -> GrillTurn:
+async def start_grill(deal_id: str, deal: Deal | None = None) -> GrillTurn:
     if deal is None:
         deal = get_deal(deal_id)
         if deal is None:
@@ -206,12 +189,12 @@ async def start_grill(deal_id: str, deal: Optional[Deal] = None) -> GrillTurn:
 async def _generate_crosstalk(
     deal: Deal,
     last_turn: GrillTurn,
-    recalled_memory: List[str],
+    recalled_memory: list[str],
     *,
-    llm_generate: Optional[Callable[..., Any]] = None,
-) -> Optional[CrossTalk]:
+    llm_generate: Callable[..., Any] | None = None,
+) -> CrossTalk | None:
     # Pick a persona different from last_turn.persona
-    candidates: List[Persona] = [p for p in ["finance", "market", "tech"] if p != last_turn.persona]
+    candidates: list[Persona] = [p for p in ["finance", "market", "tech"] if p != last_turn.persona]
     from_persona = candidates[0]
     to_persona = last_turn.persona
 
@@ -257,10 +240,10 @@ async def _generate_crosstalk(
 async def _finish_grill(
     deal: Deal,
     *,
-    llm_generate: Optional[Callable[..., Any]] = None,
+    llm_generate: Callable[..., Any] | None = None,
 ) -> None:
     deal.status = "complete"
-    verdicts: List[FinalVerdict] = []
+    verdicts: list[FinalVerdict] = []
 
     for r in deal.reports:
         # Code computes verdict via schemas.verdict_for
@@ -291,7 +274,7 @@ async def _finish_grill(
         deal.narrative = await generate_narrative(deal)
     except ImportError:
         try:
-            from backend.app.agents.narrative import generate_narrative
+            from app.agents.narrative import generate_narrative
             deal.narrative = await generate_narrative(deal)
         except ImportError:
             deal.narrative = Narrative(
@@ -312,9 +295,9 @@ async def submit_answer(
     deal_id: str,
     turn_id: str,
     answer: str,
-    deal: Optional[Deal] = None,
+    deal: Deal | None = None,
     *,
-    llm_generate: Optional[Callable[..., Any]] = None,
+    llm_generate: Callable[..., Any] | None = None,
 ) -> GrillTurn:
     if deal is None:
         deal = get_deal(deal_id)
@@ -336,7 +319,7 @@ async def submit_answer(
     memory = get_memory()
 
     # 1. MEKO Recall before evaluating (hard 4s budget)
-    recalled_hits: List[str] = []
+    recalled_hits: list[str] = []
     try:
         recall_task = memory.recall(
             deal_id,
@@ -480,7 +463,7 @@ async def submit_answer(
 
     # 11. Plan Next Turn
     # If rejected and turn was initial question with followup, ask followup next
-    next_turn: Optional[GrillTurn] = None
+    next_turn: GrillTurn | None = None
     if outcome == "rejected" and turn.kind == "question" and evaluation.followup:
         next_turn = GrillTurn(
             id=f"G-{turn_num + 1}",

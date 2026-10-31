@@ -1,11 +1,13 @@
 import json
-from typing import Any, Awaitable, Callable, List, Optional, Tuple
+from collections.abc import Awaitable, Callable
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 try:
     from contracts.schemas import Finding, PersonaReport, all_findings
 except ImportError:
-    from second_brain.contracts.schemas import Finding, PersonaReport, all_findings
+    from contracts.schemas import Finding, PersonaReport, all_findings
 
 from .prompts import P_00, P_08
 
@@ -13,7 +15,7 @@ try:
     from app.llm import generate_json
 except ImportError:
     try:
-        from backend.app.llm import generate_json
+        from app.llm import generate_json
     except ImportError:
         generate_json = None
 
@@ -21,16 +23,16 @@ SEVERITY_ORDER = {"critical": 0, "major": 1, "minor": 2}
 
 
 class ModeratorOutput(BaseModel):
-    reports: List[PersonaReport]
-    top_issues: List[str] = Field(default_factory=list)
+    reports: list[PersonaReport]
+    top_issues: list[str] = Field(default_factory=list)
     summary: str = ""
-    conflicts: List[str] = Field(default_factory=list)
+    conflicts: list[str] = Field(default_factory=list)
 
 
 def _dedupe_and_detect_conflicts(
-    reports: List[PersonaReport],
-) -> Tuple[List[PersonaReport], List[str]]:
-    conflicts: List[str] = []
+    reports: list[PersonaReport],
+) -> tuple[list[PersonaReport], list[str]]:
+    conflicts: list[str] = []
     finance_findings = [f for r in reports if r.persona == "finance" for f in r.findings]
     market_findings = [f for r in reports if r.persona == "market" for f in r.findings]
 
@@ -67,16 +69,16 @@ def _dedupe_and_detect_conflicts(
     return reports, conflicts
 
 
-def _fallback_top_issues(reports: List[PersonaReport]) -> List[str]:
+def _fallback_top_issues(reports: list[PersonaReport]) -> list[str]:
     all_f = all_findings(reports)
     sorted_f = sorted(all_f, key=lambda f: SEVERITY_ORDER.get(f.severity, 3))
     return [f.id for f in sorted_f[:3]]
 
 
 async def run_moderator(
-    reports: List[PersonaReport],
+    reports: list[PersonaReport],
     *,
-    llm_generate: Optional[Callable[..., Awaitable[Any]]] = None,
+    llm_generate: Callable[..., Awaitable[Any]] | None = None,
 ) -> ModeratorOutput:
     cleaned_reports, conflicts = _dedupe_and_detect_conflicts(reports)
     all_f = all_findings(cleaned_reports)

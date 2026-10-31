@@ -2,8 +2,9 @@ import asyncio
 import json
 import logging
 import os
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any
 
 try:
     from contracts.schemas import (
@@ -17,7 +18,7 @@ try:
         TechSignals,
     )
 except ImportError:
-    from second_brain.contracts.schemas import (
+    from contracts.schemas import (
         ChecklistItem,
         Deal,
         DeckFacts,
@@ -42,11 +43,11 @@ try:
     from app.store import append_event, get_deal, save_deal
 except ImportError:
     try:
-        from backend.app.store import append_event, get_deal, save_deal
+        from app.store import append_event, get_deal, save_deal
     except ImportError:
-        _STORE_DEALS: Dict[str, Deal] = {}
+        _STORE_DEALS: dict[str, Deal] = {}
 
-        def get_deal(deal_id: str) -> Optional[Deal]:
+        def get_deal(deal_id: str) -> Deal | None:
             return _STORE_DEALS.get(deal_id)
 
         def save_deal(deal: Deal) -> None:
@@ -62,7 +63,7 @@ class _LocalMemoryClient:
         self._seq = 1
 
     async def remember(
-        self, deal_id: str, persona: Optional[str], text: str, tag: str
+        self, deal_id: str, persona: str | None, text: str, tag: str
     ) -> MemoryRecord:
         rec = MemoryRecord(
             id=f"MR-{self._seq}",
@@ -83,7 +84,7 @@ try:
     from app.memory import get_memory
 except ImportError:
     try:
-        from backend.app.memory import get_memory
+        from app.memory import get_memory
     except ImportError:
         def get_memory() -> Any:
             return _local_memory_instance
@@ -153,7 +154,7 @@ async def _run_tech_tool(deal_id: str, deck: DeckFacts) -> TechSignals:
     return res
 
 
-async def _run_checklist_tool(deal: Deal) -> List[ChecklistItem]:
+async def _run_checklist_tool(deal: Deal) -> list[ChecklistItem]:
     try:
         if os.getenv("MOCK") == "1":
             raise ImportError("MOCK=1 requested")
@@ -185,7 +186,7 @@ async def _run_checklist_tool(deal: Deal) -> List[ChecklistItem]:
 
 
 async def _record_findings_to_memory(
-    memory_client: Any, deal: Deal, persona: str, findings: List[Any]
+    memory_client: Any, deal: Deal, persona: str, findings: list[Any]
 ) -> None:
     tasks = []
     for f in findings:
@@ -202,9 +203,9 @@ async def _record_findings_to_memory(
 
 async def run_analysis(
     deal_id: str,
-    deal: Optional[Deal] = None,
+    deal: Deal | None = None,
     *,
-    llm_generate: Optional[Callable[..., Any]] = None,
+    llm_generate: Callable[..., Any] | None = None,
 ) -> Deal:
     # 1. Resolve or create deal
     if deal is None:
@@ -264,7 +265,7 @@ async def run_analysis(
         run_persona("tech", deal.deck, deal.tech, llm_generate=llm_generate),
     ]
 
-    reports: List[PersonaReport] = await asyncio.gather(*persona_tasks)
+    reports: list[PersonaReport] = await asyncio.gather(*persona_tasks)
     deal.reports = reports
 
     for r in reports:

@@ -1,11 +1,11 @@
-import json
 import re
-from typing import Any, Awaitable, Callable, List, Optional
+from collections.abc import Awaitable, Callable
+from typing import Any
 
 try:
     from contracts.schemas import Deal, EvalCriteria, Evaluation, Finding, clamp_outcome
 except ImportError:
-    from second_brain.contracts.schemas import Deal, EvalCriteria, Evaluation, Finding, clamp_outcome
+    from contracts.schemas import Deal, EvalCriteria, Evaluation, Finding, clamp_outcome
 
 from .prompts import P_00, P_09, wrap_untrusted
 
@@ -13,7 +13,7 @@ try:
     from app.llm import generate_json
 except ImportError:
     try:
-        from backend.app.llm import generate_json
+        from app.llm import generate_json
     except ImportError:
         generate_json = None
 
@@ -231,9 +231,9 @@ async def evaluate_answer(
     finding: Finding,
     question_text: str,
     answer: str,
-    recalled_memory: Optional[List[str]] = None,
+    recalled_memory: list[str] | None = None,
     *,
-    llm_generate: Optional[Callable[..., Awaitable[Any]]] = None,
+    llm_generate: Callable[..., Awaitable[Any]] | None = None,
 ) -> Evaluation:
     # 1. In-code Prompt Injection Check (highest priority guard)
     if INJECTION_REGEX.search(answer):
@@ -276,7 +276,7 @@ async def evaluate_answer(
         has_api_key = False
 
     generator = llm_generate or (generate_json if has_api_key else None)
-    raw_eval: Optional[Evaluation] = None
+    raw_eval: Evaluation | None = None
 
     if generator is not None:
         try:
