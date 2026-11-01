@@ -1,6 +1,40 @@
 # PITCH-GRILL — AI Diligence & Investor War Room
 
-**PITCH-GRILL** is a multi-agent due-diligence platform for startup founders. When a founder uploads a pitch deck (PDF), three hostile, specialized AI investor personas cross-examine and red-team the pitch in real time:
+> **"Face three hostile investors before the real ones do."**  
+> An uncompromising, multi-agent AI Due-Diligence War Room that red-teams startup pitch decks with deterministic unit economics, live web verification, and shared agent memory.
+
+---
+
+## 📌 Problem Statement
+
+Early-stage founders face a critical, high-stakes asymmetry when pitching institutional venture capitalists:
+
+1. **Unprepared for Hostile Due-Diligence:** Most founders practice pitch decks with supportive peers and mentors who offer superficial, agreeable feedback. In real partner meetings, investors aggressively stress-test fragile unit economics, unrealistic TAM projections, burn rate, and technical defensibility. Founders get caught off-guard and fail diligence on questions they could have anticipated.
+2. **Generic AI Tools Are Inadequate & Sycophantic:** Off-the-shelf generative AI models cannot perform genuine diligence. They **hallucinate financial calculations**, accept optimistic claims without verification, and are easily sweet-talked with charismatic rhetoric (sycophancy). They lack multi-agent specialization, live web grounding, and persistent, auditable memory across evaluation phases.
+3. **The Solution — PITCH-GRILL:** A hostile, multi-agent war room where three specialized investor personas (Finance, Market, and Technical) independently interrogate the deck. It combines **Google Gemini** for reasoning and narrative extraction, a **deterministic math engine** (zero hallucinated numbers), **live web scraping** (substring-verified quotes), and **Yugabyte Meko** for shared cross-agent memory—all governed by strict **anti-sycophancy rules enforced in code** that require concrete evidence to accept any founder defense.
+
+---
+
+## 👥 Team Members
+
+| Name | Institution |
+| :--- | :--- |
+| **Harshvardhan Rawat** | Student, University School of Automation & Robotics (USAR), GGSIPU |
+| **Nikunj Mundhra** | Student, University School of Automation & Robotics (USAR), GGSIPU |
+| **Aayush Aswal** | Student, Bhagwan Parshuram Institute of Technology (BPIT), GGSIPU |
+| **Abhigyan Badyar** | Student, National Forensic Sciences University (NFSU) |
+
+---
+
+## 📊 Presentation & Pitch Deck
+
+- 🔗 **Google Drive Pitch Deck (Judges):** [Presentation Deck Placeholder](https://drive.google.com/drive/folders/YOUR_GOOGLE_DRIVE_DECK_LINK_HERE) *(Paste your Google Drive link here)*
+
+---
+
+## 💡 How PITCH-GRILL Works
+
+When a founder uploads a pitch deck (PDF), three hostile, specialized AI investor personas cross-examine and red-team the pitch in real time:
 
 - **💰 Finance Investor (P3):** Interrogates unit economics, burn rate, runway, valuation, and capital efficiency using a deterministic financial computation engine with mathematical assertions in INR (Indian Rupees).
 - **📈 Market Investor (P4):** Validates market sizing (TAM/SAM/SOM), distribution channels, and competitors by crawling and grounding claims against live web sources.
