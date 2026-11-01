@@ -49,7 +49,7 @@ export function AnswerBox({
   };
 
   return (
-    <div className="relative rounded-2xl bg-surface border border-border p-3.5 shadow-xl transition-all focus-within:border-blue-500/60 focus-within:ring-1 focus-within:ring-blue-500/20">
+    <div className="relative rounded-2xl bg-surface border border-border p-3.5 shadow-xl transition-all focus-within:border-purple-500/60 focus-within:ring-1 focus-within:ring-purple-500/20">
       {/* Quick suggest pill for fast demo replay */}
       {suggestedAnswer && !text && (
         <div className="mb-2.5 flex items-center justify-between">
@@ -57,9 +57,9 @@ export function AnswerBox({
             type="button"
             onClick={handleFillSuggested}
             disabled={disabled || isEvaluating}
-            className="flex items-center gap-1.5 text-[11px] text-blue-400 hover:text-blue-300 transition-colors bg-blue-500/10 hover:bg-blue-500/20 px-2.5 py-1 rounded-md border border-blue-500/20"
+            className="flex items-center gap-1.5 text-[11px] text-purple-300 hover:text-purple-200 transition-colors bg-purple-500/10 hover:bg-purple-500/20 px-2.5 py-1 rounded-md border border-purple-500/20"
           >
-            <Sparkles className="w-3 h-3 text-blue-400" />
+            <Sparkles className="w-3 h-3 text-purple-400" />
             <span>Use audited pilot defense (Demo snippet)</span>
           </button>
           <span className="text-[10px] text-gray-500">Press Enter to submit</span>
@@ -115,7 +115,7 @@ export function AnswerBox({
             type="button"
             onClick={handleSubmit}
             disabled={disabled || isEvaluating || (!text.trim() && !suggestedAnswer)}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white disabled:bg-surface-elevated disabled:text-gray-500 disabled:cursor-not-allowed transition-all shadow-md active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 text-white shadow-glow hover:shadow-glow-lg disabled:bg-surface-elevated disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all active:scale-95"
           >
             {isEvaluating ? (
               <>

@@ -49,13 +49,19 @@ export function SliderPanel({
   }, []);
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between pb-1">
-        <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider">
-          Sensitivity Sliders
-        </h4>
-        <span className="text-[11px] text-gray-500 font-mono">
-          Interactive Scenario
+    <div className="bg-surface rounded-2xl p-5 border border-border shadow-sm space-y-4">
+      <div className="flex items-center justify-between pb-1 border-b border-border">
+        <div>
+          <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+            <span>Sensitivity Controls</span>
+          </h4>
+          <p className="text-[11px] text-gray-400 mt-0.5">
+            Stress-test financial assumptions in real time
+          </p>
+        </div>
+        <span className="text-[10px] text-purple-300 font-mono px-2 py-0.5 rounded bg-purple-950/40 border border-purple-800/40">
+          Live Solver
         </span>
       </div>
 
@@ -64,13 +70,13 @@ export function SliderPanel({
         <div
           role="status"
           aria-live="polite"
-          className="relative flex items-center justify-between gap-3 p-3 rounded-xl bg-amber-950/40 border border-amber-500/50 text-amber-200 text-xs shadow-md"
+          className="relative flex items-center justify-between gap-3 p-3 rounded-xl bg-purple-950/30 border border-purple-500/40 text-purple-200 text-xs shadow-glow-sm"
         >
           <div className="flex items-center gap-2">
             <span className="text-base select-none">💡</span>
             <div className="leading-snug">
-              <strong className="text-white">Try it:</strong> Drag the{" "}
-              <span className="font-semibold text-amber-300 underline underline-offset-2">CAC slider</span> higher to test ad cost inflation and watch the cash runway cross into the red danger zone.
+              <strong className="text-white">Stress Test:</strong> Drag the{" "}
+              <span className="font-semibold text-purple-300 underline underline-offset-2">CAC slider</span> higher to model ad inflation and watch runway burn into the danger zone.
             </div>
           </div>
           <button

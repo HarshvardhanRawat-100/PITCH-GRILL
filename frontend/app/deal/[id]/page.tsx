@@ -57,7 +57,7 @@ function InvestorCard({ persona, report, stageProgress }: InvestorCardProps) {
 
   return (
     <div
-      className="relative bg-surface rounded-xl border border-border overflow-hidden transition-all duration-500 hover:shadow-lg group"
+      className="relative bg-surface rounded-2xl border border-border overflow-hidden transition-all duration-300 hover:border-purple-500/40 hover:shadow-glow-sm group"
       style={{ borderColor: report ? meta.color + "40" : undefined }}
     >
       {/* Persona Header */}
@@ -312,10 +312,10 @@ export default function DealPage() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all whitespace-nowrap focus:outline-none ${
                   isActive
-                    ? "bg-surface-elevated text-white border border-border shadow-sm"
-                    : "text-gray-400 hover:text-gray-200 hover:bg-surface/50"
+                    ? "bg-surface-elevated text-white border border-purple-500/40 shadow-glow-sm"
+                    : "text-gray-400 hover:text-gray-200 hover:bg-surface/50 border border-transparent"
                 }`}
               >
                 {tab.icon}
@@ -467,7 +467,7 @@ function FinalVerdictSection({ deal }: { deal: ReturnType<typeof useDeal> }) {
 
           <button
             onClick={downloadExport}
-            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-blue-600/20 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 text-white rounded-xl text-xs font-bold shadow-glow hover:shadow-glow-lg transition-all"
           >
             <Download className="w-4 h-4" />
             <span>Export Diligence (.md)</span>

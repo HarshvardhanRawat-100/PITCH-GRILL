@@ -57,26 +57,32 @@ export function AssumptionsPanel({
   };
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between pb-1">
-        <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider">
-          Model Assumptions & Provenance
-        </h4>
-        <span className="text-[11px] text-gray-500 font-mono">
-          Click value to edit
+    <div className="bg-surface rounded-2xl border border-border p-5 shadow-sm space-y-4">
+      <div className="flex items-center justify-between pb-1 border-b border-border">
+        <div>
+          <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.8)]" />
+            <span>Financial Assumptions Ledger</span>
+          </h4>
+          <p className="text-[11px] text-gray-400 mt-0.5">
+            Verified deck facts vs. heuristic model assumptions
+          </p>
+        </div>
+        <span className="text-[10px] text-purple-300 font-mono px-2 py-0.5 rounded bg-purple-950/40 border border-purple-800/40">
+          Click value to override
         </span>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-border bg-surface">
+      <div className="overflow-x-auto rounded-xl border border-border bg-[#0E111C]">
         <table className="w-full text-left text-xs">
           <thead>
             <tr className="border-b border-border bg-surface-elevated text-gray-400 font-mono text-[11px]">
-              <th className="py-2.5 px-3 font-medium">Input Field</th>
-              <th className="py-2.5 px-3 font-medium">Value</th>
-              <th className="py-2.5 px-3 font-medium">Provenance</th>
+              <th className="py-3 px-3.5 font-semibold">Field ↑↓</th>
+              <th className="py-3 px-3.5 font-semibold">Value ↑↓</th>
+              <th className="py-3 px-3.5 font-semibold">Provenance</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-border/60">
+          <tbody className="divide-y divide-border/50">
             {ORDERED_FINANCIAL_KEYS.map((key) => {
               const def = FINANCIAL_FIELD_DEFS[key];
               const sourced = inputs?.[key];
@@ -88,14 +94,14 @@ export function AssumptionsPanel({
               const error = errorMap[key];
 
               let badgeText = "Assumed";
-              let badgeColor = "bg-amber-950/80 text-amber-400 border-amber-800/60";
+              let badgeColor = "bg-amber-950/60 text-amber-300 border-amber-800/50 shadow-xs";
 
               if (origin === "deck") {
-                badgeText = slide ? `Deck Slide ${slide}` : "Deck";
-                badgeColor = "bg-blue-950/80 text-blue-400 border-blue-800/60";
+                badgeText = slide ? `Deck (Slide ${slide})` : "Deck Verified";
+                badgeColor = "bg-purple-950/60 text-purple-300 border-purple-800/50 shadow-xs";
               } else if (origin === "founder") {
                 badgeText = "Founder Claim";
-                badgeColor = "bg-emerald-950/80 text-emerald-400 border-emerald-800/60";
+                badgeColor = "bg-emerald-950/60 text-emerald-300 border-emerald-800/50 shadow-xs";
               }
 
               const formattedVal =
@@ -110,17 +116,17 @@ export function AssumptionsPanel({
               return (
                 <tr
                   key={key}
-                  className={`transition-colors ${
-                    isAssumed ? "bg-amber-950/10 hover:bg-amber-950/20" : "hover:bg-surface-elevated/50"
+                  className={`transition-colors hover:bg-surface-elevated/70 ${
+                    isAssumed ? "bg-amber-950/5" : ""
                   }`}
                 >
-                  <td className="py-2.5 px-3">
-                    <div className="font-medium text-gray-300">{def.label}</div>
+                  <td className="py-3 px-3.5">
+                    <div className="font-semibold text-gray-200">{def.label}</div>
                     {isAssumed && val === null && (
-                      <div className="text-[10px] text-amber-400 font-medium">Fill this in</div>
+                      <div className="text-[10px] text-amber-400 font-medium">Input required</div>
                     )}
                   </td>
-                  <td className="py-2.5 px-3 font-mono">
+                  <td className="py-3 px-3.5 font-mono">
                     {isEditing ? (
                       <div className="space-y-1">
                         <input
@@ -130,7 +136,7 @@ export function AssumptionsPanel({
                           onBlur={() => handleCommit(key)}
                           onKeyDown={(e) => handleKeyDown(e, key)}
                           autoFocus
-                          className="w-28 px-2 py-0.5 rounded bg-surface-elevated border border-amber-500 text-white font-mono text-xs focus:outline-none"
+                          className="w-28 px-2 py-1 rounded-lg bg-surface-elevated border border-purple-500 text-white font-mono text-xs focus:outline-none focus:ring-1 focus:ring-purple-500"
                         />
                         {error && <p className="text-[10px] text-red-400">{error}</p>}
                       </div>
@@ -138,15 +144,15 @@ export function AssumptionsPanel({
                       <button
                         type="button"
                         onClick={() => handleStartEdit(key, val)}
-                        className="text-left font-semibold text-white hover:underline focus:outline-none focus:ring-1 focus:ring-amber-500 rounded px-1 -mx-1"
+                        className="text-left font-bold text-white hover:text-purple-300 transition-colors focus:outline-none focus:ring-1 focus:ring-purple-500 rounded px-1 -mx-1"
                       >
                         {formattedVal}
                       </button>
                     )}
                   </td>
-                  <td className="py-2.5 px-3">
+                  <td className="py-3 px-3.5">
                     <span
-                      className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-mono border ${badgeColor}`}
+                      className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold border ${badgeColor}`}
                     >
                       {badgeText}
                     </span>

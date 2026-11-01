@@ -57,8 +57,12 @@ export function RangeSlider({
     pctDiff !== null ? ` (${formatSignedPct(pctDiff)})` : ""
   }`;
 
-  // Build danger zone background gradient if present
-  let trackBackground = "linear-gradient(to right, #374151 0%, #374151 100%)";
+  // Calculate current slider fill percentage for glowing purple track
+  const rangeSpan = max - min;
+  const currentPct = rangeSpan > 0 ? Math.max(0, Math.min(100, ((value - min) / rangeSpan) * 100)) : 50;
+
+  // Build glowing track gradient
+  let trackBackground = `linear-gradient(to right, #6366F1 0%, #8B5CF6 ${currentPct}%, #1E2337 ${currentPct}%, #1E2337 100%)`;
   if (
     !disabled &&
     dangerFraction !== null &&
@@ -67,13 +71,13 @@ export function RangeSlider({
     dangerFraction <= 1
   ) {
     const dangerPct = (dangerFraction * 100).toFixed(1);
-    trackBackground = `linear-gradient(to right, #374151 0%, #374151 ${dangerPct}%, rgba(239, 68, 68, 0.4) ${dangerPct}%, rgba(239, 68, 68, 0.4) 100%)`;
+    trackBackground = `linear-gradient(to right, #6366F1 0%, #8B5CF6 ${Math.min(currentPct, Number(dangerPct))}%, rgba(239, 68, 68, 0.4) ${dangerPct}%, rgba(239, 68, 68, 0.4) 100%)`;
   }
 
   return (
-    <div className="space-y-1.5 p-3 rounded-lg bg-surface border border-border">
+    <div className="space-y-2 p-3.5 rounded-xl bg-surface border border-border hover:border-purple-500/30 transition-all">
       <div className="flex items-center justify-between text-xs">
-        <label htmlFor={id} className="font-medium text-gray-300">
+        <label htmlFor={id} className="font-semibold text-gray-300">
           {label}
         </label>
         <div className="flex items-center gap-2">
@@ -82,20 +86,20 @@ export function RangeSlider({
               type="button"
               onClick={onReset}
               title="Reset to baseline"
-              className="text-gray-400 hover:text-white p-0.5 rounded transition-colors"
+              className="text-purple-400 hover:text-white p-0.5 rounded transition-colors"
             >
               <RotateCcw className="w-3 h-3" />
             </button>
           )}
-          <span className="font-mono font-semibold text-white">
+          <span className="font-mono font-bold text-white text-xs">
             {disabled ? "—" : displayVal}
           </span>
           {pctDiff !== null && isOverridden && (
             <span
-              className={`font-mono text-[10px] px-1 py-0.2 rounded font-semibold ${
+              className={`font-mono text-[10px] px-1.5 py-0.5 rounded font-bold ${
                 pctDiff > 0
-                  ? "bg-amber-950/60 text-amber-400"
-                  : "bg-emerald-950/60 text-emerald-400"
+                  ? "bg-amber-950/60 text-amber-400 border border-amber-800/40"
+                  : "bg-emerald-950/60 text-emerald-400 border border-emerald-800/40"
               }`}
             >
               {formatSignedPct(pctDiff)}
@@ -104,7 +108,7 @@ export function RangeSlider({
         </div>
       </div>
 
-      <div className="relative flex items-center">
+      <div className="relative flex items-center py-1">
         <input
           id={id}
           type="range"
@@ -117,7 +121,7 @@ export function RangeSlider({
           aria-disabled={disabled}
           onChange={(e) => onChange(parseFloat(e.target.value))}
           style={{ background: trackBackground }}
-          className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-amber-500 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-full h-2 rounded-full appearance-none cursor-pointer accent-purple-500 disabled:opacity-40 disabled:cursor-not-allowed"
         />
       </div>
 
