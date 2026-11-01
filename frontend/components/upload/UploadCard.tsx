@@ -49,9 +49,9 @@ export function UploadCard() {
       </div>
 
       {/* Main Upload Box */}
-      <div className="bg-surface rounded-[24px] border border-border hover:border-amber-500/30 p-8 shadow-sm transition-all space-y-6">
+      <div className="efferd-panel rounded-[20px] border border-white/[0.08] hover:border-amber-500/30 p-8 shadow-2xl transition-all space-y-6 relative">
         {error && (
-          <div className="flex items-center gap-2 p-3.5 rounded-[12px] bg-red-950/40 border border-red-800/50 text-red-300 text-sm">
+          <div className="flex items-center gap-2 p-3.5 rounded-[10px] bg-red-950/40 border border-red-800/50 text-red-300 text-sm font-mono">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -130,12 +130,12 @@ export function UploadCard() {
               placeholder="https://yourstartup.com"
               value={websiteUrl}
               onChange={(e) => setWebsiteUrl(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-[12px] bg-surface-elevated border border-border text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+              className="w-full px-3.5 py-2.5 rounded-[10px] bg-surface-elevated/80 border border-white/[0.08] text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-amber-500/80 focus:ring-1 focus:ring-amber-500/40 font-mono transition-all"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-gray-300 flex items-center gap-1.5">
+            <label className="text-xs font-medium text-gray-300 flex items-center gap-1.5 font-mono">
               <Github className="w-3.5 h-3.5 text-purple-400" />
               <span>GitHub Repo (Optional)</span>
             </label>
@@ -144,7 +144,7 @@ export function UploadCard() {
               placeholder="https://github.com/org/repo"
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-[12px] bg-surface-elevated border border-border text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+              className="w-full px-3.5 py-2.5 rounded-[10px] bg-surface-elevated/80 border border-white/[0.08] text-sm text-gray-200 placeholder-gray-600 focus:outline-none focus:border-amber-500/80 focus:ring-1 focus:ring-amber-500/40 font-mono transition-all"
             />
           </div>
         </div>
@@ -154,7 +154,7 @@ export function UploadCard() {
           <button
             onClick={() => handleSubmit(false)}
             disabled={!file || loading}
-            className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-[12px] bg-amber-500 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm text-slate-950 transition-all shadow-[0_0_20px_rgba(245,158,11,0.25)] active:scale-[0.99] font-mono"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-[10px] bg-amber-500 hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed font-bold text-sm text-slate-950 transition-all shadow-[0_0_20px_rgba(245,158,11,0.25)] active:scale-[0.98] font-mono"
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldAlert className="w-4 h-4" />}
             <span>Enter Diligence War Room</span>
@@ -163,7 +163,7 @@ export function UploadCard() {
           <button
             onClick={() => handleSubmit(true)}
             disabled={loading}
-            className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-[12px] bg-surface-elevated hover:bg-surface-elevated/80 border border-border hover:border-amber-500/40 text-sm font-medium text-gray-300 hover:text-white transition-all font-mono"
+            className="inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-[10px] bg-surface border border-white/[0.08] hover:border-amber-500/40 hover:bg-surface-elevated text-sm font-medium text-gray-300 hover:text-white transition-all active:scale-[0.98] font-mono shadow-xs"
           >
             <Sparkles className="w-4 h-4 text-amber-400" />
             <span>Try Demo Deck (BolBot)</span>
