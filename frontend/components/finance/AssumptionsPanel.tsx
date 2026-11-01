@@ -57,18 +57,18 @@ export function AssumptionsPanel({
   };
 
   return (
-    <div className="bg-surface rounded-2xl border border-border p-5 shadow-sm space-y-4">
+    <div className="bg-surface rounded-[18px] border border-border p-5 shadow-sm space-y-4">
       <div className="flex items-center justify-between pb-1 border-b border-border">
         <div>
           <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.8)]" />
+            <span className="w-2 h-2 rounded-[2px] bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
             <span>Financial Assumptions Ledger</span>
           </h4>
           <p className="text-[11px] text-gray-400 mt-0.5">
             Verified deck facts vs. heuristic model assumptions
           </p>
         </div>
-        <span className="text-[10px] text-purple-300 font-mono px-2 py-0.5 rounded bg-purple-950/40 border border-purple-800/40">
+        <span className="text-[10px] text-amber-300 font-mono px-2 py-0.5 rounded-[6px] bg-amber-500/10 border border-amber-500/30">
           Click value to override
         </span>
       </div>
@@ -94,14 +94,14 @@ export function AssumptionsPanel({
               const error = errorMap[key];
 
               let badgeText = "Assumed";
-              let badgeColor = "bg-amber-950/60 text-amber-300 border-amber-800/50 shadow-xs";
+              let badgeColor = "bg-amber-950/60 text-amber-300 border-amber-800/50 shadow-xs rounded-[6px]";
 
               if (origin === "deck") {
                 badgeText = slide ? `Deck (Slide ${slide})` : "Deck Verified";
-                badgeColor = "bg-purple-950/60 text-purple-300 border-purple-800/50 shadow-xs";
+                badgeColor = "bg-blue-950/60 text-blue-300 border-blue-800/50 shadow-xs rounded-[6px]";
               } else if (origin === "founder") {
                 badgeText = "Founder Claim";
-                badgeColor = "bg-emerald-950/60 text-emerald-300 border-emerald-800/50 shadow-xs";
+                badgeColor = "bg-emerald-950/60 text-emerald-300 border-emerald-800/50 shadow-xs rounded-[6px]";
               }
 
               const formattedVal =
@@ -136,7 +136,7 @@ export function AssumptionsPanel({
                           onBlur={() => handleCommit(key)}
                           onKeyDown={(e) => handleKeyDown(e, key)}
                           autoFocus
-                          className="w-28 px-2 py-1 rounded-lg bg-surface-elevated border border-purple-500 text-white font-mono text-xs focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          className="w-28 px-2 py-1 rounded-[6px] bg-surface-elevated border border-amber-500 text-white font-mono text-xs focus:outline-none focus:ring-1 focus:ring-amber-500"
                         />
                         {error && <p className="text-[10px] text-red-400">{error}</p>}
                       </div>

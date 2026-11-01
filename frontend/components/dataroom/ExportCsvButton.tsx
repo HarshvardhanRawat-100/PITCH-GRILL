@@ -63,7 +63,7 @@ export function ExportCsvButton({ items, companyName = "Startup" }: ExportCsvBut
     <button
       onClick={handleExport}
       disabled={!items.length}
-      className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-surface border border-border text-gray-200 hover:text-white hover:bg-surface-elevated text-xs font-medium transition-colors disabled:opacity-50"
+      className="flex items-center gap-2 px-3.5 py-2 rounded-[10px] bg-surface border border-border text-gray-200 hover:text-white hover:bg-surface-elevated text-xs font-semibold font-mono transition-colors disabled:opacity-50"
       title="Download due diligence checklist formatted as CSV spreadsheet"
     >
       {downloaded ? (

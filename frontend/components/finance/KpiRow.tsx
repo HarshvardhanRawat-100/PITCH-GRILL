@@ -56,7 +56,7 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
       value: m?.ltv !== null && m?.ltv !== undefined ? formatINR(m.ltv) : "—",
       color: "text-white",
       trend: "Unit Rev",
-      trendColor: "text-purple-300 bg-purple-950/40 border-purple-800/40",
+      trendColor: "text-amber-300 bg-amber-950/40 border-amber-800/40",
       icon: "💵",
       tooltip: "Customer Lifetime Value = (ARPU × Gross Margin) / Monthly Churn Rate.",
     },
@@ -111,11 +111,11 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
           key={i}
           title={c.tooltip}
           aria-label={`${c.label}: ${c.value}. ${c.tooltip}`}
-          className="bg-surface rounded-xl p-4 border border-border flex flex-col justify-between hover:border-purple-500/40 hover:shadow-glow-sm transition-all cursor-help group"
+          className="bg-surface rounded-[14px] p-4 border border-border flex flex-col justify-between hover:border-amber-500/40 hover:shadow-sm transition-all cursor-help group"
         >
           <div className="flex items-center justify-between gap-1">
-            <span className="text-sm p-1 rounded-md bg-purple-950/30 border border-purple-500/20">{c.icon}</span>
-            <span className={`text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded border ${c.trendColor}`}>
+            <span className="text-sm p-1 rounded-[6px] bg-amber-500/10 border border-amber-500/20">{c.icon}</span>
+            <span className={`text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded-[6px] border ${c.trendColor}`}>
               {c.trend}
             </span>
           </div>

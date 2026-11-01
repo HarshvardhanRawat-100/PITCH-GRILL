@@ -45,7 +45,7 @@ export function TornadoChart({
   }
 
   return (
-    <div className="bg-surface rounded-2xl p-5 border border-border space-y-4 shadow-sm">
+    <div className="bg-surface rounded-[18px] p-5 border border-border space-y-4 shadow-sm">
       <div className="flex items-center justify-between">
         <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider font-mono">
           Sensitivity Analysis (±20% Variable Swing)
@@ -83,8 +83,8 @@ export function TornadoChart({
                 if (!active || !payload?.length) return null;
                 const d = payload[0].payload;
                 return (
-                  <div className="bg-[#121522] border border-purple-500/30 p-2.5 rounded-xl shadow-glow-sm text-xs font-mono space-y-1">
-                    <p className="font-semibold text-white font-sans">{d.label}</p>
+                  <div className="bg-[#121522] border border-border p-2.5 rounded-[10px] shadow-sm text-xs font-mono space-y-1">
+                    <p className="font-semibold text-white font-mono">{d.label}</p>
                     <p className="text-gray-300">
                       −20% → <span className="text-rose-400 font-bold">{formatMonths(d.rawLow)}</span>
                     </p>
@@ -100,12 +100,12 @@ export function TornadoChart({
             />
             <ReferenceLine
               x={0}
-              stroke="#A855F7"
+              stroke="#F59E0B"
               strokeDasharray="3 3"
               label={{
                 value: `Base: ${baseRunway.toFixed(1)} mo`,
                 position: "insideTopLeft",
-                fill: "#C084FC",
+                fill: "#FCD34D",
                 fontSize: 10,
               }}
             />

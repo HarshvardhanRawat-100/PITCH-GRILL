@@ -49,18 +49,18 @@ export function SliderPanel({
   }, []);
 
   return (
-    <div className="bg-surface rounded-2xl p-5 border border-border shadow-sm space-y-4">
+    <div className="bg-surface rounded-[18px] p-5 border border-border shadow-sm space-y-4">
       <div className="flex items-center justify-between pb-1 border-b border-border">
         <div>
           <h4 className="text-xs font-bold text-white uppercase tracking-wider font-mono flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+            <span className="w-2 h-2 rounded-[2px] bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
             <span>Sensitivity Controls</span>
           </h4>
           <p className="text-[11px] text-gray-400 mt-0.5">
             Stress-test financial assumptions in real time
           </p>
         </div>
-        <span className="text-[10px] text-purple-300 font-mono px-2 py-0.5 rounded bg-purple-950/40 border border-purple-800/40">
+        <span className="text-[10px] text-amber-300 font-mono px-2 py-0.5 rounded-[6px] bg-amber-500/10 border border-amber-500/30">
           Live Solver
         </span>
       </div>
@@ -70,13 +70,13 @@ export function SliderPanel({
         <div
           role="status"
           aria-live="polite"
-          className="relative flex items-center justify-between gap-3 p-3 rounded-xl bg-purple-950/30 border border-purple-500/40 text-purple-200 text-xs shadow-glow-sm"
+          className="relative flex items-center justify-between gap-3 p-3 rounded-[12px] bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs shadow-sm"
         >
           <div className="flex items-center gap-2">
             <span className="text-base select-none">💡</span>
             <div className="leading-snug">
               <strong className="text-white">Stress Test:</strong> Drag the{" "}
-              <span className="font-semibold text-purple-300 underline underline-offset-2">CAC slider</span> higher to model ad inflation and watch runway burn into the danger zone.
+              <span className="font-semibold text-amber-300 underline underline-offset-2">CAC slider</span> higher to model ad inflation and watch runway burn into the danger zone.
             </div>
           </div>
           <button

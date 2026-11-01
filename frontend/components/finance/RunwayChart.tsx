@@ -54,7 +54,7 @@ export function RunwayChart({
   const currentCash = chartData[chartData.length - 1]?.scenarioCash ?? 0;
 
   return (
-    <div className="bg-surface rounded-2xl p-5 border border-border space-y-4 shadow-sm">
+    <div className="bg-surface rounded-[18px] p-5 border border-border space-y-4 shadow-sm">
       {/* Top Header with Big Price & Range Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -67,7 +67,7 @@ export function RunwayChart({
             </span>
             <span className="text-xs text-gray-400 font-mono">starting capital</span>
             {isScenario && (
-              <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-purple-950/40 border border-purple-800/40 text-purple-300">
+              <span className="text-xs font-mono font-semibold px-2 py-0.5 rounded-[6px] bg-amber-500/10 border border-amber-500/30 text-amber-300">
                 Active Scenario
               </span>
             )}
@@ -76,7 +76,7 @@ export function RunwayChart({
 
         {/* Legend & Filter Badges */}
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-3 text-[11px] font-mono text-gray-400 bg-surface-elevated px-3 py-1.5 rounded-lg border border-border">
+          <div className="flex items-center gap-3 text-[11px] font-mono text-gray-400 bg-surface-elevated px-3 py-1.5 rounded-[8px] border border-border">
             {isScenario && (
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-0.5 border-t-2 border-dashed border-gray-500 inline-block" />
@@ -128,7 +128,7 @@ export function RunwayChart({
                 if (!active || !payload?.length) return null;
                 const d = payload[0].payload;
                 return (
-                  <div className="bg-[#121522] border border-purple-500/30 p-3 rounded-xl shadow-glow-sm text-xs font-mono space-y-1">
+                  <div className="bg-[#121522] border border-border p-3 rounded-[10px] shadow-sm text-xs font-mono space-y-1">
                     <p className="text-gray-400 font-sans text-[11px]">Month {d.x}</p>
                     <p className="text-emerald-400 font-bold text-sm">
                       Cash: {formatINR(d.scenarioCash)}

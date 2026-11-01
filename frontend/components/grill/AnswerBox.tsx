@@ -49,7 +49,7 @@ export function AnswerBox({
   };
 
   return (
-    <div className="relative rounded-2xl bg-surface border border-border p-3.5 shadow-xl transition-all focus-within:border-purple-500/60 focus-within:ring-1 focus-within:ring-purple-500/20">
+    <div className="relative rounded-[18px] bg-surface border border-border p-3.5 shadow-xl transition-all focus-within:border-amber-500/60 focus-within:ring-1 focus-within:ring-amber-500/20">
       {/* Quick suggest pill for fast demo replay */}
       {suggestedAnswer && !text && (
         <div className="mb-2.5 flex items-center justify-between">
@@ -57,12 +57,12 @@ export function AnswerBox({
             type="button"
             onClick={handleFillSuggested}
             disabled={disabled || isEvaluating}
-            className="flex items-center gap-1.5 text-[11px] text-purple-300 hover:text-purple-200 transition-colors bg-purple-500/10 hover:bg-purple-500/20 px-2.5 py-1 rounded-md border border-purple-500/20"
+            className="flex items-center gap-1.5 text-[11px] text-amber-300 hover:text-amber-200 transition-colors bg-amber-500/10 hover:bg-amber-500/20 px-2.5 py-1 rounded-[8px] border border-amber-500/20 font-mono"
           >
-            <Sparkles className="w-3 h-3 text-purple-400" />
+            <Sparkles className="w-3 h-3 text-amber-400" />
             <span>Use audited pilot defense (Demo snippet)</span>
           </button>
-          <span className="text-[10px] text-gray-500">Press Enter to submit</span>
+          <span className="text-[10px] text-gray-500 font-mono">Press Enter to submit</span>
         </div>
       )}
 
@@ -81,7 +81,7 @@ export function AnswerBox({
             : "Defend your position with verifiable figures, unit cohort data, or DPDP compliance... (Enter to submit, Shift+Enter for newline)"
         }
         rows={3}
-        className="w-full bg-transparent text-sm text-gray-100 placeholder-gray-500 resize-none focus:outline-none leading-relaxed disabled:opacity-50"
+        className="w-full bg-transparent text-sm text-gray-100 placeholder-gray-500 resize-none focus:outline-none leading-relaxed disabled:opacity-50 font-mono"
       />
 
       {/* Footer controls: Mic flag, Character counter, Send button */}
@@ -90,14 +90,14 @@ export function AnswerBox({
           {ENABLE_VOICE_INPUT ? (
             <button
               type="button"
-              className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-200 px-2 py-1 rounded bg-surface-elevated border border-border transition-colors"
+              className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-200 px-2 py-1 rounded-[6px] bg-surface-elevated border border-border transition-colors"
             >
               <Mic className="w-3.5 h-3.5 text-red-400" />
               <span>Record Voice</span>
             </button>
           ) : (
             <div
-              className="flex items-center gap-1.5 text-[11px] text-gray-500 px-2 py-1 rounded bg-surface/80 border border-border/40 cursor-not-allowed select-none"
+              className="flex items-center gap-1.5 text-[11px] text-gray-500 px-2 py-1 rounded-[6px] bg-surface/80 border border-border/40 cursor-not-allowed select-none"
               title="Voice input flag is disabled (default OFF)"
             >
               <MicOff className="w-3 h-3 text-gray-600" />
@@ -115,11 +115,11 @@ export function AnswerBox({
             type="button"
             onClick={handleSubmit}
             disabled={disabled || isEvaluating || (!text.trim() && !suggestedAnswer)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 text-white shadow-glow hover:shadow-glow-lg disabled:bg-surface-elevated disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-[0_0_15px_rgba(245,158,11,0.25)] hover:shadow-[0_0_22px_rgba(245,158,11,0.35)] disabled:bg-surface-elevated disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed transition-all active:scale-95 font-mono"
           >
             {isEvaluating ? (
               <>
-                <div className="w-3 h-3 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                <div className="w-3 h-3 rounded-full border-2 border-slate-950/30 border-t-slate-950 animate-spin" />
                 <span>Evaluating...</span>
               </>
             ) : (

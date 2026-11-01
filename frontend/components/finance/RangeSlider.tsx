@@ -61,8 +61,8 @@ export function RangeSlider({
   const rangeSpan = max - min;
   const currentPct = rangeSpan > 0 ? Math.max(0, Math.min(100, ((value - min) / rangeSpan) * 100)) : 50;
 
-  // Build glowing track gradient
-  let trackBackground = `linear-gradient(to right, #6366F1 0%, #8B5CF6 ${currentPct}%, #1E2337 ${currentPct}%, #1E2337 100%)`;
+  // Build tactical amber track gradient
+  let trackBackground = `linear-gradient(to right, #F59E0B 0%, #D97706 ${currentPct}%, #1E2337 ${currentPct}%, #1E2337 100%)`;
   if (
     !disabled &&
     dangerFraction !== null &&
@@ -71,11 +71,11 @@ export function RangeSlider({
     dangerFraction <= 1
   ) {
     const dangerPct = (dangerFraction * 100).toFixed(1);
-    trackBackground = `linear-gradient(to right, #6366F1 0%, #8B5CF6 ${Math.min(currentPct, Number(dangerPct))}%, rgba(239, 68, 68, 0.4) ${dangerPct}%, rgba(239, 68, 68, 0.4) 100%)`;
+    trackBackground = `linear-gradient(to right, #F59E0B 0%, #D97706 ${Math.min(currentPct, Number(dangerPct))}%, rgba(239, 68, 68, 0.4) ${dangerPct}%, rgba(239, 68, 68, 0.4) 100%)`;
   }
 
   return (
-    <div className="space-y-2 p-3.5 rounded-xl bg-surface border border-border hover:border-purple-500/30 transition-all">
+    <div className="space-y-2 p-3.5 rounded-[14px] bg-surface border border-border hover:border-amber-500/30 transition-all">
       <div className="flex items-center justify-between text-xs">
         <label htmlFor={id} className="font-semibold text-gray-300">
           {label}
@@ -86,7 +86,7 @@ export function RangeSlider({
               type="button"
               onClick={onReset}
               title="Reset to baseline"
-              className="text-purple-400 hover:text-white p-0.5 rounded transition-colors"
+              className="text-amber-400 hover:text-white p-0.5 rounded transition-colors"
             >
               <RotateCcw className="w-3 h-3" />
             </button>

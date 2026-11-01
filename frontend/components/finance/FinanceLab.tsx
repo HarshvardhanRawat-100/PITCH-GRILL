@@ -66,8 +66,8 @@ export default function FinanceLab() {
       {/* Top Header Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-4">
         <div>
-          <h2 className="text-xl font-bold text-white flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-glow-sm" />
+          <h2 className="text-xl font-bold text-white flex items-center gap-2.5 font-mono">
+            <span className="w-2.5 h-2.5 rounded-[2px] bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
             <span>Finance Investor Lab</span>
           </h2>
           <p className="text-xs text-gray-400 mt-0.5">
@@ -80,9 +80,9 @@ export default function FinanceLab() {
             <button
               type="button"
               onClick={resetAll}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-surface border border-border text-gray-400 hover:text-white hover:border-purple-500/50 hover:bg-surface-elevated transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-[10px] text-xs font-semibold bg-surface border border-border text-gray-400 hover:text-white hover:border-amber-500/50 hover:bg-surface-elevated transition-all font-mono"
             >
-              <RotateCcw className="w-3.5 h-3.5 text-purple-400" />
+              <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
               <span>Reset Scenarios</span>
             </button>
           )}

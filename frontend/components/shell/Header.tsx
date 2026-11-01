@@ -58,20 +58,20 @@ export function Header({ deal }: HeaderProps) {
   const scoreDelta = currentScore - initialScore;
 
   return (
-    <header className="w-full border-b border-border bg-[#0B0D14]/95 backdrop-blur-md sticky top-0 z-50 px-6 py-3.5 print:hidden">
+    <header className="w-full border-b border-border bg-[#090B10]/95 backdrop-blur-md sticky top-0 z-50 px-6 py-3.5 print:hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand & Deal Identity */}
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="flex items-center gap-2.5 text-white font-bold tracking-tight text-lg hover:opacity-95 focus:outline-none rounded transition-all group"
+            className="flex items-center gap-2.5 text-white font-bold tracking-tight text-lg hover:opacity-95 focus:outline-none rounded-[10px] transition-all group"
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-700 via-violet-600 to-indigo-500 flex items-center justify-center shadow-glow-sm group-hover:shadow-glow transition-all">
-              <ShieldAlert className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-[10px] bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.2)] group-hover:shadow-[0_0_18px_rgba(245,158,11,0.35)] transition-all">
+              <ShieldAlert className="w-4 h-4 text-amber-400" />
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-extrabold tracking-tight text-white">PITCH-GRILL</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-violet-500/15 border border-violet-500/30 text-purple-300 uppercase font-semibold">
+              <span className="font-extrabold tracking-tight text-white font-mono">PITCH-GRILL</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-[6px] bg-amber-500/10 border border-amber-500/30 text-amber-300 uppercase font-semibold">
                 War Room
               </span>
             </div>
@@ -81,12 +81,12 @@ export function Header({ deal }: HeaderProps) {
             <div className="flex items-center gap-3 pl-4 border-l border-border text-sm">
               <Link
                 href="/"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-gray-400 hover:text-white transition-colors px-2.5 py-1.5 rounded-lg hover:bg-surface-elevated border border-border/60 hover:border-border"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-gray-400 hover:text-white transition-colors px-2.5 py-1.5 rounded-[8px] hover:bg-surface-elevated border border-border/60 hover:border-border"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span>Back</span>
               </Link>
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500/20 to-purple-500/20 border border-purple-500/30 flex items-center justify-center text-amber-300 font-bold text-xs shadow-sm">
+              <div className="w-8 h-8 rounded-[10px] bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 font-bold text-xs shadow-sm">
                 ⚡
               </div>
               <div>
@@ -109,7 +109,7 @@ export function Header({ deal }: HeaderProps) {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handlePrint}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-elevated border border-border hover:border-gray-600 text-xs font-medium text-gray-300 hover:text-white transition-all shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-surface-elevated border border-border hover:border-gray-600 text-xs font-medium text-gray-300 hover:text-white transition-all shadow-xs"
                   title="Print or Save as PDF"
                 >
                   <Printer className="w-3.5 h-3.5 text-blue-400" />
@@ -119,7 +119,7 @@ export function Header({ deal }: HeaderProps) {
                 <button
                   onClick={handleExportMarkdown}
                   disabled={exporting}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-elevated border border-border hover:border-gray-600 text-xs font-medium text-gray-300 hover:text-white transition-all disabled:opacity-50 shadow-xs"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-surface-elevated border border-border hover:border-gray-600 text-xs font-medium text-gray-300 hover:text-white transition-all disabled:opacity-50 shadow-xs"
                   title="Download full Markdown diligence report"
                 >
                   {exporting ? (
@@ -132,7 +132,7 @@ export function Header({ deal }: HeaderProps) {
               </div>
 
               {/* Score Gauge */}
-              <div className="flex items-center gap-2.5 bg-surface-elevated border border-border px-3 py-1.5 rounded-xl">
+              <div className="flex items-center gap-2.5 bg-surface-elevated border border-border px-3 py-1.5 rounded-[10px]">
                 <div className="text-right hidden sm:block">
                   <div className="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Readiness</div>
                   <div className="text-[11px] text-gray-500 font-mono">
@@ -140,7 +140,7 @@ export function Header({ deal }: HeaderProps) {
                   </div>
                 </div>
                 <div
-                  className="w-8 h-8 rounded-lg border border-purple-500/40 flex items-center justify-center font-bold font-mono text-sm bg-purple-950/40 text-purple-300 shadow-glow-sm"
+                  className="w-8 h-8 rounded-[8px] border border-amber-500/40 flex items-center justify-center font-bold font-mono text-sm bg-amber-500/10 text-amber-300"
                   title={`Readiness score: ${currentScore.toFixed(0)}/100`}
                 >
                   {currentScore.toFixed(0)}
@@ -150,7 +150,7 @@ export function Header({ deal }: HeaderProps) {
               {/* Delete button */}
               <button
                 onClick={handleDelete}
-                className="p-2 text-gray-400 hover:text-red-400 rounded-xl hover:bg-surface-elevated transition-colors border border-transparent hover:border-red-900/40"
+                className="p-2 text-gray-400 hover:text-red-400 rounded-[10px] hover:bg-surface-elevated transition-colors border border-transparent hover:border-red-900/40"
                 title="Delete deal & wipe memory"
               >
                 <Trash2 className="w-4 h-4" />
@@ -158,10 +158,10 @@ export function Header({ deal }: HeaderProps) {
             </>
           ) : null}
 
-          {/* New Deal Glowing Action Button */}
+          {/* New Deal Tactical Action Button */}
           <Link
             href="/"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-purple-600 to-violet-500 hover:from-indigo-500 hover:to-violet-400 shadow-glow transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all active:scale-95 font-mono"
           >
             <span>+ New Deal</span>
           </Link>

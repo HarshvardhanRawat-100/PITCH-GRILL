@@ -21,7 +21,7 @@ export function ProgressRing({
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="flex items-center gap-4 bg-surface-elevated/70 border border-border rounded-xl px-4 py-3">
+    <div className="flex items-center gap-4 bg-surface-elevated/70 border border-border rounded-[14px] px-4 py-3">
       <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="transform -rotate-90">
           {/* Background circle */}

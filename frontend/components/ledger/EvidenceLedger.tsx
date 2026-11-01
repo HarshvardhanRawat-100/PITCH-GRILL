@@ -117,7 +117,7 @@ export const EvidenceLedger: React.FC<EvidenceLedgerProps> = ({
         <div>
           <h2 className="text-sm font-semibold tracking-wide text-slate-200 uppercase flex items-center gap-2">
             <span>Evidence Ledger</span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono">
+            <span className="text-xs px-2 py-0.5 rounded-[6px] bg-slate-800 text-slate-400 font-mono">
               {counts.total}
             </span>
           </h2>
@@ -136,7 +136,7 @@ export const EvidenceLedger: React.FC<EvidenceLedgerProps> = ({
         {onToggleCollapse && (
           <button
             onClick={onToggleCollapse}
-            className="text-slate-400 hover:text-slate-200 text-xs px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 transition"
+            className="text-slate-400 hover:text-slate-200 text-xs px-2 py-1 rounded-[6px] bg-slate-800 hover:bg-slate-700 transition"
             title="Collapse Panel"
           >
             ←
@@ -151,7 +151,7 @@ export const EvidenceLedger: React.FC<EvidenceLedgerProps> = ({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search claims or sources..."
-          className="w-full bg-slate-900 border border-slate-800 rounded px-2.5 py-1 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500"
+          className="w-full bg-slate-900 border border-slate-800 rounded-[6px] px-2.5 py-1 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
         />
 
         <div className="flex gap-1.5 overflow-x-auto pb-1 text-[11px]">
@@ -160,9 +160,9 @@ export const EvidenceLedger: React.FC<EvidenceLedgerProps> = ({
               <button
                 key={st}
                 onClick={() => setStatusFilter(st)}
-                className={`px-2 py-0.5 rounded capitalize font-medium transition ${
+                className={`px-2 py-0.5 rounded-[6px] capitalize font-mono text-[10px] transition ${
                   statusFilter === st
-                    ? "bg-blue-600 text-white"
+                    ? "bg-amber-500 text-slate-950 font-bold"
                     : "bg-slate-800 text-slate-400 hover:text-slate-200"
                 }`}
               >

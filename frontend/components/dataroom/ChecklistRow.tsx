@@ -35,7 +35,7 @@ export function ChecklistRow({
 
   return (
     <div
-      className={`rounded-xl border p-4 transition-all duration-500 ${
+      className={`rounded-[14px] border p-4 transition-all duration-500 ${
         isHighlighted
           ? "bg-emerald-950/30 border-emerald-500/80 ring-2 ring-emerald-500/30 scale-[1.01]"
           : isAddressed
@@ -48,20 +48,20 @@ export function ChecklistRow({
         <div className="space-y-2 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             {/* ID Chip */}
-            <span className="font-mono text-xs px-2 py-0.5 rounded bg-surface-elevated border border-border text-gray-400 font-semibold">
+            <span className="font-mono text-xs px-2 py-0.5 rounded-[6px] bg-surface-elevated border border-border text-gray-400 font-semibold">
               {item.id}
             </span>
 
             {/* India Badge */}
             {item.india_specific && (
-              <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded bg-amber-950/40 border border-amber-800/40 text-amber-300">
+              <span className="inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-[6px] bg-amber-950/40 border border-amber-800/40 text-amber-300">
                 <span>🇮🇳</span>
                 <span>India Statutory</span>
               </span>
             )}
 
             {/* Owner Chip */}
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded bg-surface-elevated border border-border text-gray-300 capitalize">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium px-2 py-0.5 rounded-[6px] bg-surface-elevated border border-border text-gray-300 capitalize">
               {getOwnerIcon(item.owner)}
               <span>{item.owner}</span>
             </span>
@@ -71,7 +71,7 @@ export function ChecklistRow({
               <button
                 type="button"
                 onClick={() => onSelectFinding?.(item.finding_id!)}
-                className="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded bg-rose-950/40 border border-rose-800/40 text-rose-300 hover:bg-rose-900/60 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 rounded-[6px] bg-rose-950/40 border border-rose-800/40 text-rose-300 hover:bg-rose-900/60 transition-colors cursor-pointer"
                 title={`Triggered by investor finding ${item.finding_id}`}
               >
                 <Flag className="w-2.5 h-2.5 text-rose-400" />
@@ -88,7 +88,7 @@ export function ChecklistRow({
             {item.title}
           </h4>
 
-          <div className="text-xs text-gray-400 leading-relaxed bg-surface-elevated/40 rounded-lg p-2.5 border border-border/50">
+          <div className="text-xs text-gray-400 leading-relaxed bg-surface-elevated/40 rounded-[10px] p-2.5 border border-border/50">
             <span className="font-semibold text-gray-300 mr-1.5">Why Investors Ask:</span>
             <span>{item.why}</span>
           </div>
@@ -96,7 +96,7 @@ export function ChecklistRow({
 
         {/* Right Section: Status Toggle Buttons */}
         <div className="flex md:flex-col items-center md:items-end justify-between gap-2 shrink-0">
-          <div className="inline-flex p-1 rounded-lg bg-surface-elevated border border-border text-xs">
+          <div className="inline-flex p-1 rounded-[8px] bg-surface-elevated border border-border text-xs">
             <button
               type="button"
               onClick={() => onStatusChange(item.id, "todo")}

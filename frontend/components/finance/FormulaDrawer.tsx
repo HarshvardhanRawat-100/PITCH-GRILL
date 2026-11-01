@@ -49,9 +49,9 @@ export function FormulaDrawer({
         ref={triggerRef}
         type="button"
         onClick={handleOpen}
-        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-surface-elevated border border-purple-500/30 text-purple-300 hover:text-white hover:border-purple-500 shadow-glow-sm transition-all"
+        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-[10px] text-xs font-semibold bg-surface-elevated border border-amber-500/30 text-amber-300 hover:text-white hover:border-amber-500 shadow-sm transition-all font-mono"
       >
-        <HelpCircle className="w-3.5 h-3.5 text-purple-400" />
+        <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
         <span>Deterministic Equations</span>
       </button>
 
@@ -87,13 +87,13 @@ export function FormulaDrawer({
               <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider font-mono">
                 Acquisition Scaling Mode
               </h4>
-              <div className="grid grid-cols-2 gap-2 p-1.5 rounded-xl bg-surface border border-border">
+              <div className="grid grid-cols-2 gap-2 p-1.5 rounded-[12px] bg-surface border border-border">
                 <button
                   type="button"
                   onClick={() => setMode("hold_growth")}
-                  className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
+                  className={`py-2 px-3 rounded-[8px] text-xs font-bold transition-all font-mono ${
                     mode === "hold_growth"
-                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-glow"
+                      ? "bg-amber-500 text-slate-950 shadow-[0_0_12px_rgba(245,158,11,0.25)]"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -102,9 +102,9 @@ export function FormulaDrawer({
                 <button
                   type="button"
                   onClick={() => setMode("hold_spend")}
-                  className={`py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
+                  className={`py-2 px-3 rounded-[8px] text-xs font-bold transition-all font-mono ${
                     mode === "hold_spend"
-                      ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-glow"
+                      ? "bg-amber-500 text-slate-950 shadow-[0_0_12px_rgba(245,158,11,0.25)]"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >

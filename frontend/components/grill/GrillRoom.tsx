@@ -31,15 +31,15 @@ export function GrillRoom({ dealId, onFinish }: GrillRoomProps) {
   return (
     <div className="space-y-6">
       {/* Grill Header / Status Bar */}
-      <div className="bg-surface rounded-xl border border-border p-4 flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-surface rounded-[18px] border border-border p-4 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
+          <div className="w-10 h-10 rounded-[10px] bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400">
             <Flame className="w-5 h-5 animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="font-bold text-white text-base">Investor Grill Room</h2>
-              <span className="px-2 py-0.5 rounded-full text-xs font-mono bg-red-500/10 text-red-400 border border-red-500/20">
+              <h2 className="font-bold text-white text-base font-mono">Investor Grill Room</h2>
+              <span className="px-2 py-0.5 rounded-[6px] text-xs font-mono bg-red-500/10 text-red-400 border border-red-500/20">
                 Turn {Math.min(activeTurnIndex + 1, 6)} of 6
               </span>
             </div>
@@ -66,7 +66,7 @@ export function GrillRoom({ dealId, onFinish }: GrillRoomProps) {
           <button
             onClick={resetDemo}
             title="Restart Grill Room"
-            className="p-2 rounded-lg border border-border bg-surface-elevated text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
+            className="p-2 rounded-[8px] border border-border bg-surface-elevated text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -74,7 +74,7 @@ export function GrillRoom({ dealId, onFinish }: GrillRoomProps) {
       </div>
 
       {/* Main Chat Stream */}
-      <div className="bg-surface rounded-xl border border-border p-4">
+      <div className="bg-surface rounded-[18px] border border-border p-4">
         <ChatStream
           turns={turns}
           crosstalk={crosstalk}

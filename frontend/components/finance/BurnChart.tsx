@@ -30,7 +30,7 @@ export function BurnChart({ displayedResult, pending = false }: BurnChartProps) 
   }, [displayedResult]);
 
   return (
-    <div className="bg-surface rounded-2xl p-5 border border-border space-y-4 shadow-sm">
+    <div className="bg-surface rounded-[18px] p-5 border border-border space-y-4 shadow-sm">
       <div className="flex items-center justify-between">
         <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider font-mono">
           Monthly Net Cash Burn / Inflow
@@ -71,7 +71,7 @@ export function BurnChart({ displayedResult, pending = false }: BurnChartProps) 
                 const d = payload[0].payload;
                 const isBurning = d.netBurn > 0;
                 return (
-                  <div className="bg-[#121522] border border-purple-500/30 p-2.5 rounded-xl shadow-glow-sm text-xs font-mono space-y-1">
+                  <div className="bg-[#121522] border border-border p-2.5 rounded-[10px] shadow-sm text-xs font-mono space-y-1">
                     <p className="text-gray-400 font-sans">Month {d.month}</p>
                     <p
                       className={`font-semibold ${
