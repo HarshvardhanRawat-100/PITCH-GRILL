@@ -1,264 +1,188 @@
 # PITCH-GRILL — AI Diligence & Investor War Room
 
-> **"Face three hostile investors before the real ones do."**  
-> An uncompromising, multi-agent AI Due-Diligence War Room that red-teams startup pitch decks with deterministic unit economics, live web verification, and shared agent memory.
+![Tests](https://img.shields.io/badge/backend%20tests-161%20passing-brightgreen)
+![Red-Team](https://img.shields.io/badge/red--team-12%2F12%20rejected-critical)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![Gemini](https://img.shields.io/badge/LLM-Google%20Gemini%202.5-4285F4)
+![Memory](https://img.shields.io/badge/memory-Yugabyte%20Meko%20(MCP)-ff6b35)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
+
+> **"Face three hostile investors before the real ones do."**
+> A multi-agent AI due-diligence war room that red-teams startup pitch decks with deterministic unit economics, live web verification, and shared agent memory.
 
 ---
 
-## 📌 Problem Statement
+## Problem
 
-Early-stage founders face a critical, high-stakes asymmetry when pitching institutional venture capitalists:
+Early-stage founders face a high-stakes asymmetry when pitching VCs:
 
-1. **Unprepared for Hostile Due-Diligence:** Most founders practice pitch decks with supportive peers and mentors who offer superficial, agreeable feedback. In real partner meetings, investors aggressively stress-test fragile unit economics, unrealistic TAM projections, burn rate, and technical defensibility. Founders get caught off-guard and fail diligence on questions they could have anticipated.
-2. **Generic AI Tools Are Inadequate & Sycophantic:** Off-the-shelf generative AI models cannot perform genuine diligence. They **hallucinate financial calculations**, accept optimistic claims without verification, and are easily sweet-talked with charismatic rhetoric (sycophancy). They lack multi-agent specialization, live web grounding, and persistent, auditable memory across evaluation phases.
-3. **The Solution — PITCH-GRILL:** A hostile, multi-agent war room where three specialized investor personas (Finance, Market, and Technical) independently interrogate the deck. It combines **Google Gemini** for reasoning and narrative extraction, a **deterministic math engine** (zero hallucinated numbers), **live web scraping** (substring-verified quotes), and **Yugabyte Meko** for shared cross-agent memory—all governed by strict **anti-sycophancy rules enforced in code** that require concrete evidence to accept any founder defense.
+1. **No hostile practice.** Founders rehearse with supportive peers who give agreeable feedback. Real partner meetings stress-test fragile unit economics, inflated TAM, burn rate, and technical defensibility — and founders get caught off guard on questions they could have anticipated.
+2. **Generic AI is sycophantic.** Off-the-shelf models hallucinate financial numbers, accept optimistic claims without verification, and can be sweet-talked with confident rhetoric. They lack specialized agents, live grounding, and auditable memory.
+
+**PITCH-GRILL** is a hostile, multi-agent war room where three specialized investor personas independently interrogate the deck — combining **Google Gemini** for reasoning, a **deterministic math engine** (zero hallucinated numbers), **live web grounding** (substring-verified quotes), and **Yugabyte Meko** shared memory — all governed by **anti-sycophancy rules enforced in code** that demand concrete evidence before accepting any defense.
 
 ---
 
-## 👥 Team Members
+## Team
 
 | Name | Institution |
 | :--- | :--- |
-| **Harshvardhan Rawat** | Student, University School of Automation & Robotics (USAR), GGSIPU |
-| **Nikunj Mundhra** | Student, University School of Automation & Robotics (USAR), GGSIPU |
-| **Aayush Aswal** | Student, Bhagwan Parshuram Institute of Technology (BPIT), GGSIPU |
-| **Abhigyan Badyar** | Student, National Forensic Sciences University (NFSU) |
+| **Harshvardhan Rawat** | University School of Automation & Robotics (USAR), GGSIPU |
+| **Nikunj Mundhra** | University School of Automation & Robotics (USAR), GGSIPU |
+| **Aayush Aswal** | Bhagwan Parshuram Institute of Technology (BPIT), GGSIPU |
+| **Abhigyan Badyar** | National Forensic Sciences University (NFSU) |
 
 ---
 
-## 📊 Presentation & Pitch Deck
+## Pitch Deck
 
-- 🔗 **Google Drive Pitch Deck (Judges):** [Presentation](https://drive.google.com/file/d/1yw17gtyI6nsWKbPPooGScNMBshh9Fhn-/view?usp=drivesdk)
-
----
-
-## 💡 How PITCH-GRILL Works
-
-When a founder uploads a pitch deck (PDF), three hostile, specialized AI investor personas cross-examine and red-team the pitch in real time:
-
-- **💰 Finance Investor (P3):** Interrogates unit economics, burn rate, runway, valuation, and capital efficiency using a deterministic financial computation engine with mathematical assertions in INR (Indian Rupees).
-- **📈 Market Investor (P4):** Validates market sizing (TAM/SAM/SOM), distribution channels, and competitors by crawling and grounding claims against live web sources.
-- **🛠️ Technical Investor (P2):** Scrutinizes technical architecture, scalability, defensibility, and data moats against founder websites, GitHub repos, and engineering rubrics.
-
-Following parallel ingestion, founders enter the **Grill Room** for an interactive, turn-bounded defense session with anti-sycophancy clamping, before receiving a synthesized **Investment Committee Final Verdict**, an India-specific **Data Room Checklist**, and an improved **Pitch Narrative**.
+**[Google Drive Presentation (Judges)](https://drive.google.com/file/d/1yw17gtyI6nsWKbPPooGScNMBshh9Fhn-/view?usp=drivesdk)**
 
 ---
 
-## 🏛 Architecture & Tech Stack
+## How It Works
+
+A founder uploads a pitch deck (PDF). Three hostile, specialized AI investor personas cross-examine and red-team it in real time:
+
+- **Finance Investor** — unit economics, burn, runway, valuation, capital efficiency, via a deterministic computation engine in INR (the LLM *never* does the math).
+- **Market Investor** — TAM/SAM/SOM, distribution, and competitors, grounded against live web sources with quotes verified in code.
+- **Technical Investor** — architecture, scalability, defensibility, and data moats, checked against the founder's website, GitHub, and engineering rubrics.
+
+After parallel ingestion and analysis, the founder enters the **Grill Room** for a turn-bounded defense session with anti-sycophancy clamping, then receives an **Investment Committee Verdict**, an India-specific **Data Room Checklist**, and an improved **Pitch Narrative**.
 
 ```
-                                 ┌──────────────────────────────────────────────────────────┐
-                                 │                   FOUNDER / CLIENT BROWSER               │
-                                 │              Next.js 14 App Router + TailwindCSS         │
-                                 └────────────────────────────┬─────────────────────────────┘
-                                                              │ REST + Server-Sent Events
-                                                              ▼
-                                 ┌──────────────────────────────────────────────────────────┐
-                                 │                   FASTAPI BACKEND (8000)                 │
-                                 ├────────────────────────────┬─────────────────────────────┤
-                                 │  /api/deals                │  /api/deals/{id}/events     │
-                                 │  /api/deals/{id}/finance   │  /api/deals/{id}/grill      │
-                                 │  /api/deals/{id}/market    │  /api/deals/{id}/memory     │
-                                 │  /api/deals/{id}/checklist │  /api/deals/{id}/export.md  │
-                                 └─────────────┬──────────────────────────────┬─────────────┘
-                                               │                              │
-                    ┌──────────────────────────┴────────┐        ┌────────────┴──────────────────────┐
-                    │       INTELLIGENCE & TOOLS        │        │        STATE & SHARED MEMORY      │
-                    ├───────────────────────────────────┤        ├───────────────────────────────────┤
-                    │ • Google Gemini (2.5-flash)       │        │ • Deal Store (File/JSON Sessions) │
-                    │ • Tavily Web Search Grounding     │        │ • Yugabyte Meko (MCP Memory Log)  │
-                    │ • Deterministic Finance Engine    │        │ • Local Resilient Fallback Store  │
-                    │ • PDF Slide Parser & Vision OCR   │        │ • Evidence Ledger & Audit Trail   │
-                    └───────────────────────────────────┘        └───────────────────────────────────┘
+Upload PDF -> Parse / Vision OCR -> DeckFacts
+  -> Finance engine + Market search + Tech check   (parallel)
+    -> 3 persona agents                            (parallel)
+      -> Moderator -> Evidence Ledger -> Readiness Score
+        -> Finance Lab -> Market Intel
+          -> GRILL ROOM  (live Q&A, <=12 turns, clamp_outcome)
+            -> Data Room checklist
+              -> Improved pitch + before/after score
+```
+
+---
+
+## Under the Hood — Engineering Guarantees
+
+What makes this more than a chatbot wrapper:
+
+- **Anti-sycophancy clamp (in code).** Each answer's outcome is decided by `clamp_outcome()` in `contracts/schemas.py`, not by the LLM. Confidence and flattery can't buy a good score — only cited data or a referenced document can. It cannot be prompt-engineered away. **Red-team: 12/12 adversarial answers rejected, 0 injections succeeded.**
+- **The LLM never does math.** All burn, runway, LTV, CAC sensitivity, and scores run in a deterministic Python engine (`tools/finance_engine.py`, <100ms). The LLM only extracts inputs and narrates.
+- **Grounded, not guessed.** Competitor names and evidence quotes must be verified as substrings of fetched page text *in code* before they appear — no hallucinated competitors.
+- **Prompt-injection defense.** Untrusted text (deck, web, founder answers, recalled memory) is wrapped in tags and regex-flagged; injection attempts are auto-rejected.
+- **Resilient shared memory.** Yugabyte Meko over MCP with an 8s timeout, retry, and automatic local fallback (circuit breaker after 3 consecutive failures). Meko calls stay off the critical path.
+- **Fully testable offline.** `MOCK=1` replays realistic workflows with zero external API calls. **161 backend tests** cover finance math, prompt injection, memory resilience, agents, and routes.
+
+---
+
+## Architecture
+
+```
+                 +-----------------------------------------------+
+                 |          FOUNDER / CLIENT BROWSER             |
+                 |        Next.js 14 App Router + Tailwind       |
+                 +-----------------------+-----------------------+
+                                         | REST + Server-Sent Events
+                                         v
+                 +-----------------------------------------------+
+                 |             FASTAPI BACKEND (8000)            |
+                 |  /deals  /events  /finance  /grill            |
+                 |  /market /memory  /checklist /export.md       |
+                 +-----------+-----------------------+-----------+
+                             |                       |
+          +------------------+--------+   +----------+------------------+
+          |    INTELLIGENCE & TOOLS   |   |    STATE & SHARED MEMORY     |
+          | - Google Gemini 2.5       |   | - Deal Store (JSON sessions) |
+          | - Tavily web grounding    |   | - Yugabyte Meko (MCP log)    |
+          | - Deterministic finance   |   | - Local resilient fallback   |
+          | - PDF parser + Vision OCR |   | - Evidence Ledger + audit    |
+          +---------------------------+   +------------------------------+
 ```
 
 ### Core Technologies
-- **Backend:** Python 3.11+, FastAPI, Uvicorn, Pydantic v2, PyMuPDF (fitz), AsyncIO.
-- **Frontend:** Next.js 14 (App Router), React 18, TypeScript, TailwindCSS, Recharts, Zustand.
-- **LLM Engine:** Google Gemini (`google-genai` SDK with `gemini-2.5-flash` primary & `gemini-2.5-pro` fallback).
-- **Agent Memory:** Yugabyte Meko via Model Context Protocol (MCP) with automatic local fallback.
-- **Live Grounding:** Tavily Search API.
-- **Shared Contracts:** `contracts/schemas.py` (Pydantic v2) and `contracts/types.ts` (TypeScript).
+- **Backend:** Python 3.11+, FastAPI, Uvicorn, Pydantic v2, PyMuPDF, AsyncIO
+- **Frontend:** Next.js 14, React 18, TypeScript, TailwindCSS, Recharts, Zustand
+- **LLM:** Google Gemini via `google-genai` (`gemini-2.5-flash` primary, `gemini-2.5-pro` fallback)
+- **Memory:** Yugabyte Meko over MCP with automatic local fallback
+- **Grounding:** Tavily Search API
+- **Shared contracts:** `contracts/schemas.py` (Pydantic v2) + `contracts/types.ts`
 
 ---
 
-## 📁 Repository Structure
+## Setup
 
-```
-PITCH-GRILL/
-├── backend/
-│   ├── app/
-│   │   ├── agents/          # Investor persona agents, orchestrator, and answer evaluator
-│   │   ├── fixtures/        # Pitch decks, grill dialogs, market, and reports test fixtures
-│   │   ├── ingest/          # PDF text extraction, vision OCR, and structured claim extraction
-│   │   ├── kb/              # Domain knowledge base (India diligence, investor rubrics)
-│   │   ├── memory/          # Meko MCP memory client, local fallback, and privacy policies
-│   │   ├── routes/          # FastAPI routers (deals, events, finance, grill, market, checklist, memory)
-│   │   ├── tools/           # Deterministic Finance Engine, India checklist, market & tech grounders
-│   │   ├── config.py        # Environment settings and LLM configuration
-│   │   ├── llm.py           # Gemini SDK client with retry, fallback, and structured JSON parsing
-│   │   ├── main.py          # FastAPI application mount, CORS, and health endpoint
-│   │   ├── security.py      # Prompt injection resistance and untrusted data wrapping
-│   │   ├── sse.py           # Server-Sent Events broker
-│   │   └── store.py         # Deal state repository and event streaming logs
-│   ├── tests/               # 161 backend tests covering finance, memory, agents, ingest, injection
-│   ├── Dockerfile           # Backend container definition
-│   ├── requirements.txt     # Python dependencies
-│   └── pytest.ini           # Pytest test discovery configuration
-│
-├── frontend/
-│   ├── app/                 # Next.js App Router (Upload Home + Dynamic Deal War Room)
-│   ├── components/
-│   │   ├── dataroom/        # India Due Diligence Checklist & CSV Export
-│   │   ├── finance/         # Finance Lab (interactive sliders, burn/runway charts, sensitivity)
-│   │   ├── grill/           # Live Grill Room (chat streams, evaluation cards, cross-talk bubbles)
-│   │   ├── ledger/          # Sourced Evidence Ledger
-│   │   ├── market/          # Market & TAM Intelligence grounding
-│   │   ├── memory/          # Yugabyte Meko Memory inspector
-│   │   ├── report/          # Investor findings & deep-dive reports
-│   │   ├── shell/           # Headers, footers, status rings
-│   │   └── upload/          # Pitch deck dropzone and demo launcher
-│   ├── contracts/           # Synced frontend TypeScript schemas
-│   ├── lib/                 # API client, SSE streaming consumer, formatters, Zustand store
-│   ├── package.json         # Node.js dependencies
-│   ├── Dockerfile           # Frontend container definition
-│   └── tsconfig.json        # TypeScript configuration with path aliases
-│
-├── contracts/
-│   ├── schemas.py           # Canonical Pydantic schemas (single source of truth)
-│   └── types.ts             # Canonical TypeScript definitions
-│
-├── demo/
-│   ├── architecture.md      # Demo architecture runbook
-│   ├── backup_video_checklist.md # Video recording checklist
-│   ├── decks/               # 5 realistic pitch deck PDFs (clean, ugly images, injection, sparse, failed)
-│   ├── qa.md                # Hackathon & judge Q&A guide
-│   └── script.md            # Live presentation demo script
-│
-├── docs/
-│   ├── API_AND_EVENTS.md    # Complete REST & SSE API specification
-│   ├── DEMO_AND_QA.md       # Stage-by-stage demo workflow
-│   ├── ISSUES.md            # Cross-module coordination tracker
-│   ├── PRODUCT_PROMPTS.md   # System prompts (P-01 to P-13)
-│   ├── REPOSITORY_AUDIT.md  # Architectural audit, consolidation & validation history
-│   ├── ROADMAP.md           # Product roadmap & sponsor track criteria
-│   └── TEAM_PROMPTS.md      # Engineer delegation briefs (P1, P2, P3, P4)
-│
-├── scripts/                 # Utility scripts (eval_decks, redteam_grill, meko_smoke, generate_decks)
-├── docker-compose.yml       # Production/development multi-container setup
-├── run_all.sh               # Dual-stack native bash launcher
-├── .env.example             # Clean environment variable template
-├── .gitignore               # Root git ignore specification
-└── README.md                # Project documentation
-```
+**Prerequisites:** Python 3.11+, Node.js 18/20, `pip` + `npm` (Docker optional).
 
----
-
-## ⚙️ Prerequisites & Environment Setup
-
-### Prerequisites
-- **Python:** 3.11 or higher
-- **Node.js:** 18.x or 20.x
-- **Package Managers:** `pip` and `npm`
-- **Docker & Docker Compose:** (Optional, for containerized run)
-
-### 1. Configure Environment
-Copy `.env.example` to `.env`:
 ```bash
 cp .env.example .env
 ```
 
-Set your API keys:
-- `GEMINI_API_KEY`: Obtain from [Google AI Studio](https://aistudio.google.com/).
-- `TAVILY_API_KEY`: (Optional) Obtain from [Tavily](https://tavily.com/) for live market search.
-- `MEKO_API_KEY`: (Optional) Obtain from [Meko Cloud](https://cloud.mekodata.ai) for live agent memory.
+Set your keys in `.env`:
+- `GEMINI_API_KEY` — from [Google AI Studio](https://aistudio.google.com/)
+- `TAVILY_API_KEY` — optional, for live market search
+- `MEKO_API_KEY` — optional, for live agent memory
 
-> [!NOTE]
-> If `GEMINI_API_KEY` is omitted, the entire platform runs seamlessly in deterministic **Mock Mode** (`MOCK=1`), replaying realistic diligence workflows with zero external API calls.
+If `GEMINI_API_KEY` is omitted, the platform runs in deterministic **Mock Mode** (`MOCK=1`) with zero external calls.
 
 ---
 
-## 🚀 Running Locally
+## Running Locally
 
-### Option A: Native Development (Recommended)
+### Native (recommended)
 
-#### 1. Backend Service
+**Backend:**
 ```bash
 cd backend
-python -m venv .venv
-
-# On Linux / macOS:
-source .venv/bin/activate
-
-# On Windows:
-.venv\Scripts\activate
-
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8000
 ```
-Backend health check is accessible at `http://localhost:8000/api/health`.
+Health check: `http://localhost:8000/api/health`
 
-#### 2. Frontend Service
-In a separate terminal:
+**Frontend** (separate terminal):
 ```bash
 cd frontend
-npm ci
-npm run dev
+npm ci && npm run dev
 ```
-Open `http://localhost:3000` in your browser.
+Open `http://localhost:3000`
 
----
-
-### Option B: Docker Compose
-Run both backend and frontend in isolated containers:
+### Docker
 ```bash
 docker compose up --build
 ```
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8000`
-- Swagger Docs: `http://localhost:8000/docs`
+Frontend `:3000` · Backend `:8000` · Swagger `:8000/docs`
 
 ---
 
-## 🎯 Demo Mode & Verification
+## Demo
 
 1. Open `http://localhost:3000`
-2. Click **"Try Demo Deck"** (BolBot — Conversational AI for Bharat SMEs).
-3. Watch the live extraction, red-team analysis, and score calculation stream via SSE.
-4. Explore the **Finance Lab** sliders to test runway sensitivity in INR.
-5. Review **Market Intel** to see live competitive groundings (Bikayi, Wati, LimeChat).
-6. Enter the **Grill Room** to answer hostile investor questions.
-7. Inspect the **Data Room** for India-specific checklist compliance and download the final Diligence Markdown summary.
+2. Click **"Try Demo Deck"** (BolBot — Conversational AI for Bharat SMEs)
+3. Watch live extraction, red-team analysis, and scoring stream via SSE
+4. Use the **Finance Lab** sliders to test runway sensitivity in INR
+5. Check **Market Intel** for live groundings (Bikayi, Wati, LimeChat)
+6. Enter the **Grill Room** and defend against hostile questions
+7. Review the **Data Room** checklist and export the diligence summary
 
 ---
 
-## 🧪 Testing & Validation
+## Testing
 
-### Backend Tests
-Execute the comprehensive test suite (161 tests covering financial math, prompt injection, memory resilience, and route handlers):
 ```bash
-pytest backend/tests/ -q
-```
-
-Linting and code quality:
-```bash
+pytest backend/tests/ -q          # 161 backend tests
 ruff check backend scripts contracts
-```
 
-### Frontend Checks
-Run TypeScript verification, unit tests, ESLint, and Next.js production build:
-```bash
 cd frontend
-npx tsc --noEmit
-npm test
-npm run lint
-npm run build
+npx tsc --noEmit && npm test && npm run lint && npm run build
 ```
 
 ---
 
-## 🔒 Security & Golden Rules
-1. **The LLM never does math:** All runway, burn, LTV, CAC sensitivity, and score calculations are executed in deterministic Python (`backend/app/tools/finance_engine.py`).
-2. **Strict Currency Uniformity:** All monetary values are calculated in INR (₹) and formatted in Lakhs/Crores.
-3. **Anti-Sycophancy Enforced in Code:** Concessions and outcomes are clamped deterministically via `clamp_outcome()` in `contracts/schemas.py`. Flattery without data cannot bypass diligence.
-4. **Resilient Memory:** Yugabyte Meko MCP integration includes automatic circuit breaking and local memory persistence.
+## Golden Rules
+
+1. **The LLM never does math** — all numbers come from `tools/finance_engine.py`.
+2. **Currency uniformity** — everything in INR, formatted in Lakhs/Crores.
+3. **Anti-sycophancy enforced in code** — `clamp_outcome()` in `contracts/schemas.py`; flattery without data cannot pass.
+4. **Resilient memory** — Meko MCP with circuit breaking and local persistence.
