@@ -28,7 +28,7 @@ Early-stage founders face a critical, high-stakes asymmetry when pitching instit
 
 ## 📊 Presentation & Pitch Deck
 
-- 🔗 **Google Drive Pitch Deck (Judges):** [Presentation Deck Placeholder](https://drive.google.com/drive/folders/YOUR_GOOGLE_DRIVE_DECK_LINK_HERE) *(https://drive.google.com/file/d/1yw17gtyI6nsWKbPPooGScNMBshh9Fhn-/view?usp=drivesdk)*
+- 🔗 **Google Drive Pitch Deck (Judges):** [Presentation Deck Placeholder](https://drive.google.com/file/d/1yw17gtyI6nsWKbPPooGScNMBshh9Fhn-/view?usp=drivesdk)
 
 ---
 
