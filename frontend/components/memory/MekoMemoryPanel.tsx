@@ -62,12 +62,12 @@ export const MekoMemoryPanel: React.FC<MekoMemoryPanelProps> = ({
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-6 text-slate-100">
       {/* Header with Meko Status & Hub Link */}
-      <div className="p-4 rounded-lg bg-slate-900 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+      <div className="p-4 rounded-[14px] bg-slate-900 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-lg font-bold flex items-center gap-2">
+            <h1 className="text-lg font-bold flex items-center gap-2 font-mono">
               <span>Yugabyte Meko Shared Deal Memory</span>
-              <span className="text-xs px-2 py-0.5 rounded font-mono bg-purple-950 text-purple-300 border border-purple-800">
+              <span className="text-xs px-2 py-0.5 rounded-[6px] font-mono bg-amber-500/10 text-amber-300 border border-amber-500/30">
                 Sponsor Track
               </span>
             </h1>
@@ -94,7 +94,7 @@ export const MekoMemoryPanel: React.FC<MekoMemoryPanelProps> = ({
             href="https://cloud.mekodata.ai"
             target="_blank"
             rel="noreferrer"
-            className="px-3 py-1.5 rounded text-xs font-medium bg-purple-700 hover:bg-purple-600 text-white transition flex items-center gap-1.5 font-mono"
+            className="px-3 py-1.5 rounded-[8px] text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center gap-1.5 font-mono shadow-sm"
           >
             <span>Open Trace in Meko Observe</span>
             <span>↗</span>
@@ -103,7 +103,7 @@ export const MekoMemoryPanel: React.FC<MekoMemoryPanelProps> = ({
       </div>
 
       {/* Ask The Memory Search Box (Prompt 4.8) */}
-      <div className="p-4 rounded-lg bg-slate-900/80 border border-slate-800 space-y-3">
+      <div className="p-4 rounded-[14px] bg-slate-900/80 border border-slate-800 space-y-3">
         <label className="text-xs font-semibold uppercase tracking-wider text-slate-300 font-mono">
           Ask The Deal Memory
         </label>
@@ -114,12 +114,12 @@ export const MekoMemoryPanel: React.FC<MekoMemoryPanelProps> = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleAskMemory(searchQuery)}
             placeholder="Search recalled findings, concessions, or decisions across investors..."
-            className="flex-1 bg-slate-950 border border-slate-800 rounded px-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500"
+            className="flex-1 bg-slate-950 border border-slate-800 rounded-[8px] px-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 font-mono"
           />
           <button
             onClick={() => handleAskMemory(searchQuery)}
             disabled={searching}
-            className="px-4 py-1.5 rounded text-xs font-medium bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white transition"
+            className="px-4 py-1.5 rounded-[8px] text-xs font-bold bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 transition font-mono shadow-sm"
           >
             {searching ? "Recalling..." : "Ask"}
           </button>

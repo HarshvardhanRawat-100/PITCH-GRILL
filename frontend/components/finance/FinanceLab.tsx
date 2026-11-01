@@ -66,23 +66,23 @@ export default function FinanceLab() {
       {/* Top Header Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-4">
         <div>
-          <h2 className="text-lg font-bold text-white flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
-            <span>Finance Lab</span>
+          <h2 className="text-xl font-bold text-white flex items-center gap-2.5 font-mono">
+            <span className="w-2.5 h-2.5 rounded-[2px] bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+            <span>Finance Investor Lab</span>
           </h2>
-          <p className="text-xs text-gray-400">
-            36-month deterministic cash burn simulation, break-point solver & sensitivity stress testing
+          <p className="text-xs text-gray-400 mt-0.5">
+            Deterministic 36-month cash burn trajectory, unit economics model & break-point sensitivity testing
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           {Object.keys(overrides).length > 0 && (
             <button
               type="button"
               onClick={resetAll}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-surface border border-border text-gray-400 hover:text-white hover:bg-surface-elevated transition-colors"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-[10px] text-xs font-semibold bg-surface border border-border text-gray-400 hover:text-white hover:border-amber-500/50 hover:bg-surface-elevated transition-all font-mono"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
               <span>Reset Scenarios</span>
             </button>
           )}

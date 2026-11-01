@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
-import { ShieldAlert, Trash2, Printer, Download, Loader2 } from "lucide-react";
+import { ShieldAlert, Trash2, Printer, Download, Loader2, ChevronLeft } from "lucide-react";
 import type { Deal } from "@/contracts/types";
 
 interface HeaderProps {
@@ -58,89 +58,114 @@ export function Header({ deal }: HeaderProps) {
   const scoreDelta = currentScore - initialScore;
 
   return (
-    <header className="w-full border-b border-border bg-surface/90 backdrop-blur sticky top-0 z-50 px-6 py-3.5 print:hidden">
+    <header className="w-full border-b border-border bg-[#090B10]/95 backdrop-blur-md sticky top-0 z-50 px-6 py-3.5 print:hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Brand & Deal Identity */}
         <div className="flex items-center gap-4">
           <Link
             href="/"
-            className="flex items-center gap-2 text-white font-bold tracking-tight text-lg hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            className="flex items-center gap-2.5 text-white font-bold tracking-tight text-lg hover:opacity-95 focus:outline-none rounded-[10px] transition-all group"
           >
-            <ShieldAlert className="w-6 h-6 text-red-500" />
-            <span>SecondBrain</span>
-            <span className="text-xs px-2 py-0.5 rounded bg-red-950/80 border border-red-800/40 text-red-400 uppercase font-mono">
-              War Room
-            </span>
+            <div className="w-8 h-8 rounded-[10px] bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.2)] group-hover:shadow-[0_0_18px_rgba(245,158,11,0.35)] transition-all">
+              <ShieldAlert className="w-4 h-4 text-amber-400" />
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold tracking-tight text-white font-mono">PITCH-GRILL</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-[6px] bg-amber-500/10 border border-amber-500/30 text-amber-300 uppercase font-semibold">
+                War Room
+              </span>
+            </div>
           </Link>
 
           {deal && (
-            <div className="flex items-center gap-2 pl-4 border-l border-border text-sm">
-              <span className="font-semibold text-gray-200">
-                {deal.deck?.company_name || "Diligence Run"}
-              </span>
-              <span className="font-mono text-xs text-gray-500 bg-surface-elevated px-2 py-0.5 rounded border border-border">
-                {deal.id}
-              </span>
+            <div className="flex items-center gap-3 pl-4 border-l border-border text-sm">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-gray-400 hover:text-white transition-colors px-2.5 py-1.5 rounded-[8px] hover:bg-surface-elevated border border-border/60 hover:border-border"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span>Back</span>
+              </Link>
+              <div className="w-8 h-8 rounded-[10px] bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-300 font-bold text-xs shadow-sm">
+                ⚡
+              </div>
+              <div>
+                <div className="font-bold text-gray-100 text-sm leading-tight">
+                  {deal.deck?.company_name || "Diligence Target"}
+                </div>
+                <div className="font-mono text-[11px] text-gray-400">
+                  {deal.id.slice(0, 8).toUpperCase()}
+                </div>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Score Gauge & Actions */}
-        {deal && (
-          <div className="flex items-center gap-4 sm:gap-6">
-            {/* Action buttons: Print & Export */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handlePrint}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-elevated border border-border hover:border-gray-500 text-xs font-medium text-gray-300 hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-blue-500"
-                title="Print or Save as PDF"
-              >
-                <Printer className="w-3.5 h-3.5 text-blue-400" />
-                <span className="hidden sm:inline">Print / PDF</span>
-              </button>
+        {/* Right Actions */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          {deal ? (
+            <>
+              {/* Action buttons: Print & Export */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handlePrint}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-surface-elevated border border-border hover:border-gray-600 text-xs font-medium text-gray-300 hover:text-white transition-all shadow-xs"
+                  title="Print or Save as PDF"
+                >
+                  <Printer className="w-3.5 h-3.5 text-blue-400" />
+                  <span className="hidden sm:inline">Print / PDF</span>
+                </button>
 
-              <button
-                onClick={handleExportMarkdown}
-                disabled={exporting}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-elevated border border-border hover:border-gray-500 text-xs font-medium text-gray-300 hover:text-white transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                title="Download full Markdown diligence report"
-              >
-                {exporting ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                ) : (
-                  <Download className="w-3.5 h-3.5 text-emerald-400" />
-                )}
-                <span className="hidden sm:inline">Export .md</span>
-              </button>
-            </div>
+                <button
+                  onClick={handleExportMarkdown}
+                  disabled={exporting}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] bg-surface-elevated border border-border hover:border-gray-600 text-xs font-medium text-gray-300 hover:text-white transition-all disabled:opacity-50 shadow-xs"
+                  title="Download full Markdown diligence report"
+                >
+                  {exporting ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Download className="w-3.5 h-3.5 text-emerald-400" />
+                  )}
+                  <span className="hidden sm:inline">Export .md</span>
+                </button>
+              </div>
 
-            {/* Score Gauge */}
-            <div className="flex items-center gap-3">
-              <div className="text-right hidden sm:block">
-                <div className="text-xs uppercase tracking-wider text-gray-400 font-medium">Readiness Score</div>
-                <div className="text-xs text-gray-500">
-                  Initial: {initialScore.toFixed(0)}
-                  {scoreDelta > 0 && <span className="text-emerald-400 font-semibold ml-1">+{scoreDelta.toFixed(0)}</span>}
+              {/* Score Gauge */}
+              <div className="flex items-center gap-2.5 bg-surface-elevated border border-border px-3 py-1.5 rounded-[10px]">
+                <div className="text-right hidden sm:block">
+                  <div className="text-[10px] uppercase tracking-wider text-gray-400 font-mono">Readiness</div>
+                  <div className="text-[11px] text-gray-500 font-mono">
+                    {scoreDelta > 0 && <span className="text-emerald-400 font-bold">+{scoreDelta.toFixed(0)}</span>}
+                  </div>
+                </div>
+                <div
+                  className="w-8 h-8 rounded-[8px] border border-amber-500/40 flex items-center justify-center font-bold font-mono text-sm bg-amber-500/10 text-amber-300"
+                  title={`Readiness score: ${currentScore.toFixed(0)}/100`}
+                >
+                  {currentScore.toFixed(0)}
                 </div>
               </div>
-              <div
-                className="w-11 h-11 rounded-full border-2 border-border flex items-center justify-center font-bold font-mono text-base bg-surface-elevated text-emerald-400 shadow-inner"
-                title={`Readiness score: ${currentScore.toFixed(0)}/100`}
-              >
-                {currentScore.toFixed(0)}
-              </div>
-            </div>
 
-            {/* Delete button */}
-            <button
-              onClick={handleDelete}
-              className="p-2 text-gray-400 hover:text-red-400 rounded-lg hover:bg-surface-elevated transition-colors border border-transparent hover:border-red-900/40 focus:outline-none focus:ring-2 focus:ring-red-500"
-              title="Delete deal & wipe memory"
-            >
-              <Trash2 className="w-4 h-4" />
-            </button>
-          </div>
-        )}
+              {/* Delete button */}
+              <button
+                onClick={handleDelete}
+                className="p-2 text-gray-400 hover:text-red-400 rounded-[10px] hover:bg-surface-elevated transition-colors border border-transparent hover:border-red-900/40"
+                title="Delete deal & wipe memory"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </>
+          ) : null}
+
+          {/* New Deal Tactical Action Button */}
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-[10px] text-xs font-bold text-slate-950 bg-amber-500 hover:bg-amber-400 shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all active:scale-95 font-mono"
+          >
+            <span>+ New Deal</span>
+          </Link>
+        </div>
       </div>
     </header>
   );

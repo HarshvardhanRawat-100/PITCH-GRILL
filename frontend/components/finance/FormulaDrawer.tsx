@@ -49,15 +49,15 @@ export function FormulaDrawer({
         ref={triggerRef}
         type="button"
         onClick={handleOpen}
-        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-surface-elevated border border-border text-gray-300 hover:text-white hover:border-gray-600 transition-colors"
+        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-[10px] text-xs font-semibold bg-surface-elevated border border-amber-500/30 text-amber-300 hover:text-white hover:border-amber-500 shadow-sm transition-all font-mono"
       >
-        <HelpCircle className="w-3.5 h-3.5 text-amber-500" />
-        <span>How this works</span>
+        <HelpCircle className="w-3.5 h-3.5 text-amber-400" />
+        <span>Deterministic Equations</span>
       </button>
 
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm transition-opacity"
+          className="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-md transition-opacity"
           onClick={handleClose}
         >
           <div
@@ -65,17 +65,18 @@ export function FormulaDrawer({
             role="dialog"
             aria-modal="true"
             aria-label="How the finance model works"
-            className="w-full max-w-lg h-full bg-surface border-l border-border p-6 shadow-2xl overflow-y-auto space-y-6"
+            className="w-full max-w-lg h-full bg-[#0E111C] border-l border-border p-6 shadow-2xl overflow-y-auto space-y-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-border pb-4">
               <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-purple-500 shadow-glow-sm" />
                 <span>Deterministic Math Engine</span>
               </h3>
               <button
                 type="button"
                 onClick={handleClose}
-                className="p-1 rounded-md text-gray-400 hover:text-white hover:bg-surface-elevated transition-colors"
+                className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-surface-elevated transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -83,16 +84,16 @@ export function FormulaDrawer({
 
             {/* Mode Toggle Explainer */}
             <div className="space-y-3">
-              <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider font-mono">
                 Acquisition Scaling Mode
               </h4>
-              <div className="grid grid-cols-2 gap-2 p-1 rounded-lg bg-surface-elevated border border-border">
+              <div className="grid grid-cols-2 gap-2 p-1.5 rounded-[12px] bg-surface border border-border">
                 <button
                   type="button"
                   onClick={() => setMode("hold_growth")}
-                  className={`py-1.5 px-2.5 rounded text-xs font-semibold transition-all ${
+                  className={`py-2 px-3 rounded-[8px] text-xs font-bold transition-all font-mono ${
                     mode === "hold_growth"
-                      ? "bg-amber-500 text-black shadow"
+                      ? "bg-amber-500 text-slate-950 shadow-[0_0_12px_rgba(245,158,11,0.25)]"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -101,9 +102,9 @@ export function FormulaDrawer({
                 <button
                   type="button"
                   onClick={() => setMode("hold_spend")}
-                  className={`py-1.5 px-2.5 rounded text-xs font-semibold transition-all ${
+                  className={`py-2 px-3 rounded-[8px] text-xs font-bold transition-all font-mono ${
                     mode === "hold_spend"
-                      ? "bg-amber-500 text-black shadow"
+                      ? "bg-amber-500 text-slate-950 shadow-[0_0_12px_rgba(245,158,11,0.25)]"
                       : "text-gray-400 hover:text-white"
                   }`}
                 >

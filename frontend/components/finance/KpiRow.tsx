@@ -46,13 +46,18 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
       label: "Runway",
       value: runwayDisplay,
       color: "text-white",
-      note: m?.runway_capped ? "Survives 36-mo horizon" : undefined,
+      trend: m?.runway_capped ? "Survives 36M" : m?.runway_months && m.runway_months >= 18 ? "Optimal" : "At Risk",
+      trendColor: m?.runway_months && m.runway_months >= 18 ? "text-emerald-400 bg-emerald-950/40 border-emerald-800/40" : "text-amber-400 bg-amber-950/40 border-amber-800/40",
+      icon: "📅",
       tooltip: "Months of operating cash remaining until balance reaches zero under active scenario.",
     },
     {
       label: "LTV",
       value: m?.ltv !== null && m?.ltv !== undefined ? formatINR(m.ltv) : "—",
       color: "text-white",
+      trend: "Unit Rev",
+      trendColor: "text-amber-300 bg-amber-950/40 border-amber-800/40",
+      icon: "💵",
       tooltip: "Customer Lifetime Value = (ARPU × Gross Margin) / Monthly Churn Rate.",
     },
     {
@@ -62,6 +67,9 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
           ? formatMultiple(m.ltv_cac)
           : "—",
       color: ltvCacColor,
+      trend: m?.ltv_cac && m.ltv_cac >= 3.0 ? "≥ 3.0× VC Tier" : "Underwater",
+      trendColor: m?.ltv_cac && m.ltv_cac >= 3.0 ? "text-emerald-400 bg-emerald-950/40 border-emerald-800/40" : "text-red-400 bg-red-950/40 border-red-800/40",
+      icon: "⚡",
       tooltip: "Ratio of Customer Lifetime Value to Acquisition Cost (3.0× is a healthy VC benchmark).",
     },
     {
@@ -71,40 +79,53 @@ export function KpiRow({ displayedResult }: KpiRowProps) {
           ? `${m.payback_months.toFixed(1)} mo`
           : "—",
       color: "text-white",
+      trend: m?.payback_months && m.payback_months <= 12 ? "Healthy" : "Long",
+      trendColor: m?.payback_months && m.payback_months <= 12 ? "text-emerald-400 bg-emerald-950/40 border-emerald-800/40" : "text-amber-400 bg-amber-950/40 border-amber-800/40",
+      icon: "⏱️",
       tooltip: "Months required to recover customer acquisition spend from gross profit contribution.",
     },
     {
       label: "Breakeven",
       value: breakevenDisplay,
       color: "text-white",
+      trend: "Timeline",
+      trendColor: "text-blue-400 bg-blue-950/40 border-blue-800/40",
+      icon: "🎯",
       tooltip: "First calendar month where gross profit exceeds total fixed and variable acquisition burn.",
     },
     {
       label: "Month-0 Net Burn",
       value: month0Display,
       color: "text-white",
+      trend: m && m.month0_net_burn !== undefined && m.month0_net_burn <= 0 ? "Surplus" : "Cash Out",
+      trendColor: m && m.month0_net_burn !== undefined && m.month0_net_burn <= 0 ? "text-emerald-400 bg-emerald-950/40 border-emerald-800/40" : "text-amber-400 bg-amber-950/40 border-amber-800/40",
+      icon: "🔥",
       tooltip: "Initial net monthly cash burn rate calculated as Operating Expenses minus Gross Profit.",
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
       {cards.map((c, i) => (
         <div
           key={i}
           title={c.tooltip}
           aria-label={`${c.label}: ${c.value}. ${c.tooltip}`}
-          className="bg-surface rounded-xl p-3.5 border border-border flex flex-col justify-between hover:border-gray-700 transition-colors cursor-help"
+          className="bg-surface rounded-[14px] p-4 border border-border flex flex-col justify-between hover:border-amber-500/40 hover:shadow-sm transition-all cursor-help group"
         >
-          <div className="text-[11px] font-medium text-gray-400">{c.label}</div>
-          <div className={`text-base sm:text-lg font-bold font-mono mt-1 ${c.color}`}>
-            {c.value}
+          <div className="flex items-center justify-between gap-1">
+            <span className="text-sm p-1 rounded-[6px] bg-amber-500/10 border border-amber-500/20">{c.icon}</span>
+            <span className={`text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded-[6px] border ${c.trendColor}`}>
+              {c.trend}
+            </span>
           </div>
-          {c.note && (
-            <div className="text-[9px] text-emerald-400/80 mt-1 font-mono">
-              {c.note}
+
+          <div className="mt-3">
+            <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">{c.label}</div>
+            <div className={`text-base sm:text-lg font-bold font-mono tracking-tight mt-0.5 ${c.color}`}>
+              {c.value}
             </div>
-          )}
+          </div>
         </div>
       ))}
     </div>

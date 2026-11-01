@@ -70,14 +70,14 @@ export default function DataRoom({ dealId, companyName = "Startup", onSelectFind
   return (
     <div className="space-y-6">
       {/* Top Header Card */}
-      <div className="bg-surface rounded-2xl border border-border p-6 shadow-sm">
+      <div className="bg-surface rounded-[18px] border border-border p-6 shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-lg bg-emerald-950/60 border border-emerald-800/40 text-emerald-400">
+              <span className="p-1.5 rounded-[8px] bg-emerald-950/60 border border-emerald-800/40 text-emerald-400">
                 <CheckSquare className="w-5 h-5" />
               </span>
-              <h2 className="text-xl font-bold text-gray-100 tracking-tight">
+              <h2 className="text-xl font-bold text-gray-100 tracking-tight font-mono">
                 India Diligence Data Room
               </h2>
             </div>
@@ -98,7 +98,7 @@ export default function DataRoom({ dealId, companyName = "Startup", onSelectFind
       <div className="flex items-center justify-between gap-3 border-b border-border pb-3">
         <div className="flex items-center gap-1.5">
           <Filter className="w-3.5 h-3.5 text-gray-500 ml-1" />
-          <span className="text-xs text-gray-400 font-medium mr-2">Filter:</span>
+          <span className="text-xs text-gray-400 font-medium mr-2 font-mono">Filter:</span>
           {(
             [
               { id: "all", label: `All Items (${checklist.length})` },
@@ -110,9 +110,9 @@ export default function DataRoom({ dealId, companyName = "Startup", onSelectFind
             <button
               key={tab.id}
               onClick={() => setFilter(tab.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-[8px] text-xs font-semibold font-mono transition-colors ${
                 filter === tab.id
-                  ? "bg-surface-elevated text-white border border-border shadow-xs"
+                  ? "bg-surface-elevated text-amber-300 border border-amber-500/40 shadow-xs"
                   : "text-gray-400 hover:text-gray-200 hover:bg-surface/50"
               }`}
             >

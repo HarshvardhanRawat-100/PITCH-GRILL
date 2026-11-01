@@ -57,7 +57,7 @@ function InvestorCard({ persona, report, stageProgress }: InvestorCardProps) {
 
   return (
     <div
-      className="relative bg-surface rounded-xl border border-border overflow-hidden transition-all duration-500 hover:shadow-lg group"
+      className="relative bg-surface rounded-2xl border border-border overflow-hidden transition-all duration-300 hover:border-purple-500/40 hover:shadow-glow-sm group"
       style={{ borderColor: report ? meta.color + "40" : undefined }}
     >
       {/* Persona Header */}
@@ -297,7 +297,7 @@ export default function DealPage() {
             </div>
             <div className="w-full h-1.5 bg-surface-elevated rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-blue-600 to-blue-400 transition-all duration-700 ease-out rounded-full"
+                className="h-full bg-gradient-to-r from-amber-600 to-amber-400 transition-all duration-700 ease-out rounded-[4px]"
                 style={{ width: `${Math.max(5, stageProgress * 100)}%` }}
               />
             </div>
@@ -312,10 +312,10 @@ export default function DealPage() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-[10px] text-xs font-semibold tracking-wide transition-all whitespace-nowrap focus:outline-none ${
                   isActive
-                    ? "bg-surface-elevated text-white border border-border shadow-sm"
-                    : "text-gray-400 hover:text-gray-200 hover:bg-surface/50"
+                    ? "bg-surface-elevated text-white border border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.15)]"
+                    : "text-gray-400 hover:text-gray-200 hover:bg-surface/50 border border-transparent"
                 }`}
               >
                 {tab.icon}
@@ -467,7 +467,7 @@ function FinalVerdictSection({ deal }: { deal: ReturnType<typeof useDeal> }) {
 
           <button
             onClick={downloadExport}
-            className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-blue-600/20 transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-[10px] text-xs font-bold shadow-[0_0_18px_rgba(245,158,11,0.25)] transition-all font-mono"
           >
             <Download className="w-4 h-4" />
             <span>Export Diligence (.md)</span>

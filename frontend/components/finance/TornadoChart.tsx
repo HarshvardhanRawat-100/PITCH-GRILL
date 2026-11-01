@@ -45,12 +45,12 @@ export function TornadoChart({
   }
 
   return (
-    <div className="bg-surface rounded-xl p-4 border border-border space-y-3">
+    <div className="bg-surface rounded-[18px] p-5 border border-border space-y-4 shadow-sm">
       <div className="flex items-center justify-between">
-        <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider">
+        <h4 className="text-xs font-bold text-gray-300 uppercase tracking-wider font-mono">
           Sensitivity Analysis (±20% Variable Swing)
         </h4>
-        <span className="text-[10px] font-mono text-gray-400">
+        <span className="text-[11px] font-mono text-gray-400">
           Sorted by impact on runway
         </span>
       </div>
@@ -62,10 +62,10 @@ export function TornadoChart({
             data={data}
             margin={{ top: 10, right: 30, left: 60, bottom: 20 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#25293C" horizontal={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#1E2337" horizontal={false} />
             <XAxis
               type="number"
-              stroke="#6B7280"
+              stroke="#4B5563"
               fontSize={10}
               tickLine={false}
               tickFormatter={(v) => `${v > 0 ? "+" : ""}${v} mo`}
@@ -83,10 +83,10 @@ export function TornadoChart({
                 if (!active || !payload?.length) return null;
                 const d = payload[0].payload;
                 return (
-                  <div className="bg-surface-elevated border border-border p-2.5 rounded shadow-lg text-xs font-mono space-y-1">
-                    <p className="font-semibold text-white font-sans">{d.label}</p>
+                  <div className="bg-[#121522] border border-border p-2.5 rounded-[10px] shadow-sm text-xs font-mono space-y-1">
+                    <p className="font-semibold text-white font-mono">{d.label}</p>
                     <p className="text-gray-300">
-                      −20% → <span className="text-amber-400 font-bold">{formatMonths(d.rawLow)}</span>
+                      −20% → <span className="text-rose-400 font-bold">{formatMonths(d.rawLow)}</span>
                     </p>
                     <p className="text-gray-300">
                       +20% → <span className="text-emerald-400 font-bold">{formatMonths(d.rawHigh)}</span>
@@ -101,16 +101,17 @@ export function TornadoChart({
             <ReferenceLine
               x={0}
               stroke="#F59E0B"
+              strokeDasharray="3 3"
               label={{
                 value: `Base: ${baseRunway.toFixed(1)} mo`,
                 position: "insideTopLeft",
-                fill: "#F59E0B",
+                fill: "#FCD34D",
                 fontSize: 10,
               }}
             />
             <Bar
               dataKey="low"
-              fill="#EF4444"
+              fill="#F43F5E"
               radius={[3, 0, 0, 3]}
               isAnimationActive={!pending}
             />

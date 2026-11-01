@@ -49,18 +49,18 @@ export const MarketIntel: React.FC<MarketIntelProps> = ({
   return (
     <div className="p-6 max-w-6xl mx-auto space-y-6 text-slate-100">
       {/* Top Banner: Status + Refresh Button */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-lg bg-slate-900 border border-slate-800">
+      <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-[14px] bg-slate-900 border border-slate-800">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-lg font-bold text-slate-100">
+            <h1 className="text-lg font-bold text-slate-100 font-mono">
               Market Intelligence & Grounding
             </h1>
             {market.from_cache ? (
-              <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-amber-950/70 border border-amber-700/50 text-amber-300">
+              <span className="px-2 py-0.5 rounded-[6px] text-[11px] font-mono bg-amber-950/70 border border-amber-700/50 text-amber-300">
                 Cached from live search {market.generated_at ? `on ${new Date(market.generated_at).toLocaleDateString()}` : ""}
               </span>
             ) : (
-              <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-950/70 border border-emerald-700/50 text-emerald-300">
+              <span className="px-2 py-0.5 rounded-[6px] text-[11px] font-mono bg-emerald-950/70 border border-emerald-700/50 text-emerald-300">
                 Live Grounded
               </span>
             )}
@@ -73,7 +73,7 @@ export const MarketIntel: React.FC<MarketIntelProps> = ({
         <button
           onClick={handleRefresh}
           disabled={refreshing}
-          className="px-3 py-1.5 rounded text-xs font-medium bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white transition flex items-center gap-2"
+          className="px-3.5 py-2 rounded-[8px] text-xs font-bold bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 transition flex items-center gap-2 font-mono shadow-sm"
         >
           {refreshing ? (
             <>
@@ -91,7 +91,7 @@ export const MarketIntel: React.FC<MarketIntelProps> = ({
 
       {/* Bold Callout: No-Competitor Contradiction Alert */}
       {market.no_competitor_claim_contradicted && (
-        <div className="p-4 rounded-lg bg-rose-950/40 border border-rose-800/80 flex items-start gap-3">
+        <div className="p-4 rounded-[12px] bg-rose-950/40 border border-rose-800/80 flex items-start gap-3">
           <span className="text-xl">⚠️</span>
           <div>
             <h3 className="text-sm font-bold text-rose-300">
@@ -108,7 +108,7 @@ export const MarketIntel: React.FC<MarketIntelProps> = ({
       {/* TAM Verification & Funnel Card */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* TAM Evidence & Verdict */}
-        <div className="p-5 rounded-lg bg-slate-900/80 border border-slate-800 space-y-3">
+        <div className="p-5 rounded-[14px] bg-slate-900/80 border border-slate-800 space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-300 font-mono">
               TAM Sizing Validation
