@@ -61,6 +61,34 @@ input[type="range"]::-webkit-slider-runnable-track {
   background: #1E2337;
 }
 
+/* Efferd Dashboard 3 Tactical Surface Tokens */
+.efferd-panel {
+  background: rgba(13, 16, 24, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.5);
+}
+
+.efferd-subtle {
+  background: rgba(22, 27, 40, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.efferd-nav-active {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #FFFFFF;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.12);
+}
+
+.efferd-pill {
+  border-radius: 9999px;
+  font-family: 'JetBrainsMonoNL NF SemiBold', 'JetBrainsMonoNL NF', 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: -0.01em;
+}
+
 /* Smooth sleek scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
