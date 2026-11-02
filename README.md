@@ -104,7 +104,7 @@ What makes this more than a chatbot wrapper:
 ### Core Technologies
 - **Backend:** Python 3.11+, FastAPI, Uvicorn, Pydantic v2, PyMuPDF, AsyncIO
 - **Frontend:** Next.js 14, React 18, TypeScript, TailwindCSS, Recharts, Zustand
-- **LLM:** Google Gemini via `google-genai` (`gemini-2.5-flash` primary, `gemini-2.5-pro` fallback)
+- **LLM:** Google Gemini via `google-genai` (`gemini-3.5-flash` primary, `gemini-3.5-pro` fallback)
 - **Memory:** Yugabyte Meko over MCP with automatic local fallback
 - **Grounding:** Tavily Search API
 - **Shared contracts:** `contracts/schemas.py` (Pydantic v2) + `contracts/types.ts`
