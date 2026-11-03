@@ -31,7 +31,7 @@ Early-stage founders face a high-stakes asymmetry when pitching VCs:
 | **Harshvardhan Rawat** | University School of Automation & Robotics (USAR), GGSIPU |
 | **Nikunj Mundhra** | University School of Automation & Robotics (USAR), GGSIPU |
 | **Aayush Aswal** | Bhagwan Parshuram Institute of Technology (BPIT), GGSIPU |
-| **Abhigyan Badyar** | National Forensic Sciences University (NFSU) |
+| **Abhigyan Badyar** | National Forensic Sciences University (NFSU) |.
 
 ---
 
